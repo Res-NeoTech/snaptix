@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+* {
+    transition: all 500ms;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, sans-serif;
+}
