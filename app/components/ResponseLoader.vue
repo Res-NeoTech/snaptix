@@ -38,6 +38,7 @@ div {
 .hiddenLoader {
     opacity: 0;
     visibility: hidden;
+	pointer-events: none;
 }
 
 img {
