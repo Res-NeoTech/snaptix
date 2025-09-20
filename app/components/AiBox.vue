@@ -54,14 +54,14 @@ const copyResponse = async () => {
   <div class="mt-25 flex flex-col items-center">
     <!-- Rendered Markdown -->
     <div
-      class="renderer w-2/5 p-3 rounded-xl border border-[#00E1FF] text-[#F1F1F1] bg-black/20 prose prose-invert"
+      class="renderer min-w-2/5 max-w-4/5 p-3 rounded-xl border border-[#00E1FF] text-[#F1F1F1] bg-black/20 prose prose-invert"
       v-html="renderedMarkdown"
     />
 
     <!-- Copy button -->
     <button
       id="copy"
-      class="w-2/5 mt-10 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
+      class="w-4/5 md:w-2/5 mt-10 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
       @click="copyResponse"
     >
       <Icon
@@ -75,7 +75,7 @@ const copyResponse = async () => {
     <!-- Regenerate button -->
     <button
       id="regenerate"
-      class="w-2/5 mt-10 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
+      class="w-4/5 md:w-2/5 mt-10 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
       @click="emit('regenerate')"
     >
       <Icon

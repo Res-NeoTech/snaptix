@@ -19,12 +19,12 @@ watch(prompt, (newVal) => {
 			ref="promptInput"
 			v-model="prompt"
 			name="promptArea"
-			class="w-2/5 text-[#F1F1F1] h-100 placeholder-[#9BA1A6] p-3 text-lg"
+			class="w-4/5 md:w-2/5 text-[#F1F1F1] h-100 placeholder-[#9BA1A6] p-3 text-lg customScrollbar"
 			placeholder="Paste anything that makes trouble here..."
 		/>
 		<button
 			id="addContext"
-			class="w-2/5 mt-10 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
+			class="w-4/5 md:w-2/5 mt-10 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
 		>
 			<Icon
 				name="mingcute:add-fill"
@@ -34,7 +34,7 @@ watch(prompt, (newVal) => {
 		</button>
 		<button
 			id="fix"
-			class="w-2/5 mt-10 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
+			class="w-4/5 md:w-2/5 mt-10 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
 			@click="emit('submit-prompt')"
 		>
 			<Icon

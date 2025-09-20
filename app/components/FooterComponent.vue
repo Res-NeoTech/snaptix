@@ -6,11 +6,11 @@ const { data } = await useAsyncData('dynamicData', () =>
 
 <template>
 	<footer class="mt-25">
-		<div class="flex flex-col items-center p-5">
+		<div class="flex flex-col items-center p-5 text-center">
 			<h2 class="text-[#F1F1F1]">
 				&copy;{{ data?.year }} SnapTix, all rights reserved.
 			</h2>
-			<h2 class="text-[#F1F1F1]">
+			<h2 class="text-[#F1F1F1] text-center">
 				{{ data?.quote }}
 			</h2>
 		</div>

@@ -8,3 +8,72 @@ body {
     margin: 0;
     font-family: Roboto, sans-serif;
 }
+
+/* Code highlighting */
+.hljs {
+  background: none !important;
+  scrollbar-color: #736EFE transparent !important;
+  scrollbar-width: thin !important;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #5EFCE8 !important;  /* minty/cyan light, but maybe a bit more muted */
+  font-style: italic !important;
+}
+
+/* keywords, control flow, bold syntax items */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-name,
+.hljs-title {
+  color: #736EFE !important;  /* your purple */
+  font-weight: bold !important;
+}
+
+/* strings, literals */
+.hljs-string,
+.hljs-regexp,
+.hljs-symbol,
+.hljs-template-string {
+  color: #00E1FF !important;  /* bright cyan */
+}
+
+/* numbers, types, built-ins */
+.hljs-number,
+.hljs-type,
+.hljs-built_in {
+  color: #5EFCE8 !important;  /* minty/cyan */
+}
+
+/* functions, classes, titles */
+.hljs-function,
+.hljs-class .hljs-title {
+  color: #736EFE !important;  /* purple */
+}
+
+/* punctuation, operators, etc */
+.hljs-punctuation,
+.hljs-operator {
+  color: #E0E0E0 !important;  /* neutral, maybe light-grey so accents stand out */
+}
+
+/* Markdown */
+
+.renderer > p {
+  font-size: large !important;
+}
+
+.renderer > ol, .renderer > ul {
+    padding: 10px;
+}
+
+.renderer > ol > li, .renderer > ul > li {
+  font-size: medium !important;
+  list-style-type: disc;
+}
+
+.customScrollbar {
+  scrollbar-color: #736EFE transparent;
+  scrollbar-width: thick;
+}
