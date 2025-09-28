@@ -5,7 +5,7 @@ const { data } = await useAsyncData('dynamicData', () =>
 </script>
 
 <template>
-	<footer class="mt-25">
+	<footer class="mt-25 flex flex-col items-center">
 		<div class="flex flex-col items-center p-5 text-center">
 			<h2 class="text-[#F1F1F1]">
 				&copy;{{ data?.year }} SnapTix, all rights reserved.
@@ -13,6 +13,12 @@ const { data } = await useAsyncData('dynamicData', () =>
 			<h2 class="text-[#F1F1F1] text-center">
 				{{ data?.quote }}
 			</h2>
+		</div>
+		<div class="flex flex-row justify-evenly pb-5 w-1/3">
+			<NuxtLink
+				class="text-[#00E1FF] hover:text-[#736EFE]"
+				to="/privacy-policy"
+			>Privacy Policy</NuxtLink>
 		</div>
 	</footer>
 </template>

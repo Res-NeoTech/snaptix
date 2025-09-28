@@ -27,7 +27,7 @@ watch(prompt, (newVal) => {
 			class="w-4/5 md:w-2/5 mt-10 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
 		>
 			<Icon
-				name="mingcute:add-fill"
+				name="mingcute:plus-fill"
 				style="color: #F1F1F1"
 				class="mr-2"
 			/> Add Context
@@ -55,7 +55,7 @@ textarea {
     resize: none;
 }
 
-textarea:focus {
+textarea:focus, textarea:hover {
     outline: none;
     border: 1px solid #736EFE;
 }
