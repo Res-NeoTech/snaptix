@@ -15,6 +15,10 @@ export default defineNuxtConfig({
 		},
 	},
 	css: ['~/assets/css/main.css'],
+	runtimeConfig: {
+		public: {},
+		MONGO_URI: process.env.MONGO_URI || 'mongodb://admin:admin@localhost:27017/snaptix',
+	},
 	compatibilityDate: '2025-07-15',
 	vite: {
 		plugins: [
@@ -29,8 +33,4 @@ export default defineNuxtConfig({
 			},
 		},
 	},
-	runtimeConfig: {
-    public: {},
-    MONGO_URI: process.env.MONGO_URI || "mongodb://admin:admin@localhost:27017/snaptix",
-  }
 });
