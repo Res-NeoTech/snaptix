@@ -29,7 +29,7 @@ footer {
   border-image: linear-gradient(to right, #00E1FF, #736EFE);
   border-image-slice: 1;
   background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(3px);
   box-shadow: 0 -4px 25px rgba(0, 225, 255, 0.08);
   padding-top: 1rem;
   padding-bottom: 1rem;

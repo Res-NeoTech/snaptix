@@ -54,20 +54,19 @@ const copyResponse = async () => {
 	<div class="mt-25 flex flex-col items-center">
 		<!-- Rendered Markdown -->
 		<div
-			class="renderer min-w-2/5 max-w-4/5 p-3 rounded-xl border border-[#00E1FF] text-[#F1F1F1] bg-black/20 prose prose-invert"
+			class="renderer min-w-2/5 max-w-4/5 p-6 rounded-2xl shadow-lg border border-transparent text-[#F1F1F1] bg-white/5 backdrop-blur-xl prose prose-invert transition-all duration-300 hover:shadow-[#00E1FF]/40 hover:border-[#736EFE]"
 			v-html="renderedMarkdown"
 		/>
 
 		<!-- Copy button -->
 		<button
 			id="copy"
-			class="w-4/5 md:w-2/5 mt-10 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
+			class="glass-btn w-4/5 md:w-2/5 mt-10 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
 			@click="copyResponse"
 		>
 			<Icon
 				name="mingcute:copy-2-fill"
-				style="color: #F1F1F1"
-				class="mr-2"
+				class="mr-2 text-[#F1F1F1]"
 			/>
 			{{ copyText }}
 		</button>
@@ -75,13 +74,12 @@ const copyResponse = async () => {
 		<!-- Regenerate button -->
 		<button
 			id="regenerate"
-			class="w-4/5 md:w-2/5 mt-10 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
+			class="glass-btn w-4/5 md:w-2/5 mt-6 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
 			@click="emit('regenerate')"
 		>
 			<Icon
 				name="mingcute:refresh-3-fill"
-				style="color: #F1F1F1"
-				class="mr-2"
+				class="mr-2 text-[#F1F1F1]"
 			/>
 			Regenerate
 		</button>
@@ -89,44 +87,45 @@ const copyResponse = async () => {
 </template>
 
 <style scoped>
-button {
+/* Shared glass style */
+.glass-btn {
   border-radius: 15px;
   backdrop-filter: blur(3px);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 
-button:hover {
+.glass-btn:hover {
   cursor: pointer;
+  border-color: #736EFE;
+  background: rgba(0, 225, 255, 0.12);
+  box-shadow: 0 6px 25px rgba(115, 110, 254, 0.4);
 }
 
+/* Regenerate button with accent */
 #regenerate {
-  background-color: rgba(0, 225, 255, 0.5);
   border: 1px solid #00E1FF;
+  background: linear-gradient(135deg, rgba(0, 225, 255, 0.25), rgba(115, 110, 254, 0.25));
 }
 
-#regenerate:hover {
-  border-color: #736EFE;
-  background-color: #736efe8c;
-}
-
+/* Copy button more subtle */
 #copy {
-  border: 1px solid #4D4B4B;
-  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-#copy:hover {
-  border-color: #736EFE;
-}
-
+/* AI response container */
 .renderer {
-  border-radius: 15px;
-  border: 1px solid #00E1FF;
-  background-color: rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  border: 1px solid rgba(0, 225, 255, 0.4);
+  background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(3px);
-  resize: none;
+  transition: all 0.3s ease;
 }
 
 .renderer:hover {
-  outline: none;
   border: 1px solid #736EFE;
+  box-shadow: 0 6px 30px rgba(115, 110, 254, 0.25);
 }
 </style>

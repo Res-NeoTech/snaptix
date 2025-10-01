@@ -128,7 +128,6 @@ button:hover {
 
 #primaryButton:hover {
   border-color: #736EFE;
-  background: linear-gradient(135deg, rgba(115,110,254,0.6), rgba(0,225,255,0.6));
   box-shadow: 0 0 28px rgba(115,110,254,0.5),
               0 0 16px rgba(0,225,255,0.3);
 }
