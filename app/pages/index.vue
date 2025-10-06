@@ -12,8 +12,8 @@ const onUpdatePrompt = (updatedPrompt: string) => {
 };
 
 const onSubmitPrompt = async () => {
-	isLoaderHidden.value = false;
 	if (prompt.value.trim() !== '') {
+		isLoaderHidden.value = false;
 		const response = await $fetch<{ response?: string; error?: string }>('/api/fix', {
 			method: 'POST',
 			body: { prompt: prompt.value },
@@ -41,8 +41,14 @@ onMounted(() => nbParticles.value = Math.round(200 + Math.random() * 50));
 <template>
 	<div class="min-h-screen bg-[#0D1117] overflow-hidden">
 		<ClientOnly>
-			<ParticlesBg class="absolute inset-0 w-full h-full pointer-events-none z-0 fixed" :quantity="nbParticles"
-				:ease="100" color="00E1FF" :staticity="25" refresh />
+			<ParticlesBg
+				class="absolute inset-0 w-full h-full pointer-events-none z-0 fixed"
+				:quantity="nbParticles"
+				:ease="100"
+				color="00E1FF"
+				:staticity="25"
+				refresh
+			/>
 		</ClientOnly>
 		<ResponseLoader :is-hidden="isLoaderHidden" />
 		<HeaderComponent />
@@ -53,16 +59,27 @@ onMounted(() => nbParticles.value = Math.round(200 + Math.random() * 50));
 			</h2>
 			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
 		</div>
-		<PromptBox @update-prompt="onUpdatePrompt" @submit-prompt="onSubmitPrompt" />
-		<div v-if="aiResponse" class="flex items-center justify-evenly mt-25 mb-25">
+		<PromptBox
+			@update-prompt="onUpdatePrompt"
+			@submit-prompt="onSubmitPrompt"
+		/>
+		<div
+			v-if="aiResponse"
+			class="flex items-center justify-evenly mt-25 mb-25"
+		>
 			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
 			<h2 class="text-center">
 				AI Response
 			</h2>
 			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
 		</div>
-		<AiBox v-if="aiResponse" v-auto-animate :ai-response="aiResponse" @regenerate="onSubmitPrompt" />
-		<FooterComponent />
+		<AiBox
+			v-if="aiResponse"
+			v-auto-animate
+			:ai-response="aiResponse"
+			@regenerate="onSubmitPrompt"
+		/>
+		<FooterComponent :margin="true" />
 	</div>
 </template>
 

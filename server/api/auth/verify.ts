@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { parse } from 'cookie';
+import User from '~~/server/models/User';
 
 export default defineEventHandler(async (event) => {
 	const cookies = parse(event.node.req.headers.cookie || '');
@@ -16,11 +17,15 @@ export default defineEventHandler(async (event) => {
 			email: string;
 		};
 
-		// decoded.id is your Mongo user _id
-		// You can now query DB if you need full user object:
-		// const user = await User.findById(decoded.id);
+		// decoded.id is Mongo user _id
+		const user = await User.findById(decoded.id);
 
-		return { userId: decoded.id, email: decoded.email };
+		if (!user) {
+			setResponseStatus(event, 401);
+			return { error: 'Deleted or uknown user.' };
+		}
+
+		return { userId: user.id, email: user.email };
 	}
 	catch (err) {
 		setResponseStatus(event, 401);

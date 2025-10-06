@@ -11,14 +11,14 @@ export default defineEventHandler(async (event) => {
 
 	if (!(email && password)) {
 		setResponseStatus(event, 400);
-		return { error: "Username and Password are required to login." };
+		return { error: 'Username and Password are required to login.' };
 	}
 
 	const user = await User.findOne({ email });
 
 	if (!user) {
 		setResponseStatus(event, 401);
-		return { error: "Incorrect login credentials. Please try again." };
+		return { error: 'Incorrect login credentials. Please try again.' };
 	}
 
 	const matches = await argon2.verify(user.password, password);
@@ -45,8 +45,9 @@ export default defineEventHandler(async (event) => {
 			message: 'User successfully logged in!',
 			user: { id: user._id, username: user.username, email: user.email },
 		};
-	} else {
+	}
+	else {
 		setResponseStatus(event, 401);
-		return { error: "Incorrect login credentials. Please try again." };
+		return { error: 'Incorrect login credentials. Please try again.' };
 	}
 });

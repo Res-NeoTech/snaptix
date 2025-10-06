@@ -114,7 +114,7 @@ const createAccount = async () => {
 				</NuxtLink> for free!
 			</p>
 		</article>
-		<FooterComponent />
+		<FooterComponent :margin="true" />
 	</div>
 </template>
 

@@ -2,10 +2,12 @@
 const { data } = await useAsyncData('dynamicData', () =>
 	$fetch('/api/dynamic'),
 );
+
+const props = defineProps<{ margin?: boolean }>();
 </script>
 
 <template>
-	<footer class="mt-25 flex flex-col items-center">
+	<footer :class="[props.margin ? 'mt-25' : '', 'flex flex-col items-center']">
 		<div class="flex flex-col items-center p-5 text-center">
 			<h2 class="text-[#F1F1F1]">
 				&copy;{{ data?.year }} SnapTix, all rights reserved.

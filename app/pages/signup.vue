@@ -186,7 +186,7 @@ const createAccount = async () => {
 				</NuxtLink> instead.
 			</p>
 		</article>
-		<FooterComponent />
+		<FooterComponent :margin="true" />
 	</div>
 </template>
 
