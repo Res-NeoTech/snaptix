@@ -95,6 +95,7 @@ onMounted(() => nbParticles.value = Math.round(200 + Math.random() * 50));
 				class="flex-1 p-5 md:p-10"
 			>
 				<component
+					v-if="userDetails"
 					:is="currentSection"
 					:key="activeSection"
                     :user="userDetails"

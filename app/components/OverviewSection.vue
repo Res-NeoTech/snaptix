@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Ref, ComputedRef } from 'vue'
 import AnimatedCircularProgressBar from './imported/AnimatedCircularProgressBar.vue'
 
 interface User {
@@ -10,8 +9,7 @@ interface User {
   isPremium: boolean
 }
 
-const props = defineProps<{ user: Ref<User | null> }>()
-const userInfo: ComputedRef<User | null> = computed(() => props.user.value ?? null)
+const props = defineProps<{ user: User | null }>();
 </script>
 
 <template>
@@ -32,7 +30,7 @@ const userInfo: ComputedRef<User | null> = computed(() => props.user.value ?? nu
 			<!-- User Info -->
 			<div class="flex-1 text-center md:text-left">
 				<h3 class="text-xl font-bold text-[#F1F1F1]">
-					{{ userInfo?.username }}
+					<p>{{ props.user?.username }}</p>
 				</h3>
 				<p class="text-[#9BA1A6] mt-5">
 					johndoe@example.com
