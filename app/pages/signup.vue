@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, computed } from 'vue';
 import validator from 'validator';
 import { validatePassword } from '~~/lib/utils/validators';
 import ParticlesBg from '../components/imported/ParticlesBg.vue';
@@ -14,13 +14,25 @@ const signButtonText = ref<string>('Create Account');
 const serverSideError = ref<boolean>(false);
 const emailTaken = ref<boolean>(false);
 
-const diagnostics = computed(() => {
-	return {
-		usernameValid: username.value.length > 3 && username.value.length <= 100,
-		emailValid: validator.isEmail(email.value),
-		passwordValid: validatePassword(password.value),
-		passwordRepeated: password.value === rPassword.value,
-	};
+const diagnostics = ref({
+  usernameValid: false,
+  emailValid: false,
+  passwordValid: false,
+  passwordRepeated: false,
+});
+
+let debounceTimer: NodeJS.Timeout;
+
+watch([username, email, password, rPassword], () => {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => {
+    diagnostics.value = {
+      usernameValid: username.value.length > 3 && username.value.length <= 100,
+      emailValid: validator.isEmail(email.value),
+      passwordValid: validatePassword(password.value),
+      passwordRepeated: password.value === rPassword.value,
+    };
+  }, 200);
 });
 
 const validData = computed<boolean>(() => {
@@ -30,14 +42,13 @@ const validData = computed<boolean>(() => {
 		&& diagnostics.value.passwordRepeated;
 });
 
-const nbParticles = ref<number>(0);
-onMounted(() => nbParticles.value = Math.round(200 + Math.random() * 50));
+const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 
 const createAccount = async () => {
 	signButtonText.value = 'Please Wait...';
 	serverSideError.value = false;
 	emailTaken.value = false;
-	const { data, pending, error } = await useFetch('/api/auth/signup', {
+	await useFetch('/api/auth/signup', {
 		method: 'POST',
 		body: {
 			username,
@@ -46,7 +57,7 @@ const createAccount = async () => {
 		},
 		onResponse({ response }) {
 			if (response.status === 201) {
-				navigateTo('/dashboard');
+				navigateTo('/dashboard', { redirectCode: 301 });
 			}
 		},
 		onResponseError({ response }) {
@@ -89,7 +100,7 @@ const createAccount = async () => {
 			</div>
 			<input
 				id="usernameInput"
-				v-model.lazy="username"
+				v-model="username"
 				class="h-15 w-4/5 md:w-2/5 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1] mt-25"
 				type="text"
 				name="username"
@@ -104,7 +115,7 @@ const createAccount = async () => {
 			</p>
 			<input
 				id="emailInput"
-				v-model.lazy="email"
+				v-model="email"
 				class="h-15 w-4/5 md:w-2/5 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1] mt-10"
 				type="email"
 				name="email"
@@ -125,7 +136,7 @@ const createAccount = async () => {
 			</p>
 			<input
 				id="passwordInput"
-				v-model.lazy="password"
+				v-model="password"
 				class="h-15 w-4/5 md:w-2/5 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1] mt-10"
 				type="password"
 				name="password"
@@ -140,7 +151,7 @@ const createAccount = async () => {
 			</p>
 			<input
 				id="rPasswordInput"
-				v-model.lazy="rPassword"
+				v-model="rPassword"
 				class="h-15 w-4/5 md:w-2/5 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1] mt-10"
 				type="password"
 				name="rPassword"

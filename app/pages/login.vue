@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import ParticlesBg from '../components/imported/ParticlesBg.vue';
 
 // Form Values
@@ -10,14 +10,13 @@ const signButtonText = ref<string>('Log-In');
 const serverSideError = ref<boolean>(false);
 const unauthorized = ref<boolean>(false);
 
-const nbParticles = ref<number>(0);
-onMounted(() => nbParticles.value = Math.round(200 + Math.random() * 50));
+const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 
 const createAccount = async () => {
 	signButtonText.value = 'Please Wait...';
 	serverSideError.value = false;
 	unauthorized.value = false;
-	const { data, pending, error } = await useFetch('/api/auth/login', {
+	await useFetch('/api/auth/login', {
 		method: 'POST',
 		body: {
 			email,
@@ -25,7 +24,7 @@ const createAccount = async () => {
 		},
 		onResponse({ response }) {
 			if (response.status === 200) {
-				navigateTo('/dashboard');
+				navigateTo('/dashboard', { redirectCode: 301 });
 			}
 		},
 		onResponseError({ response }) {
@@ -68,7 +67,7 @@ const createAccount = async () => {
 			</div>
 			<input
 				id="emailInput"
-				v-model.lazy="email"
+				v-model="email"
 				class="h-15 w-4/5 md:w-2/5 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1] mt-25"
 				type="email"
 				name="email"
@@ -76,7 +75,7 @@ const createAccount = async () => {
 			>
 			<input
 				id="passwordInput"
-				v-model.lazy="password"
+				v-model="password"
 				class="h-15 w-4/5 md:w-2/5 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1] mt-10"
 				type="password"
 				name="password"

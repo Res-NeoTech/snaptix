@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import ParticlesBg from '../components/imported/ParticlesBg.vue';
 
-const nbParticles = ref<number>(0);
+const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 const prompt = ref<string>('');
 const aiResponse = ref<string>('');
 const isLoaderHidden = ref<boolean>(true);
+const serverSideError = ref<boolean>(false);
 
 const onUpdatePrompt = (updatedPrompt: string) => {
 	prompt.value = updatedPrompt;
@@ -13,42 +14,43 @@ const onUpdatePrompt = (updatedPrompt: string) => {
 
 const onSubmitPrompt = async () => {
 	if (prompt.value.trim() !== '') {
+		serverSideError.value = false;
 		isLoaderHidden.value = false;
-		const response = await $fetch<{ response?: string; error?: string }>('/api/fix', {
+
+		await useFetch<{response: string}>('/api/fix', {
 			method: 'POST',
 			body: { prompt: prompt.value },
+			onResponse({ response }) {
+				if (response.status === 200) {
+					aiResponse.value = response._data?.response as string;
+				}
+			},
+			onResponseError({ response }) {
+				if (response.status === 429) {
+					// @TODO: Decode and interpretate rate-limit message.
+				}
+				else {
+					serverSideError.value = true;
+				}
+			},
 		});
 
-		if (response?.response) {
-			aiResponse.value = response.response;
-			setTimeout(() => {
-				window.scrollTo({
-					top: document.body.scrollHeight,
-					behavior: 'smooth',
-				});
-				isLoaderHidden.value = true;
-			}, 100);
-		}
-		else if (response?.error) {
-			console.error('API error:', response.error);
-		}
+		setTimeout(() => {
+			window.scrollTo({
+				top: document.body.scrollHeight,
+				behavior: 'smooth',
+			});
+			isLoaderHidden.value = true;
+		}, 100);
 	}
 };
-
-onMounted(() => nbParticles.value = Math.round(200 + Math.random() * 50));
 </script>
 
 <template>
 	<div class="min-h-screen bg-[#0D1117] overflow-hidden">
 		<ClientOnly>
-			<ParticlesBg
-				class="absolute inset-0 w-full h-full pointer-events-none z-0 fixed"
-				:quantity="nbParticles"
-				:ease="100"
-				color="00E1FF"
-				:staticity="25"
-				refresh
-			/>
+			<ParticlesBg class="absolute inset-0 w-full h-full pointer-events-none z-0 fixed" :quantity="nbParticles"
+				:ease="100" color="00E1FF" :staticity="25" refresh />
 		</ClientOnly>
 		<ResponseLoader :is-hidden="isLoaderHidden" />
 		<HeaderComponent />
@@ -59,26 +61,20 @@ onMounted(() => nbParticles.value = Math.round(200 + Math.random() * 50));
 			</h2>
 			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
 		</div>
-		<PromptBox
-			@update-prompt="onUpdatePrompt"
-			@submit-prompt="onSubmitPrompt"
-		/>
-		<div
-			v-if="aiResponse"
-			class="flex items-center justify-evenly mt-25 mb-25"
-		>
+		<PromptBox @update-prompt="onUpdatePrompt" @submit-prompt="onSubmitPrompt" />
+		<div v-if="serverSideError" v-auto-animate
+			class="error-box w-4/5 md:w-2/5 mt-6 flex items-center justify-between p-4 rounded-lg border border-[#00E1FF]/40 bg-white/5 mt-25 mb-25">
+			<p class="text-[#FF4D6D] text-center">The server encountered a problem while processing your request.
+				Please, retry later. We are deeply sorry for the interruption.</p>
+		</div>
+		<div v-if="aiResponse" class="flex items-center justify-evenly mt-25 mb-25">
 			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
 			<h2 class="text-center">
 				AI Response
 			</h2>
 			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
 		</div>
-		<AiBox
-			v-if="aiResponse"
-			v-auto-animate
-			:ai-response="aiResponse"
-			@regenerate="onSubmitPrompt"
-		/>
+		<AiBox v-if="aiResponse" v-auto-animate :ai-response="aiResponse" @regenerate="onSubmitPrompt" />
 		<FooterComponent :margin="true" />
 	</div>
 </template>
@@ -94,5 +90,16 @@ h2 {
 	font-size: xx-large;
 	letter-spacing: 1px;
 	text-shadow: 0 0 10px rgba(0, 225, 255, 0.4);
+}
+
+.error-box {
+	border-radius: 20px;
+	border: 1px solid rgba(255, 111, 111, 0.25);
+	background: rgba(255, 105, 105, 0.08);
+	backdrop-filter: blur(3px);
+	box-shadow: inset 0 0 15px rgba(255, 0, 98, 0.05),
+		0 0 12px rgba(255, 0, 43, 0.08);
+	margin-left: auto;
+	margin-right: auto;
 }
 </style>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import ParticlesBg from '../components/imported/ParticlesBg.vue';
 
 // Section components
@@ -8,13 +9,15 @@ import AccountSettings from '~/components/AccountSettings.vue';
 import PaymentSection from '~/components/PaymentSection.vue';
 
 interface User {
-  id: string
-  username: string
-  email: string
-  joinDate: string
-  isPremium: boolean
+	id: string;
+	username: string;
+	email: string;
+	joinDate: string;
+	isPremium: boolean;
 }
 
+const route = useRoute();
+const router = useRouter();
 
 enum Section {
 	overview = 'overview',
@@ -22,13 +25,24 @@ enum Section {
 	payments = 'payments',
 }
 
-const activeSection = ref<Section>(Section.overview);
-const nbParticles = ref<number>(0);
+function isSection(value: any): value is Section {
+	return Object.values(Section).includes(value);
+}
+
+if (!route.query.section) {
+	router.replace({ query: { section: 'overview' } });
+}
+
+const activeSection = computed<Section>({
+	get: () => (isSection(route.query.section) ? route.query.section : Section.overview),
+	set: val => router.replace({ query: { section: val } }),
+});
+const currentSection = computed(() => sections[activeSection.value]);
 
 const navItems = [
 	{ key: Section.overview, label: 'Overview', icon: 'bx:user' },
-	{ key: Section.settings, label: 'Account Settings', icon: 'mdi:cog' },
-	{ key: Section.payments, label: 'Payments', icon: 'mdi:credit-card-outline' },
+	{ key: Section.settings, label: 'Account Settings', icon: 'mingcute:settings-3-fill' },
+	{ key: Section.payments, label: 'Payments', icon: 'mingcute:bank-card-fill' },
 ];
 
 const sections = {
@@ -38,13 +52,13 @@ const sections = {
 };
 
 const { data: userDetails } = await useAsyncData<User>(
-  'userDetails',
-  () => $fetch('/api/account/info'),
-  { server: true, lazy: false }
-)
+	'userDetails',
+	() => $fetch('/api/account/info', {
+		headers: useRequestHeaders(['cookie']),
+	}),
+);
 
-const currentSection = computed(() => sections[activeSection.value]);
-onMounted(() => nbParticles.value = Math.round(200 + Math.random() * 50));
+const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 </script>
 
 <template>
@@ -59,15 +73,16 @@ onMounted(() => nbParticles.value = Math.round(200 + Math.random() * 50));
 				refresh
 			/>
 		</ClientOnly>
+
 		<HeaderComponent />
-		<!-- Sidebar Navigation -->
+
 		<div class="flex">
+			<!-- Sidebar -->
 			<aside class="flex flex-col w-64 p-5 min-h-[70vh] overflow-y-auto">
-				<h1
-					class="text-2xl font-bold mb-10"
-				>
+				<h1 class="text-2xl font-bold mb-10">
 					Dashboard
 				</h1>
+
 				<nav class="flex flex-col gap-4">
 					<button
 						v-for="item in navItems"
@@ -95,31 +110,30 @@ onMounted(() => nbParticles.value = Math.round(200 + Math.random() * 50));
 				class="flex-1 p-5 md:p-10"
 			>
 				<component
-					v-if="userDetails"
 					:is="currentSection"
-					:key="activeSection"
-                    :user="userDetails"
+					:user="userDetails"
 					class="w-full"
 				/>
 			</main>
 		</div>
+
 		<FooterComponent />
 	</div>
 </template>
 
 <style scoped>
 aside {
-    border-right: 2px solid transparent;
-    border-image: linear-gradient(to right, #00E1FF, #736EFE);
-    border-image-slice: 1;
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(3px);
-    box-shadow: 0 0 25px rgba(0, 225, 255, 0.1);
-    color: #f1f1f1;
+	border-right: 2px solid transparent;
+	border-image: linear-gradient(to right, #00E1FF, #736EFE);
+	border-image-slice: 1;
+	background: rgba(255, 255, 255, 0.06);
+	backdrop-filter: blur(3px);
+	box-shadow: 0 0 25px rgba(0, 225, 255, 0.1);
+	color: #f1f1f1;
 }
 
 h1 {
-    background: linear-gradient(to right, #00E1FF, #736EFE);
+	background: linear-gradient(to right, #00E1FF, #736EFE);
 	-webkit-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;

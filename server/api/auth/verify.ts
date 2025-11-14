@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { parse } from 'cookie';
-import User from '~~/server/models/User';
+import User, { IUser } from '~~/server/models/User';
 
 export default defineEventHandler(async (event) => {
 	const cookies = parse(event.node.req.headers.cookie || '');
@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 
 	if (!token) {
 		setResponseStatus(event, 401);
-		return { error: 'Unauthorized' };
+		return { error: 'Unauthorized.' };
 	}
 
 	try {
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
 		};
 
 		// decoded.id is Mongo user _id
-		const user = await User.findById(decoded.id);
+		const user: IUser | null = await User.findById(decoded.id);
 
 		if (!user) {
 			setResponseStatus(event, 401);
@@ -27,8 +27,8 @@ export default defineEventHandler(async (event) => {
 
 		return { userId: user.id, email: user.email };
 	}
-	catch (err) {
+	catch {
 		setResponseStatus(event, 401);
-		return { error: 'Invalid or expired token' };
+		return { error: 'Invalid or expired token.' };
 	}
 });

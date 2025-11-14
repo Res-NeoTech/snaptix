@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
 
 	const body = await readBody(event);
 	const prompt: string = body.prompt;
-
+	
 	const fixRequest = await fetch(MISTRAL_API_URL, {
 		method: 'POST',
 		headers: {
@@ -31,6 +31,7 @@ export default defineEventHandler(async (event) => {
 	else {
 		const text = await fixRequest.text();
 		console.error(`Mistral API error ${fixRequest.status}: ${text}`);
+		setResponseStatus(event, 500);
 		return { error: `API error: ${fixRequest.status} - ${text}` };
 	}
 });

@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import ParticlesBg from '../components/imported/ParticlesBg.vue';
 import ParticleImage from '~/components/imported/ParticleImage/ParticleImage.vue';
 
-const nbParticles = ref<number>(0);
-
-onMounted(() => nbParticles.value = Math.round(200 + Math.random() * 50));
+const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 </script>
 
 <template>

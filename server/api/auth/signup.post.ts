@@ -3,7 +3,7 @@ import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import { serialize } from 'cookie';
 import { validatePassword } from '~~/lib/utils/validators';
-import User from '~~/server/models/User';
+import User, { IUser } from '~~/server/models/User';
 
 export default defineEventHandler(async (event) => {
 	const body = await readBody(event);
@@ -37,17 +37,17 @@ export default defineEventHandler(async (event) => {
 		return { error: 'An account with this email already exists.' };
 	}
 
-	const hashedPassword = await argon2.hash(password, { type: argon2.argon2id });
+	const hashedPassword: string = await argon2.hash(password, { type: argon2.argon2id });
 
 	// Proceeding to create User
-	const newUser = await User.create({
+	const newUser : IUser = await User.create({
 		username,
 		email,
 		password: hashedPassword,
 	});
 
 	const token = jwt.sign(
-		{ id: newUser._id, email: newUser.email }, // payload
+		{ id: newUser.id, email: newUser.email }, // payload
 		process.env.JWT_SECRET!, // secret key (keep it secret!)
 		{ expiresIn: '31d' },
 	);
@@ -65,7 +65,7 @@ export default defineEventHandler(async (event) => {
 
 	setResponseStatus(event, 201);
 	return {
-		message: 'User created and logged in!',
-		user: { id: newUser._id, username: newUser.username, email: newUser.email },
+		message: 'User created and logged in.',
+		user: { id: newUser.id, username: newUser.username, email: newUser.email },
 	};
 });
