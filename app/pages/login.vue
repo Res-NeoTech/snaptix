@@ -9,13 +9,15 @@ const password = ref<string>('');
 const signButtonText = ref<string>('Log-In');
 const serverSideError = ref<boolean>(false);
 const unauthorized = ref<boolean>(false);
+const rateLimited = ref<boolean>(false);
 
 const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 
-const createAccount = async () => {
+const login = async () => {
 	signButtonText.value = 'Please Wait...';
 	serverSideError.value = false;
 	unauthorized.value = false;
+	rateLimited.value = false;
 	await useFetch('/api/auth/login', {
 		method: 'POST',
 		body: {
@@ -30,8 +32,9 @@ const createAccount = async () => {
 		onResponseError({ response }) {
 			if (response.status === 401) {
 				unauthorized.value = true;
-			}
-			else {
+			} else if (response.status === 429) {
+				rateLimited.value = true;
+			} else {
 				serverSideError.value = true;
 			}
 		},
@@ -90,8 +93,8 @@ const createAccount = async () => {
 			<button
 				id="submit"
 				:disabled="!(email && password)"
-				class="h-15 w-4/5 md:w-2/5 text-[#F1F1F1] text-lg flex items-center justify-center mt-10"
-				@click="createAccount"
+				class="h-15 w-4/5 md:w-2/5 text-[#F1F1F1] text-lg flex items-center justify-center mt-10 hover:cursor-pointer"
+				@click="login"
 			>
 				<Icon
 					name="bx:user"
@@ -104,6 +107,12 @@ const createAccount = async () => {
 				class="formError w-4/5 md:w-2/5 mt-10 text-lg"
 			>
 				Something unexpected happened. Please, try again later.
+			</p>
+			<p
+				v-if="rateLimited"
+				class="formError w-4/5 md:w-2/5 mt-10 text-lg"
+			>
+				Too many login attempts. Please wait a moment.
 			</p>
 			<p class="text-[#F1F1F1] text-lg text-center w-2/3 mt-25">
 				New to SnapTix? <NuxtLink

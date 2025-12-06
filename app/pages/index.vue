@@ -8,6 +8,15 @@ const aiResponse = ref<string>('');
 const isLoaderHidden = ref<boolean>(true);
 const serverSideError = ref<boolean>(false);
 
+enum PopupType {
+	NONE = 'none',
+	GUEST = 'guest',
+	USER = 'user',
+	PREMIUM = 'premium',
+}
+
+const limitPopupType = ref<PopupType>(PopupType.NONE);
+
 const onUpdatePrompt = (updatedPrompt: string) => {
 	prompt.value = updatedPrompt;
 };
@@ -17,42 +26,63 @@ const onSubmitPrompt = async () => {
 		serverSideError.value = false;
 		isLoaderHidden.value = false;
 
-		await useFetch<{response: string}>('/api/fix', {
-			method: 'POST',
-			body: { prompt: prompt.value },
-			onResponse({ response }) {
-				if (response.status === 200) {
-					aiResponse.value = response._data?.response as string;
-				}
-			},
-			onResponseError({ response }) {
-				if (response.status === 429) {
-					// @TODO: Decode and interpretate rate-limit message.
-				}
-				else {
-					serverSideError.value = true;
-				}
-			},
-		});
-
-		setTimeout(() => {
-			window.scrollTo({
-				top: document.body.scrollHeight,
-				behavior: 'smooth',
+		try {
+			const data = await $fetch<{ response: string; typeUser?: string }>('/api/fix', {
+				method: 'POST',
+				body: { prompt: prompt.value },
 			});
-			isLoaderHidden.value = true;
-		}, 100);
+			aiResponse.value = data.response;
+			setTimeout(() => {
+				window.scrollTo({
+					top: document.body.scrollHeight,
+					behavior: 'smooth',
+				});
+				isLoaderHidden.value = true;
+			}, 100);
+		}
+		catch (err: any) {
+			const errorData = err.data as { response?: string; typeUser?: string } | undefined;
+
+			if (err.status === 429 && errorData?.typeUser) {
+				isLoaderHidden.value = true;
+				limitPopupType.value = errorData.typeUser as PopupType;
+			}
+			else {
+				serverSideError.value = true;
+				setTimeout(() => {
+					window.scrollTo({
+						top: document.body.scrollHeight,
+						behavior: 'smooth',
+					});
+					isLoaderHidden.value = true;
+				}, 100);
+			}
+		}
 	}
+};
+
+const hideLimitPoput = () => {
+	limitPopupType.value = PopupType.NONE;
 };
 </script>
 
 <template>
 	<div class="min-h-screen bg-[#0D1117] overflow-hidden">
 		<ClientOnly>
-			<ParticlesBg class="absolute inset-0 w-full h-full pointer-events-none z-0 fixed" :quantity="nbParticles"
-				:ease="100" color="00E1FF" :staticity="25" refresh />
+			<ParticlesBg
+				class="absolute inset-0 w-full h-full pointer-events-none z-0 fixed"
+				:quantity="nbParticles"
+				:ease="100"
+				color="00E1FF"
+				:staticity="25"
+				refresh
+			/>
 		</ClientOnly>
 		<ResponseLoader :is-hidden="isLoaderHidden" />
+		<LimitPopup
+			:type="limitPopupType"
+			@hide="hideLimitPoput"
+		/>
 		<HeaderComponent />
 		<div class="flex items-center justify-evenly mt-25">
 			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
@@ -61,20 +91,36 @@ const onSubmitPrompt = async () => {
 			</h2>
 			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
 		</div>
-		<PromptBox @update-prompt="onUpdatePrompt" @submit-prompt="onSubmitPrompt" />
-		<div v-if="serverSideError" v-auto-animate
-			class="error-box w-4/5 md:w-2/5 mt-6 flex items-center justify-between p-4 rounded-lg border border-[#00E1FF]/40 bg-white/5 mt-25 mb-25">
-			<p class="text-[#FF4D6D] text-center">The server encountered a problem while processing your request.
-				Please, retry later. We are deeply sorry for the interruption.</p>
+		<PromptBox
+			@update-prompt="onUpdatePrompt"
+			@submit-prompt="onSubmitPrompt"
+		/>
+		<div
+			v-if="serverSideError"
+			v-auto-animate
+			class="error-box w-4/5 md:w-2/5 mt-6 flex items-center justify-between p-4 rounded-lg border border-[#00E1FF]/40 bg-white/5 mt-25 mb-25"
+		>
+			<p class="text-[#FF4D6D] text-center">
+				The server encountered a problem while processing your request.
+				Please, retry later. We are deeply sorry for the interruption.
+			</p>
 		</div>
-		<div v-if="aiResponse" class="flex items-center justify-evenly mt-25 mb-25">
+		<div
+			v-if="aiResponse"
+			class="flex items-center justify-evenly mt-25 mb-25"
+		>
 			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
 			<h2 class="text-center">
 				AI Response
 			</h2>
 			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
 		</div>
-		<AiBox v-if="aiResponse" v-auto-animate :ai-response="aiResponse" @regenerate="onSubmitPrompt" />
+		<AiBox
+			v-if="aiResponse"
+			v-auto-animate
+			:ai-response="aiResponse"
+			@regenerate="onSubmitPrompt"
+		/>
 		<FooterComponent :margin="true" />
 	</div>
 </template>

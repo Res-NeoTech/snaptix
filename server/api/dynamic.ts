@@ -1,5 +1,5 @@
 export default defineEventHandler(() => {
-	const seoQuotes: Array<string> = [
+	const seoQuotes: string[] = [
 		'Fix text, code or content. Paste and go. No prompt needed.',
 		'Your AI fixer. Just paste — SnapTix does the rest.',
 		'AI that fixes anything — no prompt, no delay, no BS.',

@@ -14,6 +14,9 @@ interface User {
 	email: string;
 	joinDate: string;
 	isPremium: boolean;
+	correctionLimit: number;
+	correctionCount: number;
+	correctionQuotaReset: string;
 }
 
 const route = useRoute();

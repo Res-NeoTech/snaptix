@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 interface User {
 	id: string;
 	username: string;
@@ -8,7 +7,7 @@ interface User {
 	isPremium: boolean;
 }
 
-const props = defineProps<{ user: User }>();
+defineProps<{ user: User }>();
 </script>
 
 <template>
@@ -16,13 +15,22 @@ const props = defineProps<{ user: User }>();
 		<h2 class="section-title">
 			Payments
 		</h2>
-
 		<!-- Current Plan -->
 		<div class="mt-6">
 			<p class="text-[#F1F1F1] flex items-center">
 				Current Plan: {{ user.isPremium ? "Premium" : "Free" }}
-				<Icon v-if="user?.isPremium" name="tabler:crown" style="color: #F1F1F1" class="mx-1" />
-				<Icon v-else name="ic:round-money-off" style="color: #F1F1F1" class="mx-1" />
+				<Icon
+					v-if="user?.isPremium"
+					name="material-symbols:crown-rounded"
+					style="color: #F1F1F1"
+					class="mx-1"
+				/>
+				<Icon
+					v-else
+					name="ic:round-money-off"
+					style="color: #F1F1F1"
+					class="mx-1"
+				/>
 			</p>
 			<p class="text-[#9BA1A6] text-sm">
 				Next Payment: Feb 15, 2025
@@ -32,12 +40,19 @@ const props = defineProps<{ user: User }>();
 		<!-- Card Info -->
 		<div class="card-box mt-6 flex items-center justify-between p-4 rounded-lg border border-[#00E1FF]/40 bg-white/5">
 			<div class="flex items-center gap-3">
-				<Icon name="mingcute:bank-card-fill" class="text-[#00E1FF] text-2xl" />
+				<Icon
+					name="mingcute:bank-card-fill"
+					class="text-[#00E1FF] text-2xl"
+				/>
 				<span class="text-[#F1F1F1]">**** **** **** 4242</span>
 			</div>
 			<button
-				class="btn-primary hover:cursor-pointer flex-1 sm:flex-none px-4 py-2 text-[#F1F1F1] text-lg flex items-center justify-center h-12">
-				<Icon name="mingcute:settings-3-fill" class="mr-2" />
+				class="btn-primary hover:cursor-pointer flex-1 sm:flex-none px-4 py-2 text-[#F1F1F1] text-lg flex items-center justify-center h-12"
+			>
+				<Icon
+					name="mingcute:settings-3-fill"
+					class="mr-2"
+				/>
 				Change Card
 			</button>
 		</div>

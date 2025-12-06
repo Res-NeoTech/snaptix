@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
-import { parse } from 'cookie';
-import User, { IUser } from '~~/server/models/User';
+import { getCookie } from 'h3';
+import type { IUser } from '~~/server/models/User';
+import User from '~~/server/models/User';
 
 export default defineEventHandler(async (event) => {
-	const cookies = parse(event.node.req.headers.cookie || '');
-	const token = cookies.auth_token;
+	const token = getCookie(event, "auth_token");
 
 	if (!token) {
 		setResponseStatus(event, 401);

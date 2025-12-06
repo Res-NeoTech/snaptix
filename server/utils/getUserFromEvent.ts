@@ -1,9 +1,8 @@
 import jwt from 'jsonwebtoken';
-import { parse } from 'cookie';
+import { getCookie } from 'h3';
 
 export function getUserFromEvent(event: any) {
-	const cookies = parse(event.node.req.headers.cookie || '');
-	const token = cookies.auth_token;
+	const token = getCookie(event, "auth_token");
 	if (!token) return null;
 
 	try {

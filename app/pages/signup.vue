@@ -13,26 +13,27 @@ const rPassword = ref<string>('');
 const signButtonText = ref<string>('Create Account');
 const serverSideError = ref<boolean>(false);
 const emailTaken = ref<boolean>(false);
+const rateLimited = ref<boolean>(false);
 
 const diagnostics = ref({
-  usernameValid: false,
-  emailValid: false,
-  passwordValid: false,
-  passwordRepeated: false,
+	usernameValid: false,
+	emailValid: false,
+	passwordValid: false,
+	passwordRepeated: false,
 });
 
 let debounceTimer: NodeJS.Timeout;
 
 watch([username, email, password, rPassword], () => {
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(() => {
-    diagnostics.value = {
-      usernameValid: username.value.length > 3 && username.value.length <= 100,
-      emailValid: validator.isEmail(email.value),
-      passwordValid: validatePassword(password.value),
-      passwordRepeated: password.value === rPassword.value,
-    };
-  }, 200);
+	clearTimeout(debounceTimer);
+	debounceTimer = setTimeout(() => {
+		diagnostics.value = {
+			usernameValid: username.value.length > 3 && username.value.length <= 100,
+			emailValid: validator.isEmail(email.value),
+			passwordValid: validatePassword(password.value),
+			passwordRepeated: password.value === rPassword.value,
+		};
+	}, 200);
 });
 
 const validData = computed<boolean>(() => {
@@ -48,6 +49,7 @@ const createAccount = async () => {
 	signButtonText.value = 'Please Wait...';
 	serverSideError.value = false;
 	emailTaken.value = false;
+	rateLimited.value = false;
 	await useFetch('/api/auth/signup', {
 		method: 'POST',
 		body: {
@@ -63,8 +65,9 @@ const createAccount = async () => {
 		onResponseError({ response }) {
 			if (response.status === 409) {
 				emailTaken.value = true;
-			}
-			else {
+			} else if (response.status === 429) {
+				rateLimited.value = true;
+			} else {
 				serverSideError.value = true;
 			}
 		},
@@ -167,7 +170,7 @@ const createAccount = async () => {
 			<button
 				id="submit"
 				:disabled="!validData"
-				class="h-15 w-4/5 md:w-2/5 text-[#F1F1F1] text-lg flex items-center justify-center mt-10"
+				class="h-15 w-4/5 md:w-2/5 text-[#F1F1F1] text-lg flex items-center justify-center mt-10 hover:cursor-pointer"
 				@click="createAccount"
 			>
 				<Icon
@@ -181,6 +184,12 @@ const createAccount = async () => {
 				class="formError w-4/5 md:w-2/5 mt-10 text-lg"
 			>
 				Something unexpected happened. Please, try again later.
+			</p>
+			<p
+				v-if="rateLimited"
+				class="formError w-4/5 md:w-2/5 mt-10 text-lg"
+			>
+				Too many sign-up attempts. Please wait a moment.
 			</p>
 			<p class="text-[#F1F1F1] text-lg text-center w-2/3 mt-25">
 				By creating an account, you agree to SnapTix's Terms of Use and confirm that you are familiar with our

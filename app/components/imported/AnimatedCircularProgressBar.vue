@@ -70,7 +70,9 @@ const props = withDefaults(defineProps<Props>(), {
 const circumference = 2 * Math.PI * 45;
 const percentPx = circumference / 100;
 
-const currentPercent = computed(() => ((props.value - props.min) / (props.max - props.min)) * 100);
+const currentPercent = computed(() =>
+	Math.round(((props.value - props.min) / (props.max - props.min)) * 100),
+);
 const percentageInPx = computed(() => `${percentPx}px`);
 const durationInSeconds = computed(() => `${props.duration}s`);
 </script>

@@ -7,6 +7,9 @@ interface User {
 	email: string;
 	joinDate: string;
 	isPremium: boolean;
+	correctionLimit: number;
+	correctionCount: number;
+	correctionQuotaReset: string;
 }
 
 defineProps<{ user: User }>();
@@ -54,7 +57,7 @@ const logout = async () => {
 					Subscription: {{ user.isPremium ? "Premium" : "Free" }}
 					<Icon
 						v-if="user?.isPremium"
-						name="tabler:crown"
+						name="material-symbols:crown-rounded"
 						style="color: #F1F1F1"
 						class="mx-1"
 					/>
@@ -75,11 +78,21 @@ const logout = async () => {
 					</h3>
 					<AnimatedCircularProgressBar
 						:gauge-primary-color="'#736EFE'"
-						:max="25"
+						:max="user.correctionLimit"
 						:min="0"
-						:value="10"
+						:value="user.correctionCount"
 					/>
 				</div>
+				<hr
+					v-if="user.correctionQuotaReset !== 'NONE'"
+					class="mt-10 text-[#9BA1A6]"
+				>
+				<p
+					v-if="user.correctionQuotaReset !== 'NONE'"
+					class="mt-5 text-[#F1F1F1] flex items-center"
+				>
+					Your limit resets in {{ user.correctionQuotaReset }}.
+				</p>
 			</div>
 
 			<!-- Log Out Button -->

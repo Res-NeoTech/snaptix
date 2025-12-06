@@ -26,42 +26,42 @@ const successfullModification = ref<boolean>(false);
 const diagnostics = ref({
 	usernameValid: true,
 	passwordValid: false,
-	passwordRepeated: false
+	passwordRepeated: false,
 });
 
 let debounceTimer: NodeJS.Timeout;
 
 watch([username, password, rPassword], () => {
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(() => {
-    diagnostics.value = {
-      usernameValid: username.value.length > 3 && username.value.length <= 100,
-      passwordValid: validatePassword(password.value),
-      passwordRepeated: password.value === rPassword.value,
-    };
-  }, 200);
+	clearTimeout(debounceTimer);
+	debounceTimer = setTimeout(() => {
+		diagnostics.value = {
+			usernameValid: username.value.length > 3 && username.value.length <= 100,
+			passwordValid: validatePassword(password.value),
+			passwordRepeated: password.value === rPassword.value,
+		};
+	}, 200);
 });
 
 const validData = computed<boolean>(() => {
-  const { usernameValid, passwordValid, passwordRepeated } = diagnostics.value;
+	const { usernameValid, passwordValid, passwordRepeated } = diagnostics.value;
 
-  const usernameChanged = username.value !== props.user.username;
-  const newPasswordEntered = password.value.length > 0;
+	const usernameChanged = username.value !== props.user.username;
+	const newPasswordEntered = password.value.length > 0;
 
-  // must always provide current password
-  const hasCurrentPassword = cPassword.value.length > 0;
+	// must always provide current password
+	const hasCurrentPassword = cPassword.value.length > 0;
 
-  // if password entered → must be valid and repeated correctly
-  const passwordOk = !newPasswordEntered || (passwordValid && passwordRepeated);
+	// if password entered → must be valid and repeated correctly
+	const passwordOk = !newPasswordEntered || (passwordValid && passwordRepeated);
 
-  // user must change *something*
-  const somethingChanged = usernameChanged || newPasswordEntered;
+	// user must change *something*
+	const somethingChanged = usernameChanged || newPasswordEntered;
 
-  return hasCurrentPassword && somethingChanged && usernameValid && passwordOk;
+	return hasCurrentPassword && somethingChanged && usernameValid && passwordOk;
 });
 
 const editAccount = async () => {
-	signButtonText.value = "Saving Changes...";
+	signButtonText.value = 'Saving Changes...';
 	serverSideError.value = false;
 	wrongPassword.value = false;
 	successfullModification.value = false;
@@ -71,7 +71,7 @@ const editAccount = async () => {
 		body: {
 			newUsername: username,
 			password: cPassword,
-			newPassword: password
+			newPassword: password,
 		},
 		onResponse({ response }) {
 			if (response.status === 204) {
@@ -88,8 +88,8 @@ const editAccount = async () => {
 		},
 	});
 
-	signButtonText.value = "Save Changes";
-}
+	signButtonText.value = 'Save Changes';
+};
 </script>
 
 <template>
@@ -98,44 +98,87 @@ const editAccount = async () => {
 			Account Settings
 		</h2>
 
-		<form class="flex flex-col gap-5 mt-6" v-auto-animate>
-			<input type="text" placeholder="Change Username" v-model="username"
-				class="h-15 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1]">
-			<p v-if="!diagnostics.usernameValid" class="formError text-lg">
+		<form
+			v-auto-animate
+			class="flex flex-col gap-5 mt-6"
+		>
+			<input
+				v-model="username"
+				type="text"
+				placeholder="Change Username"
+				class="h-15 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1]"
+			>
+			<p
+				v-if="!diagnostics.usernameValid"
+				class="formError text-lg"
+			>
 				Username must be
 				between 3 and 100 characters long.
 			</p>
-			<input type="password" placeholder="New Password" v-model="password"
-				class="h-15 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1]">
-			<p v-if="!diagnostics.passwordValid && password" class="formError text-lg">
+			<input
+				v-model="password"
+				type="password"
+				placeholder="New Password"
+				class="h-15 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1]"
+			>
+			<p
+				v-if="!diagnostics.passwordValid && password"
+				class="formError text-lg"
+			>
 				Password must be at
 				least 6 characters long and include at least one number and one special character.
 			</p>
-			<input type="password" placeholder="Confirm New Password" v-model="rPassword"
-				class="h-15 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1]">
-			<p v-if="!diagnostics.passwordRepeated && password && rPassword" class="formError text-lg">
+			<input
+				v-model="rPassword"
+				type="password"
+				placeholder="Confirm New Password"
+				class="h-15 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1]"
+			>
+			<p
+				v-if="!diagnostics.passwordRepeated && password && rPassword"
+				class="formError text-lg"
+			>
 				The
 				passwords do not match.
 			</p>
 			<h3 class="text-xl font-bold text-[#F1F1F1]">
 				Making sure it's you
 			</h3>
-			<input type="password" placeholder="Your current password" v-model="cPassword"
-				class="h-15 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1]">
-			<p v-if="wrongPassword" class="formError text-lg">
+			<input
+				v-model="cPassword"
+				type="password"
+				placeholder="Your current password"
+				class="h-15 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1]"
+			>
+			<p
+				v-if="wrongPassword"
+				class="formError text-lg"
+			>
 				Incorrect password. Please try again.
 			</p>
-			<button type="button"
-				@click="editAccount"
+			<button
+				type="button"
 				:disabled="!validData"
-				class="btn-primary px-4 py-2 text-[#F1F1F1] text-lg flex items-center justify-center h-15">
-				<Icon name="mingcute:save-2-fill" style="color: #F1F1F1" class="mr-2" />
+				class="btn-primary px-4 py-2 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
+				@click="editAccount"
+			>
+				<Icon
+					name="mingcute:save-2-fill"
+					style="color: #F1F1F1"
+					class="mr-2"
+				/>
 				{{ signButtonText }}
 			</button>
-			<p v-if="serverSideError" class="formError text-lg">
+			<p
+				v-if="serverSideError"
+				class="formError text-lg"
+			>
 				Something unexpected happened. Please, try again later.
 			</p>
-			<p v-if="successfullModification" class="formSuccess text-lg">
+			<p
+				v-if="successfullModification"
+				class="formSuccess text-lg"
+			>
 				Successfully saved changes!
 			</p>
 		</form>
@@ -198,15 +241,15 @@ button {
 }
 
 button:disabled {
-  	background: rgba(1, 171, 194, 0.3);
-  	border: 1px solid rgba(1, 189, 214, 0.6);
-  	box-shadow: none;
-  	cursor: not-allowed;
+	background: rgba(1, 171, 194, 0.3);
+	border: 1px solid rgba(1, 189, 214, 0.6);
+	box-shadow: none;
+	cursor: not-allowed;
 }
 
 button:disabled:hover {
 	box-shadow: none;
-  	cursor: not-allowed;
+	cursor: not-allowed;
 	border: 1px solid rgba(1, 189, 214, 0.6);
 }
 

@@ -1,5 +1,5 @@
 import { getUserFromEvent } from '~~/server/utils/getUserFromEvent';
-import { serialize } from 'cookie';
+import { setCookie } from 'h3';
 
 export default defineEventHandler(async (event) => {
 	const user = await getUserFromEvent(event);
@@ -8,16 +8,13 @@ export default defineEventHandler(async (event) => {
 		return { error: 'Unauthorized.' };
 	}
 
-	event.node.res.setHeader(
-		'Set-Cookie',
-		serialize('auth_token', '', {
-			httpOnly: true,
-			secure: process.env.NODE_ENV === 'production',
-			sameSite: 'strict',
-			path: '/',
-			maxAge: 0,
-		}),
-	);
+	setCookie(event, 'auth_token', '', {
+		httpOnly: true,
+		secure: process.env.NODE_ENV === 'production',
+		sameSite: 'strict',
+		path: '/',
+		maxAge: 0,
+	});
 
 	return { status: 'User successfully logged-out.' };
 });
