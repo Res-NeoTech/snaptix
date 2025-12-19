@@ -33,17 +33,18 @@ export function getRedis(): Redis {
  * @param key Key to decrement
  */
 export async function safeDecr(redis: Redis, key: string) {
-  try {
-    const exists = await redis.exists(key);
-    if (!exists) return;
-    const current = Number(await redis.get(key));
-    if (!isNaN(current) && current > 0) {
-      await redis.decr(key);
-    }
-  } catch (err) {
-    // логируем, но не кидаем — нельзя ломать обработку ошибки внешнего API
-    console.error('[safeDecr] error:', err);
-  }
+	try {
+		const exists = await redis.exists(key);
+		if (!exists) return;
+		const current = Number(await redis.get(key));
+		if (!isNaN(current) && current > 0) {
+			await redis.decr(key);
+		}
+	}
+	catch (err) {
+		// логируем, но не кидаем — нельзя ломать обработку ошибки внешнего API
+		console.error('[safeDecr] error:', err);
+	}
 }
 
 /**

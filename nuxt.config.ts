@@ -18,8 +18,14 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		public: {},
 		MONGO_URI: process.env.MONGO_URI || 'mongodb://admin:admin@localhost:27017/snaptix',
+		stripeSecret: process.env.STRIPE_SECRET_KEY,
+		stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
+		stripePriceIdPremium: process.env.STRIPE_PREMIUM_PRICE_ID,
 	},
 	compatibilityDate: '2025-07-15',
+	nitro: {
+		preset: 'node-server',
+	},
 	vite: {
 		plugins: [
 			tailwindcss(),

@@ -2,7 +2,7 @@ import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import { setCookie } from 'h3';
 import { getUserFromEvent } from '~~/server/utils/getUserFromEvent';
-import { getRedis, applyRateLimit } from '~~/server/utils/redis';
+import { getRedis } from '~~/server/utils/redis';
 import type { IUser } from '~~/server/models/User';
 import User from '~~/server/models/User';
 
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
 	// Rate-limiting log-in attempts.
 	const redis = getRedis();
 
-	const ip: string = getRequestIP(event) ?? "unknown";
+	const ip: string = getRequestIP(event) ?? 'unknown';
 
 	const limits = [
 		{ key: `auth:login:minutely:${ip}`, limit: 5, ttl: 60 }, // 5 attempts per minute.
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
 		if (count === 1) await redis.expire(l.key, l.ttl);
 		if (count > l.limit) {
 			setResponseStatus(event, 429);
-			return { error: "Too many login attempts. Please wait a moment." };
+			return { error: 'Too many login attempts. Please wait a moment.' };
 		}
 	}
 

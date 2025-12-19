@@ -4,7 +4,7 @@ import type { IUser } from '~~/server/models/User';
 import User from '~~/server/models/User';
 
 export default defineEventHandler(async (event) => {
-	const token = getCookie(event, "auth_token");
+	const token = getCookie(event, 'auth_token');
 
 	if (!token) {
 		setResponseStatus(event, 401);

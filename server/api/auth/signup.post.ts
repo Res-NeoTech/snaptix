@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
 	// Rate-limiting signup-in attempts.
 	const redis = getRedis();
 
-	const ip: string = getRequestIP(event) ?? "unknown";
+	const ip: string = getRequestIP(event) ?? 'unknown';
 
 	const limits = [
 		{ key: `auth:signup:fiveMinutely:${ip}`, limit: 3, ttl: 60 * 5 }, // 3 attempts per 5 minutes.
@@ -53,7 +53,7 @@ export default defineEventHandler(async (event) => {
 		if (count === 1) await redis.expire(l.key, l.ttl);
 		if (count > l.limit) {
 			setResponseStatus(event, 429);
-			return { error: "Too many signup attempts. Please wait a moment." };
+			return { error: 'Too many signup attempts. Please wait a moment.' };
 		}
 	}
 

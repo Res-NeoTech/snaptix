@@ -21,6 +21,10 @@ const props = defineProps<{ margin?: boolean }>();
 				class="text-[#00E1FF] hover:text-[#736EFE]"
 				to="/privacy-policy"
 			>Privacy Policy</NuxtLink>
+			<NuxtLink
+				class="text-[#00E1FF] hover:text-[#736EFE]"
+				to="/pricing"
+			>Pricing</NuxtLink>
 		</div>
 	</footer>
 </template>

@@ -6,7 +6,7 @@ import ParticlesBg from '../components/imported/ParticlesBg.vue';
 // Section components
 import OverviewSection from '~/components/OverviewSection.vue';
 import AccountSettings from '~/components/AccountSettings.vue';
-import PaymentSection from '~/components/PaymentSection.vue';
+import BillingSection from '~/components/BillingSection.vue';
 
 interface User {
 	id: string;
@@ -19,13 +19,28 @@ interface User {
 	correctionQuotaReset: string;
 }
 
+interface BillingInfo {
+	cardLast4: number;
+	nextPayment: string;
+	invoices: Invoice[];
+}
+
+interface Invoice {
+	id: string;
+	amount: number;
+	currency: string;
+	status?: string;
+	date: string;
+	pdfUrl?: string | null;
+}
+
 const route = useRoute();
 const router = useRouter();
 
 enum Section {
 	overview = 'overview',
 	settings = 'settings',
-	payments = 'payments',
+	billing = 'billing',
 }
 
 function isSection(value: any): value is Section {
@@ -45,18 +60,25 @@ const currentSection = computed(() => sections[activeSection.value]);
 const navItems = [
 	{ key: Section.overview, label: 'Overview', icon: 'bx:user' },
 	{ key: Section.settings, label: 'Account Settings', icon: 'mingcute:settings-3-fill' },
-	{ key: Section.payments, label: 'Payments', icon: 'mingcute:bank-card-fill' },
+	{ key: Section.billing, label: 'Billing', icon: 'mingcute:bank-card-fill' },
 ];
 
 const sections = {
 	overview: OverviewSection,
 	settings: AccountSettings,
-	payments: PaymentSection,
+	billing: BillingSection,
 };
 
 const { data: userDetails } = await useAsyncData<User>(
 	'userDetails',
 	() => $fetch('/api/account/info', {
+		headers: useRequestHeaders(['cookie']),
+	}),
+);
+
+const { data: billingDetails } = await useAsyncData<BillingInfo>(
+	'billingDetails',
+	() => $fetch('/api/stripe/billing/overview', {
 		headers: useRequestHeaders(['cookie']),
 	}),
 );
@@ -115,6 +137,7 @@ const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 				<component
 					:is="currentSection"
 					:user="userDetails"
+					:billing="billingDetails"
 					class="w-full"
 				/>
 			</main>

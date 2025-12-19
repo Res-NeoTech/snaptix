@@ -9,6 +9,12 @@ const UserSchema = new mongoose.Schema({
 	joinDate: { type: Date, default: Date.now },
 	lastUpdated: { type: Date, default: Date.now },
 	isPremium: { type: Boolean, default: false },
+
+	stripeCustomerId: { type: String, default: null },
+	stripeSubscriptionId: { type: String, default: null },
+	stripePriceId: { type: String, default: null },
+	stripeStatus: { type: String, default: 'none' }, // possible: none | active | past_due | canceled | unpaid
+	stripeCurrentPeriodEnd: { type: Number, default: null }, // UNIX timestamp
 });
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);
@@ -18,7 +24,14 @@ export interface IUser extends Document {
 	username: string;
 	email: string;
 	password: string;
+
 	joinDate: Date;
 	lastUpdated: Date;
 	isPremium: boolean;
+
+	stripeCustomerId: string;
+	stripeSubscriptionId: string | null;
+	stripeStatus: string;
+	stripePriceId: string | null;
+	stripeCurrentPeriodEnd: number | null;
 }

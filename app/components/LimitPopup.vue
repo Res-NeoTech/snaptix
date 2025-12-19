@@ -11,13 +11,24 @@ const goSignup = () => {
 const goLogin = () => {
 	navigateTo('/login');
 };
+
+const goPricing = () => {
+	navigateTo('/pricing');
+};
 </script>
 
 <template>
 	<section :class="divClassString">
-		<div v-if="type === 'guest'" class="flex flex-col items-center justify-center">
+		<div
+			v-if="type === 'guest'"
+			class="flex flex-col items-center justify-center"
+		>
 			<div class="flex items-center justify-center">
-				<NuxtImg src="/snaptix.png" class="w-25 mr-5" draggable="false" />
+				<NuxtImg
+					src="/snaptix.png"
+					class="w-25 mr-5"
+					draggable="false"
+				/>
 				<h1>
 					SnapTix
 				</h1>
@@ -27,40 +38,77 @@ const goLogin = () => {
 			</p>
 			<ul>
 				<li class="flex items-center">
-					<Icon name="mingcute:scale-fill" style="color: #F1F1F1" class="mr-2" />Less limitations
+					<Icon
+						name="mingcute:scale-fill"
+						style="color: #F1F1F1"
+						class="mr-2"
+					/>Less limitations
 				</li>
 				<li class="flex items-center">
-					<Icon name="mingcute:bulb-2-fill" style="color: #F1F1F1" class="mr-2" />Smarter responses
+					<Icon
+						name="mingcute:bulb-2-fill"
+						style="color: #F1F1F1"
+						class="mr-2"
+					/>Smarter responses
 				</li>
 				<li class="flex items-center">
-					<Icon name="mingcute:unlock-fill" style="color: #F1F1F1" class="mr-2" />More features to come
+					<Icon
+						name="mingcute:unlock-fill"
+						style="color: #F1F1F1"
+						class="mr-2"
+					/>More features to come
 				</li>
 			</ul>
 			<div class="flex items-center justify-center p-5 gap-2 w-full sm:w-auto">
-				<button id="secondaryButton"
+				<button
+					id="secondaryButton"
 					class="sm:flex-none w-2/3 px-4 py-2 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
-					@click="goLogin">
-					<Icon name="bx:user" style="color: #F1F1F1" class="mr-2" />
+					@click="goLogin"
+				>
+					<Icon
+						name="bx:user"
+						style="color: #F1F1F1"
+						class="mr-2"
+					/>
 					Login
 				</button>
-				<button id="primaryButton"
+				<button
+					id="primaryButton"
 					class="sm:flex-none w-2/3 px-4 py-2 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
-					@click="goSignup">
-					<Icon name="mingcute:user-add-line" style="color: #F1F1F1" class="mr-2" />
+					@click="goSignup"
+				>
+					<Icon
+						name="mingcute:user-add-line"
+						style="color: #F1F1F1"
+						class="mr-2"
+					/>
 					Sign Up
 				</button>
 			</div>
-			<h3 class="text-[#00E1FF] hover:text-[#736EFE] cursor-pointer mt-12" @click="emit('hide')">
+			<h3
+				class="text-[#00E1FF] hover:text-[#736EFE] cursor-pointer mt-12"
+				@click="emit('hide')"
+			>
 				Dismiss
 			</h3>
 			<p class="text-[#F1F1F1] text-lg text-center w-2/3 mt-12">
 				By creating an account, you agree to SnapTix's Terms of Use and confirm that you are familiar with our
-				<NuxtLink class="text-[#00E1FF] hover:text-[#736EFE]" to="/privacy-policy">Privacy Policy</NuxtLink>.
+				<NuxtLink
+					class="text-[#00E1FF] hover:text-[#736EFE]"
+					to="/privacy-policy"
+				>Privacy Policy</NuxtLink>.
 			</p>
 		</div>
-		<div v-else-if="type === 'user'" class="flex flex-col items-center justify-center">
+		<div
+			v-else-if="type === 'user'"
+			class="flex flex-col items-center justify-center"
+		>
 			<div class="flex items-center justify-center">
-				<NuxtImg src="/snaptix.png" class="w-25 mr-5" draggable="false" />
+				<NuxtImg
+					src="/snaptix.png"
+					class="w-25 mr-5"
+					draggable="false"
+				/>
 				<h1>
 					SnapTix
 				</h1>
@@ -71,11 +119,19 @@ const goLogin = () => {
 			</p>
 			<ul>
 				<li class="flex items-center">
-					<Icon name="material-symbols:crown-rounded" style="color: #F1F1F1" class="mr-2" /> Become a
+					<Icon
+						name="material-symbols:crown-rounded"
+						style="color: #F1F1F1"
+						class="mr-2"
+					/> Become a
 					Premium member and unlock way more corrections every day.
 				</li>
 				<li class="flex items-center">
-					<Icon name="mingcute:time-duration-fill" style="color: #F1F1F1" class="mr-2" /> Or just wait a few
+					<Icon
+						name="mingcute:time-duration-fill"
+						style="color: #F1F1F1"
+						class="mr-2"
+					/> Or just wait a few
 					hours until your free quota resets.
 				</li>
 			</ul>
@@ -84,31 +140,59 @@ const goLogin = () => {
 			</p>
 			<ul>
 				<li class="flex items-center">
-					<Icon name="mingcute:scale-fill" style="color: #F1F1F1" class="mr-2" />Larger daily limit
+					<Icon
+						name="mingcute:scale-fill"
+						style="color: #F1F1F1"
+						class="mr-2"
+					/>Larger daily limit
 					(up to 50 corrections/day)
 				</li>
 				<li class="flex items-center">
-					<Icon name="mingcute:bulb-2-fill" style="color: #F1F1F1" class="mr-2" />Smarter & more
+					<Icon
+						name="mingcute:bulb-2-fill"
+						style="color: #F1F1F1"
+						class="mr-2"
+					/>Smarter & more
 					accurate responses
 				</li>
 				<li class="flex items-center">
-					<Icon name="mingcute:unlock-fill" style="color: #F1F1F1" class="mr-2" />Early access to new
+					<Icon
+						name="mingcute:unlock-fill"
+						style="color: #F1F1F1"
+						class="mr-2"
+					/>Early access to new
 					features
 				</li>
 			</ul>
-			<button id="primaryButton"
+			<button
+				id="primaryButton"
 				class="sm:flex-none w-2/3 px-4 py-2 text-[#F1F1F1] text-lg flex items-center justify-center h-15 mt-10"
-				@click="goLogin">
-				<Icon name="solar:tag-price-bold" style="color: #F1F1F1" class="mr-2" />
+				@click="goPricing"
+			>
+				<Icon
+					name="solar:tag-price-bold"
+					style="color: #F1F1F1"
+					class="mr-2"
+				/>
 				See pricing
 			</button>
-			<h3 class="text-[#00E1FF] hover:text-[#736EFE] cursor-pointer mt-5" @click="emit('hide')">
+			<h3
+				class="text-[#00E1FF] hover:text-[#736EFE] cursor-pointer mt-5"
+				@click="emit('hide')"
+			>
 				Dismiss
 			</h3>
 		</div>
-		<div v-else class="flex flex-col items-center justify-center">
+		<div
+			v-else
+			class="flex flex-col items-center justify-center"
+		>
 			<div class="flex items-center justify-center">
-				<NuxtImg src="/snaptix.png" class="w-25 mr-5" draggable="false" />
+				<NuxtImg
+					src="/snaptix.png"
+					class="w-25 mr-5"
+					draggable="false"
+				/>
 				<h1>
 					SnapTix
 				</h1>
@@ -119,11 +203,15 @@ const goLogin = () => {
 			<p class="mt-5">
 				<strong>You’ve hit your daily limit for today.</strong>
 			</p>
-			<p class="w-1/2 mt-5">No stress — your quota will reset in a few hours, and you&apos;ll be back to unlimited
+			<p class="w-1/2 mt-5">
+				No stress — your quota will reset in a few hours, and you&apos;ll be back to unlimited
 				edits in no time.
 				Thanks for being a Premium member — we appreciate you and all the magic you create with your text! 🩵
 			</p>
-			<h3 class="text-[#00E1FF] hover:text-[#736EFE] cursor-pointer mt-5" @click="emit('hide')">
+			<h3
+				class="text-[#00E1FF] hover:text-[#736EFE] cursor-pointer mt-5"
+				@click="emit('hide')"
+			>
 				Dismiss
 			</h3>
 		</div>

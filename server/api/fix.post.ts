@@ -1,7 +1,7 @@
 import uniqid from 'uniqid';
 import type { IUser } from '~~/server/models/User';
 import User from '~~/server/models/User';
-import crypto from 'crypto'
+import crypto from 'crypto';
 import { getRedis, applyRateLimit, safeDecr } from '~~/server/utils/redis';
 import { getUserFromEvent } from '~~/server/utils/getUserFromEvent';
 import { getCookie, setCookie } from 'h3';
@@ -85,11 +85,11 @@ export default defineEventHandler(async (event) => {
 	// Apply rate limit
 	const allowed = await applyRateLimit(redis, rateKey, max);
 	if (!allowed) {
-		const rateLimitUserType: string = rateKey.split(":")[1];
+		const rateLimitUserType: string = rateKey.split(':')[1];
 		setResponseStatus(event, 429);
-		return { 
+		return {
 			error: 'Daily limit exceeded.',
-			typeUser: rateLimitUserType
+			typeUser: rateLimitUserType,
 		};
 	}
 
@@ -123,7 +123,8 @@ export default defineEventHandler(async (event) => {
 
 		const data = await fixRequest.json();
 		return { response: data.choices[0].message.content };
-	} catch (err) {
+	}
+	catch (err) {
 		// network / unexpected error — обязательно откатываем лимит
 		await safeDecr(redis, rateKey);
 		console.error('[Mistral fetch] exception:', err);

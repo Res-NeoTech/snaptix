@@ -32,9 +32,11 @@ const login = async () => {
 		onResponseError({ response }) {
 			if (response.status === 401) {
 				unauthorized.value = true;
-			} else if (response.status === 429) {
+			}
+			else if (response.status === 429) {
 				rateLimited.value = true;
-			} else {
+			}
+			else {
 				serverSideError.value = true;
 			}
 		},

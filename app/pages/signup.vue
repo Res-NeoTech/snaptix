@@ -65,9 +65,11 @@ const createAccount = async () => {
 		onResponseError({ response }) {
 			if (response.status === 409) {
 				emailTaken.value = true;
-			} else if (response.status === 429) {
+			}
+			else if (response.status === 429) {
 				rateLimited.value = true;
-			} else {
+			}
+			else {
 				serverSideError.value = true;
 			}
 		},
