@@ -194,7 +194,10 @@ const createAccount = async () => {
 				Too many sign-up attempts. Please wait a moment.
 			</p>
 			<p class="text-[#F1F1F1] text-lg text-center w-2/3 mt-25">
-				By creating an account, you agree to SnapTix's Terms of Use and confirm that you are familiar with our
+				By creating an account, you agree to SnapTix's <NuxtLink
+					class="text-[#00E1FF] hover:text-[#736EFE]"
+					to="/terms-of-use"
+				>Terms Of Use</NuxtLink> and confirm that you are familiar with our
 				<NuxtLink
 					class="text-[#00E1FF] hover:text-[#736EFE]"
 					to="/privacy-policy"
@@ -214,69 +217,69 @@ const createAccount = async () => {
 
 <style scoped>
 h2 {
-  background: linear-gradient(to right, #00E1FF, #736EFE);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
-  font-weight: 900;
-  font-size: xx-large;
-  letter-spacing: 1px;
-  text-shadow: 0 0 10px rgba(0, 225, 255, 0.4);
+	background: linear-gradient(to right, #00E1FF, #736EFE);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	display: inline-block;
+	font-weight: 900;
+	font-size: xx-large;
+	letter-spacing: 1px;
+	text-shadow: 0 0 10px rgba(0, 225, 255, 0.4);
 }
 
 input {
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  color: #f1f1f1;
-  transition: all 0.3s ease;
-  box-shadow: inset 0 0 15px rgba(0, 225, 255, 0.05),
-              0 0 12px rgba(0, 225, 255, 0.08);
+	border-radius: 20px;
+	border: 1px solid rgba(255, 255, 255, 0.25);
+	background: rgba(255, 255, 255, 0.08);
+	backdrop-filter: blur(12px);
+	color: #f1f1f1;
+	transition: all 0.3s ease;
+	box-shadow: inset 0 0 15px rgba(0, 225, 255, 0.05),
+		0 0 12px rgba(0, 225, 255, 0.08);
 }
 
 input:focus,
 input:hover {
-  outline: none;
-  border: 1px solid #00E1FF;
-  box-shadow: 0 0 20px rgba(0, 225, 255, 0.4);
-  background: rgba(255, 255, 255, 0.12);
+	outline: none;
+	border: 1px solid #00E1FF;
+	box-shadow: 0 0 20px rgba(0, 225, 255, 0.4);
+	background: rgba(255, 255, 255, 0.12);
 }
 
 button {
-  border-radius: 20px;
-  backdrop-filter: blur(8px);
-  transition: all 0.3s ease;
+	border-radius: 20px;
+	backdrop-filter: blur(8px);
+	transition: all 0.3s ease;
 }
 
 #submit {
-  background: linear-gradient(135deg, rgba(0,225,255,0.5), rgba(115,110,254,0.5));
-  border: 1px solid rgba(0, 225, 255, 0.7);
-  box-shadow: 0 0 25px rgba(0,225,255,0.25);
-  font-weight: 600;
-  letter-spacing: 0.5px;
+	background: linear-gradient(135deg, rgba(0, 225, 255, 0.5), rgba(115, 110, 254, 0.5));
+	border: 1px solid rgba(0, 225, 255, 0.7);
+	box-shadow: 0 0 25px rgba(0, 225, 255, 0.25);
+	font-weight: 600;
+	letter-spacing: 0.5px;
 }
 
 #submit:hover:not(:disabled) {
-  border-color: #736EFE;
-  box-shadow: 0 0 35px rgba(115,110,254,0.5),
-              0 0 20px rgba(0,225,255,0.3);
-  transform: translateY(-2px);
+	border-color: #736EFE;
+	box-shadow: 0 0 35px rgba(115, 110, 254, 0.5),
+		0 0 20px rgba(0, 225, 255, 0.3);
+	transform: translateY(-2px);
 }
 
 #submit:disabled {
-  background: rgba(1, 171, 194, 0.3);
-  border: 1px solid rgba(1, 189, 214, 0.6);
-  box-shadow: none;
-  cursor: not-allowed;
+	background: rgba(1, 171, 194, 0.3);
+	border: 1px solid rgba(1, 189, 214, 0.6);
+	box-shadow: none;
+	cursor: not-allowed;
 }
 
 .formError {
-  color: #ff4d6d;
-  text-align: left;
-  margin-left: 50px;
-  font-weight: 500;
-  text-shadow: 0 0 4px rgba(0,0,0,0.4);
+	color: #ff4d6d;
+	text-align: left;
+	margin-left: 50px;
+	font-weight: 500;
+	text-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
 }
 </style>
