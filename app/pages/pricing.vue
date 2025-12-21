@@ -2,6 +2,13 @@
 import ParticlesBg from '../components/imported/ParticlesBg.vue';
 import DropDown from '~/components/DropDown.vue';
 
+useHead({
+  title: 'Pricing | SnapTix',
+  meta: [
+    { name: 'description', content: 'See SnapTix pricing and choose a simple AI plan to fix code, text, and content instantly. No prompt engineering. Cancel anytime.' },
+  ]
+});
+
 const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 
 interface User {

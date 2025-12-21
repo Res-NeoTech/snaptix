@@ -3,6 +3,13 @@ import { ref } from 'vue';
 import ParticlesBg from '../components/imported/ParticlesBg.vue';
 import ParticleImage from '~/components/imported/ParticleImage/ParticleImage.vue';
 
+useHead({
+  title: 'Terms of Use | SnapTix',
+  meta: [
+    { name: 'description', content: 'Read SnapTix’s Terms of Use to understand the rules for using the app and how we ensure a safe and smooth experience while fixing code, text, and content instantly.' },
+  ]
+});
+
 const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 </script>
 

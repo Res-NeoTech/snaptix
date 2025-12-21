@@ -5,6 +5,10 @@ import ParticlesBg from './components/imported/ParticlesBg.vue';
 const props = defineProps<{ error: NuxtError }>();
 const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 
+useHead({
+    title: `Error - ${props.error.statusCode} | SnapTix`
+})
+
 const goHome = () => {
 	navigateTo('/');
 };

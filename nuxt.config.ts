@@ -10,7 +10,7 @@ export default defineNuxtConfig({
 				lang: 'en',
 			},
 			meta: [
-				{ name: 'description', content: 'Fix grammar, emails, and code instantly with AI — no prompt required.' },
+				{ name: 'description', content: 'SnapTix is an application to fix grammar, emails, and code instantly with AI — no prompt required.' },
 			],
 		},
 	},

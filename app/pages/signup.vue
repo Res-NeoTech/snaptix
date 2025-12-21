@@ -4,6 +4,13 @@ import validator from 'validator';
 import { validatePassword } from '~~/lib/utils/validators';
 import ParticlesBg from '../components/imported/ParticlesBg.vue';
 
+useHead({
+  title: 'Sign-Up | SnapTix',
+  meta: [
+    { name: 'description', content: 'Create a free SnapTix account in under a minute and instantly fix code, text, and content with AI. No prompt engineering needed.' },
+  ]
+});
+
 // Form Values
 const username = ref<string>('');
 const email = ref<string>('');

@@ -8,6 +8,13 @@ import OverviewSection from '~/components/OverviewSection.vue';
 import AccountSettings from '~/components/AccountSettings.vue';
 import BillingSection from '~/components/BillingSection.vue';
 
+useHead({
+  title: 'Dashboard | SnapTix',
+  meta: [
+    { name: 'description', content: 'Access your SnapTix dashboard to manage your account, billing, and subscription settings, and quickly fix code, text, and content.' },
+  ]
+});
+
 interface User {
 	id: string;
 	username: string;

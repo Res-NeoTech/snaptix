@@ -2,6 +2,10 @@
 import ParticlesBg from '../components/imported/ParticlesBg.vue';
 import ParticleImage from '~/components/imported/ParticleImage/ParticleImage.vue';
 
+useHead({
+  title: 'SnapTix Premium',
+});
+
 const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 </script>
 

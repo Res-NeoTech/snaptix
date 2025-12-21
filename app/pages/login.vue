@@ -2,6 +2,13 @@
 import { ref } from 'vue';
 import ParticlesBg from '../components/imported/ParticlesBg.vue';
 
+useHead({
+  title: 'Log-In | SnapTix',
+  meta: [
+    { name: 'description', content: 'Log-In to your SnapTix account to instantly fix code, text, and content with AI. Paste it, fix it, done.' },
+  ]
+});
+
 // Form Values
 const email = ref<string>('');
 const password = ref<string>('');
