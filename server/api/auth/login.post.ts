@@ -39,6 +39,7 @@ export default defineEventHandler(async (event) => {
 		if (count === 1) await redis.expire(l.key, l.ttl);
 		if (count > l.limit) {
 			setResponseStatus(event, 429);
+			logger.warn(`[Log-In] Rate-limit triggered for key : ${l.key}`);
 			return { error: 'Too many login attempts. Please wait a moment.' };
 		}
 	}
@@ -47,6 +48,7 @@ export default defineEventHandler(async (event) => {
 
 	if (!user) {
 		setResponseStatus(event, 401);
+		logger.warn(`[Log-In] Failed to authentify user. Email not found : ${email} | IP: ${ip}`);
 		return { error: 'Incorrect login credentials. Please try again.' };
 	}
 
@@ -54,6 +56,7 @@ export default defineEventHandler(async (event) => {
 
 	if (!matches) {
 		setResponseStatus(event, 401);
+		logger.warn(`[Log-In] Failed to authentify user. Password didn't match for this user : ${user.id} | IP: ${ip}`);
 		return { error: 'Incorrect login credentials. Please try again.' };
 	}
 
@@ -70,6 +73,8 @@ export default defineEventHandler(async (event) => {
 		path: '/',
 		maxAge: 31 * 24 * 60 * 60,
 	});
+
+	logger.info(`[Log-In] User successfully authentified: ${user.id} | IP: ${ip}`);
 
 	return {
 		message: 'User successfully authentified.',

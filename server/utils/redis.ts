@@ -14,14 +14,14 @@ export function getRedis(): Redis {
 			retryStrategy(times) {
 				// Reconnecting with 10 seconds delay.
 				const delay = Math.min(times * 200, 10000);
-				console.warn(`[Redis] Reconnecting in ${delay}ms...`);
+				logger.warn(`[Redis] Reconnecting in ${delay}ms...`);
 				return delay;
 			},
 		});
 
-		redis.on('connect', () => console.log('[Redis] Connected'));
-		redis.on('error', err => console.error('[Redis] Error:', err));
-		redis.on('close', () => console.warn('[Redis] Connection closed'));
+		redis.on('connect', () => logger.info('[Redis] Connected'));
+		redis.on('error', err => logger.error(err, '[Redis] Error:'));
+		redis.on('close', () => logger.warn('[Redis] Connection closed'));
 	}
 
 	return redis;
@@ -43,7 +43,7 @@ export async function safeDecr(redis: Redis, key: string) {
 	}
 	catch (err) {
 		// логируем, но не кидаем — нельзя ломать обработку ошибки внешнего API
-		console.error('[safeDecr] error:', err);
+		logger.error(err, '[safeDecr] error:');
 	}
 }
 

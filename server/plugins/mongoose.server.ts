@@ -16,14 +16,13 @@ export default defineNitroPlugin(() => {
 	const uri = config.MONGO_URI;
 
 	if (!globalThis._mongoose) {
-		console.log('Trying to connect to MongoDB at:', uri);
 		globalThis._mongoose = mongoose.connect(uri, {
 			maxPoolSize: 10,
 			serverSelectionTimeoutMS: 5000,
 		} as ConnectOptions);
 
 		(mongoose.connection as unknown as EventEmitter).on('connected', () => {
-			console.log('✔ Mongoose connected');
+			logger.info('[Mongoose] Connected');
 		});
 	}
 

@@ -86,6 +86,7 @@ export default defineEventHandler(async (event) => {
 	const allowed = await applyRateLimit(redis, rateKey, max);
 	if (!allowed) {
 		const rateLimitUserType: string = rateKey.split(':')[1];
+		logger.warn(`[Fix] Rate-limit triggered for key : ${rateKey}`);
 		setResponseStatus(event, 429);
 		return {
 			error: 'Daily limit exceeded.',
@@ -116,7 +117,7 @@ export default defineEventHandler(async (event) => {
 			await safeDecr(redis, rateKey);
 
 			const text = await fixRequest.text();
-			console.error(`Mistral API error ${fixRequest.status}: ${text}`);
+			logger.error(`[Fix] Mistral API error ${fixRequest.status}: ${text}`);
 			setResponseStatus(event, 500);
 			return { error: 'Server-side exception occured.' };
 		}
@@ -127,7 +128,7 @@ export default defineEventHandler(async (event) => {
 	catch (err) {
 		// network / unexpected error — обязательно откатываем лимит
 		await safeDecr(redis, rateKey);
-		console.error('[Mistral fetch] exception:', err);
+		logger.error(err, '[Fix] Mistral fetch exception:');
 		setResponseStatus(event, 500);
 		return { error: 'Server-side exception occured.' };
 	}

@@ -53,6 +53,7 @@ export default defineEventHandler(async (event) => {
 		if (count === 1) await redis.expire(l.key, l.ttl);
 		if (count > l.limit) {
 			setResponseStatus(event, 429);
+			logger.warn(`[Sign-Up] Rate-limit triggered for key : ${l.key}`);
 			return { error: 'Too many signup attempts. Please wait a moment.' };
 		}
 	}
@@ -86,6 +87,8 @@ export default defineEventHandler(async (event) => {
 		path: '/',
 		maxAge: 31 * 24 * 60 * 60,
 	});
+
+	logger.info(`[Sign-Up] User successfully created: ${newUser.id} | IP: ${ip}`);
 
 	setResponseStatus(event, 201);
 	return {

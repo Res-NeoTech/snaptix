@@ -25,6 +25,7 @@ export default defineEventHandler(async (event) => {
 
 	const signature = event.node.req.headers['stripe-signature'] as string;
 	if (!signature) {
+		logger.error('[Stripe Webhook] Missing Stripe signature');
 		return sendError(
 			event,
 			createError({ statusCode: 400, statusMessage: 'Missing Stripe signature' }),
@@ -41,7 +42,7 @@ export default defineEventHandler(async (event) => {
 		);
 	}
 	catch (err: any) {
-		console.error('❌ Invalid webhook signature:', err.message);
+		logger.error(err, '[Stripe Webhook] Invalid webhook signature:');
 		return sendError(
 			event,
 			createError({ statusCode: 400, statusMessage: 'Invalid signature' }),
@@ -53,7 +54,7 @@ export default defineEventHandler(async (event) => {
 	// --------------------------------------------------
 	if (stripeEvent.type === 'checkout.session.completed') {
 		const session = stripeEvent.data.object as Stripe.Checkout.Session;
-		console.log('✔ Checkout completed:', session.id);
+		logger.info(`[Stripe Webhook: ${stripeEvent.type}] Checkout completed: ${session.id}`);
 		return 'ok';
 	}
 
@@ -68,13 +69,13 @@ export default defineEventHandler(async (event) => {
 
 		const userId = (customer as Stripe.Customer).metadata?.mongoUserId;
 		if (!userId) {
-			console.error('❌ No mongoUserId on customer');
+			logger.error(`[Stripe Webhook: ${stripeEvent.type}] No mongoUserId on customer: ${customerId}`);
 			return 'ok';
 		}
 
 		const dbUser = await User.findById(userId);
 		if (!dbUser) {
-			console.error('❌ User not found:', userId);
+			logger.error(`[Stripe Webhook: ${stripeEvent.type}] User not found: ${userId}`);
 			return 'ok';
 		}
 
@@ -88,7 +89,7 @@ export default defineEventHandler(async (event) => {
 		const redis = getRedis();
 		await redis.del(`billing_overview:${dbUser.id}`);
 
-		console.log('✔ Subscription created → premium ON:', userId);
+		logger.info(`[Stripe Webhook: ${stripeEvent.type}] Subscription created. Premium is ON for : ${userId}`);
 		return 'ok';
 	}
 
@@ -103,19 +104,19 @@ export default defineEventHandler(async (event) => {
 
 		const userId = (customer as Stripe.Customer).metadata?.mongoUserId;
 		if (!userId) {
-			console.error('❌ No mongoUserId on customer');
+			logger.error(`[Stripe Webhook: ${stripeEvent.type}] No mongoUserId on customer: ${customerId}`);
 			return 'ok';
 		}
 
 		const dbUser: IUser | null = await User.findById(userId);
 		if (!dbUser) {
-			console.error('❌ User not found:', userId);
+			logger.error(`[Stripe Webhook: ${stripeEvent.type}] User not found: ${userId}`);
 			return 'ok';
 		}
 
 		// 🔒 Guard: если подписка уже удалена — игнорируем update
 		if (!dbUser.stripeSubscriptionId) {
-			console.log('⏭ Ignoring update for deleted subscription:', userId);
+			logger.info(`[Stripe Webhook: ${stripeEvent.type}] Ignoring update for deleted subscription of user: ${userId}`);
 			return 'ok';
 		}
 
@@ -132,11 +133,7 @@ export default defineEventHandler(async (event) => {
 		const redis = getRedis();
 		await redis.del(`billing_overview:${dbUser.id}`);
 
-		console.log('✔ Subscription updated:', {
-			userId,
-			status: subscription.status,
-			isPremium: isActive,
-		});
+		logger.info(`[Stripe Webhook: ${stripeEvent.type}] Subscription updated. userId: ${userId} | status: ${subscription.status} | isPremium: ${isActive}`);
 
 		return 'ok';
 	}
@@ -152,13 +149,13 @@ export default defineEventHandler(async (event) => {
 
 		const userId = (customer as Stripe.Customer).metadata?.mongoUserId;
 		if (!userId) {
-			console.error('❌ No mongoUserId on customer');
+			logger.error(`[Stripe Webhook: ${stripeEvent.type}] No mongoUserId on customer: ${customerId}`);
 			return 'ok';
 		}
 
 		const dbUser: IUser | null = await User.findById(userId);
 		if (!dbUser) {
-			console.error('❌ User not found:', userId);
+			logger.error(`[Stripe Webhook: ${stripeEvent.type}] User not found: ${userId}`);
 			return 'ok';
 		}
 
@@ -172,7 +169,7 @@ export default defineEventHandler(async (event) => {
 		const redis = getRedis();
 		await redis.del(`billing_overview:${dbUser.id}`);
 
-		console.log('✔ Subscription deleted → premium OFF:', userId);
+		logger.info(`[Stripe Webhook: ${stripeEvent.type}] Subscription deleted. Premium is OFF for : ${userId}`);
 		return 'ok';
 	}
 

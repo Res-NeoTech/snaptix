@@ -58,6 +58,8 @@ export default defineEventHandler(async (event) => {
 	dbUser.lastUpdated = new Date();
 	await dbUser.save();
 
+	logger.info(`[Edit User] Successfully edited user info : ${dbUser.id}`);
+
 	setResponseStatus(event, 204);
 	return null;
 });
