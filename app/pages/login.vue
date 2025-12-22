@@ -17,39 +17,46 @@ const signButtonText = ref<string>('Log-In');
 const serverSideError = ref<boolean>(false);
 const unauthorized = ref<boolean>(false);
 const rateLimited = ref<boolean>(false);
+const isSubmitting = ref<boolean>(false);
 
 const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 
 const login = async () => {
+	if (isSubmitting.value) return;
+	if (!email.value || !password.value) return;
+
+	isSubmitting.value = true;
 	signButtonText.value = 'Please Wait...';
 	serverSideError.value = false;
 	unauthorized.value = false;
 	rateLimited.value = false;
-	await useFetch('/api/auth/login', {
-		method: 'POST',
-		body: {
-			email,
-			password,
-		},
-		onResponse({ response }) {
-			if (response.status === 200) {
-				navigateTo('/dashboard', { redirectCode: 301 });
-			}
-		},
-		onResponseError({ response }) {
-			if (response.status === 401) {
-				unauthorized.value = true;
-			}
-			else if (response.status === 429) {
-				rateLimited.value = true;
-			}
-			else {
-				serverSideError.value = true;
-			}
-		},
-	});
 
-	signButtonText.value = 'Log-In';
+	try {
+		await $fetch('/api/auth/login', {
+			method: 'POST',
+			body: {
+				email: email.value,
+				password: password.value,
+			},
+		});
+
+		navigateTo('/dashboard', { redirectCode: 301 });
+	}
+	catch (error: any) {
+		if (error?.status === 401) {
+			unauthorized.value = true;
+		}
+		else if (error?.status === 429) {
+			rateLimited.value = true;
+		}
+		else {
+			serverSideError.value = true;
+		}
+	}
+	finally {
+		isSubmitting.value = false;
+		signButtonText.value = 'Log-In';
+	}
 };
 </script>
 
@@ -101,7 +108,8 @@ const login = async () => {
 			</p>
 			<button
 				id="submit"
-				:disabled="!(email && password)"
+				type="button"
+				:disabled="!(email && password) || isSubmitting"
 				class="h-15 w-4/5 md:w-2/5 text-[#F1F1F1] text-lg flex items-center justify-center mt-10 hover:cursor-pointer"
 				@click="login"
 			>
@@ -137,69 +145,69 @@ const login = async () => {
 
 <style scoped>
 h2 {
-  background: linear-gradient(to right, #00E1FF, #736EFE);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
-  font-weight: 900;
-  font-size: xx-large;
-  letter-spacing: 1px;
-  text-shadow: 0 0 10px rgba(0, 225, 255, 0.4);
+	background: linear-gradient(to right, #00E1FF, #736EFE);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	display: inline-block;
+	font-weight: 900;
+	font-size: xx-large;
+	letter-spacing: 1px;
+	text-shadow: 0 0 10px rgba(0, 225, 255, 0.4);
 }
 
 input {
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  color: #f1f1f1;
-  transition: all 0.3s ease;
-  box-shadow: inset 0 0 15px rgba(0, 225, 255, 0.05),
-              0 0 12px rgba(0, 225, 255, 0.08);
+	border-radius: 20px;
+	border: 1px solid rgba(255, 255, 255, 0.25);
+	background: rgba(255, 255, 255, 0.08);
+	backdrop-filter: blur(12px);
+	color: #f1f1f1;
+	transition: all 0.3s ease;
+	box-shadow: inset 0 0 15px rgba(0, 225, 255, 0.05),
+		0 0 12px rgba(0, 225, 255, 0.08);
 }
 
 input:focus,
 input:hover {
-  outline: none;
-  border: 1px solid #00E1FF;
-  box-shadow: 0 0 20px rgba(0, 225, 255, 0.4);
-  background: rgba(255, 255, 255, 0.12);
+	outline: none;
+	border: 1px solid #00E1FF;
+	box-shadow: 0 0 20px rgba(0, 225, 255, 0.4);
+	background: rgba(255, 255, 255, 0.12);
 }
 
 button {
-  border-radius: 20px;
-  backdrop-filter: blur(8px);
-  transition: all 0.3s ease;
+	border-radius: 20px;
+	backdrop-filter: blur(8px);
+	transition: all 0.3s ease;
 }
 
 #submit {
-  background: linear-gradient(135deg, rgba(0,225,255,0.5), rgba(115,110,254,0.5));
-  border: 1px solid rgba(0, 225, 255, 0.7);
-  box-shadow: 0 0 25px rgba(0,225,255,0.25);
-  font-weight: 600;
-  letter-spacing: 0.5px;
+	background: linear-gradient(135deg, rgba(0, 225, 255, 0.5), rgba(115, 110, 254, 0.5));
+	border: 1px solid rgba(0, 225, 255, 0.7);
+	box-shadow: 0 0 25px rgba(0, 225, 255, 0.25);
+	font-weight: 600;
+	letter-spacing: 0.5px;
 }
 
 #submit:hover:not(:disabled) {
-  border-color: #736EFE;
-  box-shadow: 0 0 35px rgba(115,110,254,0.5),
-              0 0 20px rgba(0,225,255,0.3);
-  transform: translateY(-2px);
+	border-color: #736EFE;
+	box-shadow: 0 0 35px rgba(115, 110, 254, 0.5),
+		0 0 20px rgba(0, 225, 255, 0.3);
+	transform: translateY(-2px);
 }
 
 #submit:disabled {
-  background: rgba(1, 171, 194, 0.3);
-  border: 1px solid rgba(1, 189, 214, 0.6);
-  box-shadow: none;
-  cursor: not-allowed;
+	background: rgba(1, 171, 194, 0.3);
+	border: 1px solid rgba(1, 189, 214, 0.6);
+	box-shadow: none;
+	cursor: not-allowed;
 }
 
 .formError {
-  color: #ff4d6d;
-  text-align: left;
-  margin-left: 50px;
-  font-weight: 500;
-  text-shadow: 0 0 4px rgba(0,0,0,0.4);
+	color: #ff4d6d;
+	text-align: left;
+	margin-left: 50px;
+	font-weight: 500;
+	text-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
 }
 </style>

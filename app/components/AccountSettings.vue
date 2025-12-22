@@ -4,6 +4,7 @@ import { validatePassword } from '~~/lib/utils/validators';
 import type User from '~~/lib/interfaces/user';
 
 const props = defineProps<{ user: User }>();
+const emit = defineEmits<{ (e: 'refreshUser'): void }>();
 
 // Form Values
 const username = ref<string>(props.user.username);
@@ -15,6 +16,7 @@ const signButtonText = ref<string>('Save Changes');
 const serverSideError = ref<boolean>(false);
 const wrongPassword = ref<boolean>(false);
 const successfullModification = ref<boolean>(false);
+const isSubmitting = ref<boolean>(false);
 
 const diagnostics = ref({
 	usernameValid: true,
@@ -54,34 +56,39 @@ const validData = computed<boolean>(() => {
 });
 
 const editAccount = async () => {
+	if (isSubmitting.value || !validData.value) return;
+
+	isSubmitting.value = true;
 	signButtonText.value = 'Saving Changes...';
 	serverSideError.value = false;
 	wrongPassword.value = false;
 	successfullModification.value = false;
 
-	await useFetch('/api/account/edit', {
-		method: 'PUT',
-		body: {
-			newUsername: username,
-			password: cPassword,
-			newPassword: password,
-		},
-		onResponse({ response }) {
-			if (response.status === 204) {
-				successfullModification.value = true;
-			}
-		},
-		onResponseError({ response }) {
-			if (response.status === 403) {
-				wrongPassword.value = true;
-			}
-			else {
-				serverSideError.value = true;
-			}
-		},
-	});
+	try {
+		await $fetch('/api/account/edit', {
+			method: 'PUT',
+			body: {
+				newUsername: username.value,
+				password: cPassword.value,
+				newPassword: password.value,
+			},
+		});
 
-	signButtonText.value = 'Save Changes';
+		successfullModification.value = true;
+		emit('refreshUser');
+	}
+	catch (error: any) {
+		if (error?.status === 403) {
+			wrongPassword.value = true;
+		}
+		else {
+			serverSideError.value = true;
+		}
+	}
+	finally {
+		isSubmitting.value = false;
+		signButtonText.value = 'Save Changes';
+	}
 };
 </script>
 
@@ -151,7 +158,7 @@ const editAccount = async () => {
 			</p>
 			<button
 				type="button"
-				:disabled="!validData"
+				:disabled="!validData || isSubmitting"
 				class="btn-primary px-4 py-2 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
 				@click="editAccount"
 			>

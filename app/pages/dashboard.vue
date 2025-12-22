@@ -54,7 +54,7 @@ const sections = {
 	billing: BillingSection,
 };
 
-const { data: userDetails } = await useAsyncData<User>(
+const { data: userDetails, refresh } = await useAsyncData<User>(
 	'userDetails',
 	() => $fetch('/api/account/info', {
 		headers: useRequestHeaders(['cookie']),
@@ -124,6 +124,7 @@ const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 					:user="userDetails"
 					:billing="billingDetails"
 					class="w-full"
+					@refresh-user="refresh"
 				/>
 			</main>
 		</div>

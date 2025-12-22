@@ -21,6 +21,7 @@ const signButtonText = ref<string>('Create Account');
 const serverSideError = ref<boolean>(false);
 const emailTaken = ref<boolean>(false);
 const rateLimited = ref<boolean>(false);
+const isSubmitting = ref<boolean>(false);
 
 const diagnostics = ref({
 	usernameValid: false,
@@ -53,36 +54,35 @@ const validData = computed<boolean>(() => {
 const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 
 const createAccount = async () => {
+	if (isSubmitting.value || !validData.value) return;
+
+	isSubmitting.value = true;
 	signButtonText.value = 'Please Wait...';
 	serverSideError.value = false;
 	emailTaken.value = false;
 	rateLimited.value = false;
-	await useFetch('/api/auth/signup', {
-		method: 'POST',
-		body: {
-			username,
-			email,
-			password,
-		},
-		onResponse({ response }) {
-			if (response.status === 201) {
-				navigateTo('/dashboard', { redirectCode: 301 });
-			}
-		},
-		onResponseError({ response }) {
-			if (response.status === 409) {
-				emailTaken.value = true;
-			}
-			else if (response.status === 429) {
-				rateLimited.value = true;
-			}
-			else {
-				serverSideError.value = true;
-			}
-		},
-	});
 
-	signButtonText.value = 'Create Account';
+	try {
+		await $fetch('/api/auth/signup', {
+			method: 'POST',
+			body: {
+				username: username.value,
+				email: email.value,
+				password: password.value,
+			},
+		});
+
+		navigateTo('/dashboard', { redirectCode: 301 });
+	}
+	catch (error: any) {
+		if (error?.status === 409) emailTaken.value = true;
+		else if (error?.status === 429) rateLimited.value = true;
+		else serverSideError.value = true;
+	}
+	finally {
+		isSubmitting.value = false;
+		signButtonText.value = 'Create Account';
+	}
 };
 </script>
 
@@ -144,7 +144,7 @@ const createAccount = async () => {
 				v-if="emailTaken"
 				class="formError w-4/5 md:w-2/5 mt-10 text-lg"
 			>
-				{{ email }} is already taken.
+				This email is already taken.
 			</p>
 			<input
 				id="passwordInput"
@@ -178,7 +178,8 @@ const createAccount = async () => {
 			</p>
 			<button
 				id="submit"
-				:disabled="!validData"
+				type="button"
+				:disabled="!validData || isSubmitting"
 				class="h-15 w-4/5 md:w-2/5 text-[#F1F1F1] text-lg flex items-center justify-center mt-10 hover:cursor-pointer"
 				@click="createAccount"
 			>
