@@ -1,14 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { validatePassword } from '~~/lib/utils/validators';
-
-interface User {
-	id: string;
-	username: string;
-	email: string;
-	joinDate: string;
-	isPremium: boolean;
-}
+import type User from '~~/lib/interfaces/user';
 
 const props = defineProps<{ user: User }>();
 

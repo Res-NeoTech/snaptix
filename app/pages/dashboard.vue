@@ -3,43 +3,21 @@ import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import ParticlesBg from '../components/imported/ParticlesBg.vue';
 
+// Necessary Types
+import type BillingInfo from '~~/lib/interfaces/billing';
+import type User from '~~/lib/interfaces/user';
+
 // Section components
 import OverviewSection from '~/components/OverviewSection.vue';
 import AccountSettings from '~/components/AccountSettings.vue';
 import BillingSection from '~/components/BillingSection.vue';
 
 useHead({
-  title: 'Dashboard | SnapTix',
-  meta: [
-    { name: 'description', content: 'Access your SnapTix dashboard to manage your account, billing, and subscription settings, and quickly fix code, text, and content.' },
-  ]
+	title: 'Dashboard | SnapTix',
+	meta: [
+		{ name: 'description', content: 'Access your SnapTix dashboard to manage your account, billing, and subscription settings, and quickly fix code, text, and content.' },
+	],
 });
-
-interface User {
-	id: string;
-	username: string;
-	email: string;
-	joinDate: string;
-	isPremium: boolean;
-	correctionLimit: number;
-	correctionCount: number;
-	correctionQuotaReset: string;
-}
-
-interface BillingInfo {
-	cardLast4: number;
-	nextPayment: string;
-	invoices: Invoice[];
-}
-
-interface Invoice {
-	id: string;
-	amount: number;
-	currency: string;
-	status?: string;
-	date: string;
-	pdfUrl?: string | null;
-}
 
 const route = useRoute();
 const router = useRouter();

@@ -4,10 +4,10 @@ import ParticlesBg from '../components/imported/ParticlesBg.vue';
 import ParticleImage from '~/components/imported/ParticleImage/ParticleImage.vue';
 
 useHead({
-  title: 'Privacy Policy | SnapTix',
-  meta: [
-    { name: 'description', content: 'Read SnapTix’s Privacy Policy to see how we protect your data while you fix code, text, and content instantly with AI.' },
-  ]
+	title: 'Privacy Policy | SnapTix',
+	meta: [
+		{ name: 'description', content: 'Read SnapTix’s Privacy Policy to see how we protect your data while you fix code, text, and content instantly with AI.' },
+	],
 });
 
 const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));

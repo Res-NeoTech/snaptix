@@ -1,16 +1,6 @@
 <script setup lang="ts">
 import AnimatedCircularProgressBar from './imported/AnimatedCircularProgressBar.vue';
-
-interface User {
-	id: string;
-	username: string;
-	email: string;
-	joinDate: string;
-	isPremium: boolean;
-	correctionLimit: number;
-	correctionCount: number;
-	correctionQuotaReset: string;
-}
+import type User from '~~/lib/interfaces/user';
 
 defineProps<{ user: User }>();
 

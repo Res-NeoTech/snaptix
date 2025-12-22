@@ -1,26 +1,16 @@
 <script setup lang="ts">
 import ParticlesBg from '../components/imported/ParticlesBg.vue';
 import DropDown from '~/components/DropDown.vue';
+import type User from '~~/lib/interfaces/user';
 
 useHead({
-  title: 'Pricing | SnapTix',
-  meta: [
-    { name: 'description', content: 'See SnapTix pricing and choose a simple AI plan to fix code, text, and content instantly. No prompt engineering. Cancel anytime.' },
-  ]
+	title: 'Pricing | SnapTix',
+	meta: [
+		{ name: 'description', content: 'See SnapTix pricing and choose a simple AI plan to fix code, text, and content instantly. No prompt engineering. Cancel anytime.' },
+	],
 });
 
 const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
-
-interface User {
-	id: string;
-	username: string;
-	email: string;
-	joinDate: string;
-	isPremium: boolean;
-	correctionLimit: number;
-	correctionCount: number;
-	correctionQuotaReset: string;
-}
 
 const getPremium = async () => {
 	try {

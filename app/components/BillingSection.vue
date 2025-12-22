@@ -1,29 +1,7 @@
 <script setup lang="ts">
-interface User {
-	id: string;
-	username: string;
-	email: string;
-	joinDate: string;
-	isPremium: boolean;
-	correctionLimit: number;
-	correctionCount: number;
-	correctionQuotaReset: string;
-}
-
-interface BillingInfo {
-	cardLast4: number;
-	nextPayment: string;
-	invoices: Invoice[];
-}
-
-interface Invoice {
-	id: string;
-	amount: number;
-	currency: string;
-	status?: string;
-	date: string;
-	pdfUrl?: string | null;
-}
+// Necessary types
+import type BillingInfo from '~~/lib/interfaces/billing';
+import type User from '~~/lib/interfaces/user';
 
 const goPricing = () => {
 	navigateTo('/pricing');
