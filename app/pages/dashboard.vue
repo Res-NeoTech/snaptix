@@ -115,17 +115,19 @@ const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 			</aside>
 
 			<!-- Main Content -->
-			<main
-				v-auto-animate
-				class="flex-1 p-5 md:p-10"
-			>
-				<component
-					:is="currentSection"
-					:user="userDetails"
-					:billing="billingDetails"
-					class="w-full"
-					@refresh-user="refresh"
-				/>
+			<main class="flex-1 p-5 md:p-10">
+				<Transition
+					name="section-fade"
+					mode="out-in"
+				>
+					<component
+						:is="currentSection"
+						:user="userDetails"
+						:billing="billingDetails"
+						class="w-full"
+						@refresh-user="refresh"
+					/>
+				</Transition>
 			</main>
 		</div>
 
@@ -152,5 +154,34 @@ h1 {
 	display: inline-block;
 	letter-spacing: 1px;
 	text-shadow: 0 0 10px rgba(0, 225, 255, 0.4);
+}
+
+.section-fade-enter-active,
+.section-fade-leave-active {
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    filter 0.25s ease;
+	transition-delay: 80ms;
+  will-change: opacity, transform, filter;
+}
+
+.section-fade-enter-from {
+  opacity: 0;
+  transform: translateY(8px) scale(0.985);
+  filter: blur(4px);
+}
+
+.section-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.99);
+  filter: blur(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-fade-enter-active,
+  .section-fade-leave-active {
+    transition: none !important;
+  }
 }
 </style>
