@@ -19,7 +19,7 @@ const goDashboard = () => {
 </script>
 
 <template>
-	<header class="flex items-center justify-between">
+	<header class="flex flex-wrap items-center justify-between">
 		<div class="flex items-center justify-center p-5">
 			<NuxtImg
 				src="/snaptix.png"

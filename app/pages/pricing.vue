@@ -56,12 +56,12 @@ const { data: userDetails } = await useAsyncData<User>(
 			/>
 		</ClientOnly>
 		<HeaderComponent />
-		<div class="flex items-center justify-evenly mt-25 px-4">
-			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF] hidden md:block">
+		<div class="flex items-center justify-evenly mt-25">
+			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
 			<h2 class="text-center">
 				Pricing
 			</h2>
-			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF] hidden md:block">
+			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
 		</div>
 
 		<div
@@ -242,12 +242,12 @@ const { data: userDetails } = await useAsyncData<User>(
 			</div>
 		</div>
 
-		<div class="flex items-center justify-evenly mt-25 px-4">
-			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF] hidden md:block">
+		<div class="flex items-center justify-evenly mt-25">
+			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
 			<h2 class="text-center">
 				FAQ
 			</h2>
-			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF] hidden md:block">
+			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
 		</div>
 
 		<div class="flex flex-col items-center w-full mt-25">
@@ -313,14 +313,15 @@ We review refund requests on a case-by-case basis and always try to be fair."
 <style scoped>
 h2,
 h3 {
-    background: linear-gradient(to right, #00E1FF, #736EFE);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
-    font-weight: 900;
-    font-size: xx-large;
-    letter-spacing: 1px;
+	background: linear-gradient(to right, #00E1FF, #736EFE);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	display: inline-block;
+	font-weight: 900;
+	font-size: xx-large;
+	letter-spacing: 1px;
+	text-shadow: 0 0 10px rgba(0, 225, 255, 0.4);
 }
 
 h3 {
@@ -528,10 +529,6 @@ li {
 /* Responsive adjustments */
 
 @media (max-width: 1023px) {
-    h2 {
-        font-size: x-large;
-    }
-
     .section-title {
         font-size: 1.75rem;
     }
@@ -543,10 +540,6 @@ li {
 }
 
 @media (max-width: 640px) {
-    h2 {
-        font-size: large;
-    }
-
     .section-title {
         font-size: 1.5rem;
     }

@@ -32,7 +32,7 @@ const logout = async () => {
 			</div>
 
 			<!-- User Info -->
-			<div class="flex-1 text-center md:text-left">
+			<div class="flex-1 w-full md:w-auto text-center md:text-left">
 				<h3 class="text-xl font-bold text-[#F1F1F1]">
 					{{ user.username }}
 				</h3>
@@ -87,7 +87,7 @@ const logout = async () => {
 
 			<!-- Log Out Button -->
 			<button
-				class="btn-primary flex-1 sm:flex-none px-4 py-2 text-[#F1F1F1] mx-5 text-lg flex items-center justify-center h-15"
+				class="btn-primary w-full md:w-auto flex-1 sm:flex-none px-4 py-2 text-[#F1F1F1] mx-5 text-lg flex items-center justify-center h-15"
 				@click="logout"
 			>
 				<Icon

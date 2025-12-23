@@ -43,7 +43,7 @@ defineProps<{ user: User | undefined; billing: BillingInfo | undefined }>();
 
 		<!-- Card Info -->
 		<div
-			class="card-box mt-6 flex items-center justify-between p-4 rounded-lg border border-[#00E1FF]/40 bg-white/5"
+			class="card-box mt-6 flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between p-4 rounded-lg border border-[#00E1FF]/40 bg-white/5"
 		>
 			<div class="flex items-center gap-3">
 				<Icon
@@ -54,7 +54,7 @@ defineProps<{ user: User | undefined; billing: BillingInfo | undefined }>();
 				<span class="text-[#F1F1F1]">**** **** **** {{ billing?.cardLast4 }}</span>
 			</div>
 			<button
-				class="btn-primary hover:cursor-pointer flex-1 sm:flex-none px-4 py-2 text-[#F1F1F1] text-lg flex items-center justify-center h-12"
+				class="btn-primary hover:cursor-pointer w-full sm:w-auto flex-1 sm:flex-none px-4 py-2 text-[#F1F1F1] text-lg flex items-center justify-center h-12"
 				@click="openBillingPortal"
 			>
 				<Icon
