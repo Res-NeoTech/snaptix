@@ -1,8 +1,6 @@
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import { setCookie } from 'h3';
-import { getUserFromEvent } from '~~/server/utils/getUserFromEvent';
-import { getRedis } from '~~/server/utils/redis';
 import type { IUser } from '~~/server/models/User';
 import User from '~~/server/models/User';
 

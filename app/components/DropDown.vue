@@ -19,7 +19,8 @@ const open = ref<boolean>(false);
 <template>
 	<div
 		v-auto-animate
-		:class="`hover:bg-white/5 p-5 ${customClass}`"
+		class="hover:bg-white/5 p-5"
+		:class="customClass"
 	>
 		<div
 			class="flex justify-between items-center gap-2 group cursor-pointer"

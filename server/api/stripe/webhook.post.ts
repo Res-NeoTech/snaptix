@@ -120,9 +120,7 @@ export default defineEventHandler(async (event) => {
 			return 'ok';
 		}
 
-		const isActive
-			= subscription.status === 'active'
-				|| subscription.status === 'trialing';
+		const isActive: boolean = subscription.status === 'active' || subscription.status === 'trialing';
 
 		dbUser.isPremium = isActive;
 		dbUser.stripePriceId = subscription.items.data[0]?.price?.id ?? null;

@@ -8,10 +8,6 @@ const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 useHead({
 	title: `Error - ${props.error.statusCode} | SnapTix`,
 });
-
-const goHome = () => {
-	navigateTo('/');
-};
 </script>
 
 <template>
@@ -64,7 +60,7 @@ const goHome = () => {
 		<button
 			id="primaryButton"
 			class="flex-1 sm:flex-none px-4 py-2 text-[#F1F1F1] text-lg flex items-center justify-center h-15 mt-25"
-			@click="goHome"
+			@click="navigateTo('/')"
 		>
 			<Icon
 				name="mingcute:home-3-fill"

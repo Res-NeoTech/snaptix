@@ -3,10 +3,6 @@
 import type BillingInfo from '~~/lib/interfaces/billing';
 import type User from '~~/lib/interfaces/user';
 
-const goPricing = () => {
-	navigateTo('/pricing');
-};
-
 const openBillingPortal = async () => {
 	const { url } = await $fetch<{ url: string }>('/api/stripe/billing/portal', {
 		method: 'POST',
@@ -150,7 +146,7 @@ defineProps<{ user: User | undefined; billing: BillingInfo | undefined }>();
 		</div>
 		<button
 			class="btn-primary mt-6 hover:cursor-pointer flex-1 w-full sm:flex-none px-4 py-2 text-[#F1F1F1] text-lg flex items-center justify-center h-12"
-			@click="goPricing"
+			@click="navigateTo('/pricing')"
 		>
 			<Icon
 				name="solar:tag-price-bold"

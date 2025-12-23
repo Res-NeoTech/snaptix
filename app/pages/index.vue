@@ -2,6 +2,13 @@
 import { ref } from 'vue';
 import ParticlesBg from '../components/imported/ParticlesBg.vue';
 
+useHead({
+	title: 'SnapTix',
+	meta: [
+		{ name: 'description', content: 'SnapTix is an application to fix grammar, emails, and code instantly with AI — no prompt required.' },
+	],
+});
+
 const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 const prompt = ref<string>('');
 const aiResponse = ref<string>('');

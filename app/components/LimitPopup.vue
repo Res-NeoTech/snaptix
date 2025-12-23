@@ -1,24 +1,13 @@
 <script setup lang="ts">
 const props = defineProps<{ type: 'none' | 'guest' | 'user' | 'premium' }>();
 const emit = defineEmits<{ (e: 'hide'): void }>();
-
-const divClassString = computed<string>(() => `fixed z-10 w-screen h-screen flex flex-col items-center justify-center ${props.type === 'none' ? 'hiddenLoader' : ''}`);
-
-const goSignup = () => {
-	navigateTo('/signup');
-};
-
-const goLogin = () => {
-	navigateTo('/login');
-};
-
-const goPricing = () => {
-	navigateTo('/pricing');
-};
 </script>
 
 <template>
-	<section :class="divClassString">
+	<section
+		class="fixed z-10 w-screen h-screen flex flex-col items-center justify-center"
+		:class="props.type === 'none' ? 'hiddenLoader' : ''"
+	>
 		<div
 			v-if="type === 'guest'"
 			class="flex flex-col items-center justify-center px-4 sm:px-6 md:px-8"
@@ -66,7 +55,7 @@ const goPricing = () => {
 				<button
 					id="secondaryButton"
 					class="w-full sm:w-auto sm:flex-1 px-4 py-2 text-[#F1F1F1] text-base sm:text-lg flex items-center justify-center h-12 sm:h-15"
-					@click="goLogin"
+					@click="navigateTo('/login')"
 				>
 					<Icon
 						name="bx:user"
@@ -78,7 +67,7 @@ const goPricing = () => {
 				<button
 					id="primaryButton"
 					class="w-full sm:w-auto sm:flex-1 px-4 py-2 text-[#F1F1F1] text-base sm:text-lg flex items-center justify-center h-12 sm:h-15"
-					@click="goSignup"
+					@click="navigateTo('/signup')"
 				>
 					<Icon
 						name="mingcute:user-add-line"
@@ -170,7 +159,7 @@ const goPricing = () => {
 			<button
 				id="primaryButton"
 				class="w-full max-w-xs sm:max-w-sm px-4 py-2 text-[#F1F1F1] text-base sm:text-lg flex items-center justify-center h-12 sm:h-15 mt-6 sm:mt-8 md:mt-10"
-				@click="goPricing"
+				@click="navigateTo('/pricing')"
 			>
 				<Icon
 					name="solar:tag-price-bold"

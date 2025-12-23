@@ -1,5 +1,4 @@
 import Stripe from 'stripe';
-import { getUserFromEvent } from '~~/server/utils/getUserFromEvent';
 import type { IUser } from '~~/server/models/User';
 import User from '~~/server/models/User';
 

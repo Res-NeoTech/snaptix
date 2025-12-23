@@ -1,21 +1,5 @@
 <script setup lang="ts">
 const auth = useAuth();
-
-const goHome = () => {
-	navigateTo('/');
-};
-
-const goSignup = () => {
-	navigateTo('/signup');
-};
-
-const goLogin = () => {
-	navigateTo('/login');
-};
-
-const goDashboard = () => {
-	navigateTo('/dashboard');
-};
 </script>
 
 <template>
@@ -25,11 +9,11 @@ const goDashboard = () => {
 				src="/snaptix.png"
 				class="w-10 mr-5 cursor-pointer"
 				draggable="false"
-				@click="goHome"
+				@click="navigateTo('/')"
 			/>
 			<h1
 				class="cursor-pointer"
-				@click="goHome"
+				@click="navigateTo('/')"
 			>
 				SnapTix
 			</h1>
@@ -38,7 +22,7 @@ const goDashboard = () => {
 			v-if="auth"
 			id="primaryButton"
 			class="flex-1 sm:flex-none px-4 py-2 text-[#F1F1F1] mx-5 text-lg flex items-center justify-center h-15"
-			@click="goDashboard"
+			@click="navigateTo('/dashboard')"
 		>
 			<Icon
 				name="ic:round-dashboard"
@@ -54,7 +38,7 @@ const goDashboard = () => {
 			<button
 				id="secondaryButton"
 				class="flex-1 sm:flex-none px-4 py-2 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
-				@click="goLogin"
+				@click="navigateTo('/login')"
 			>
 				<Icon
 					name="bx:user"
@@ -66,7 +50,7 @@ const goDashboard = () => {
 			<button
 				id="primaryButton"
 				class="flex-1 sm:flex-none px-4 py-2 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
-				@click="goSignup"
+				@click="navigateTo('/signup')"
 			>
 				<Icon
 					name="mingcute:user-add-line"

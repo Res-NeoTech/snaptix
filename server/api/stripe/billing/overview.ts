@@ -1,9 +1,13 @@
 // server/api/billing/overview.ts
 import Stripe from 'stripe';
-import { getUserFromEvent } from '~~/server/utils/getUserFromEvent';
 import type { IUser } from '~~/server/models/User';
 import User from '~~/server/models/User';
 
+/**
+ * Formats date from UNIX Timestamp.
+ * @param unixTimeStamp UNIX Timestamp obtained from seconds.
+ * @returns formatted date string.
+ */
 function formatDate(unixTimeStamp: number): string {
 	const date: Date = new Date(unixTimeStamp * 1000);
 	const dd: string = String(date.getDate()).padStart(2, '0');

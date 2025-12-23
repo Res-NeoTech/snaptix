@@ -3,7 +3,6 @@ import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import { setCookie } from 'h3';
 import { validatePassword } from '~~/lib/utils/validators';
-import { getUserFromEvent } from '~~/server/utils/getUserFromEvent';
 import type { IUser } from '~~/server/models/User';
 import User from '~~/server/models/User';
 

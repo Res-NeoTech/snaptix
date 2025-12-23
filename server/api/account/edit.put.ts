@@ -2,7 +2,6 @@ import type { IUser } from '~~/server/models/User';
 import User from '~~/server/models/User';
 import argon2 from 'argon2';
 import { validatePassword } from '~~/lib/utils/validators';
-import { getUserFromEvent } from '~~/server/utils/getUserFromEvent';
 
 export default defineEventHandler(async (event) => {
 	const body = await readBody(event);

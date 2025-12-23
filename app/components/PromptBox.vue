@@ -6,7 +6,7 @@ const emit = defineEmits<{
 	(e: 'submit-prompt'): void;
 }>();
 
-const prompt = ref('');
+const prompt = ref<string>('');
 
 watch(prompt, (newVal) => {
 	emit('update-prompt', newVal);

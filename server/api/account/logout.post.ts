@@ -1,4 +1,3 @@
-import { getUserFromEvent } from '~~/server/utils/getUserFromEvent';
 import { setCookie } from 'h3';
 
 export default defineEventHandler(async (event) => {

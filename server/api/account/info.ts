@@ -1,7 +1,5 @@
 import type { IUser } from '~~/server/models/User';
 import User from '~~/server/models/User';
-import { getRedis } from '~~/server/utils/redis';
-import { getUserFromEvent } from '~~/server/utils/getUserFromEvent';
 
 export default defineEventHandler(async (event) => {
 	const user = await getUserFromEvent(event);
