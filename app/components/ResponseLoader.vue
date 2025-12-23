@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import SparklesText from './imported/SparklesText.vue';
 
 const props = defineProps<{
 	isHidden: boolean;
 }>();
-
-const divClassString = computed<string>(() => `fixed z-10 w-screen h-screen flex flex-col items-center justify-center ${props.isHidden ? 'hiddenLoader' : ''}`);
 </script>
 
 <template>
 	<div
-		:class="divClassString"
+		class="fixed z-10 w-screen h-screen flex flex-col items-center justify-center"
+		:class="props.isHidden ? 'hiddenLoader' : ''"
 	>
 		<NuxtImg
 			src="/snaptix.png"
@@ -19,7 +17,7 @@ const divClassString = computed<string>(() => `fixed z-10 w-screen h-screen flex
 			draggable="false"
 		/>
 		<SparklesText
-			text="Generating Correction..."
+			text="Generating Correction"
 			:colors="{ first: '#00E1FF', second: '#736EFE' }"
 			:sparkles-count="25"
 			class="text-[#F1F1F1] text-center"

@@ -196,7 +196,7 @@ const emit = defineEmits<{ (e: 'hide'): void }>();
 				<strong>You've hit your daily limit for today.</strong>
 			</p>
 			<p class="w-full sm:w-3/4 md:w-1/2 mt-4 sm:mt-5 px-4">
-				No stress — your quota will reset in a few hours, and you'll be back to unlimited
+				No stress — your quota will reset in a day, and you'll be back to unlimited
 				edits in no time.
 				Thanks for being a Premium member — we appreciate you and all the magic you create with your text! 🩵
 			</p>

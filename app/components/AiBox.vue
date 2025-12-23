@@ -1,4 +1,5 @@
 <script setup lang="ts">
+/* eslint-disable vue/no-v-html */
 import { ref, watch } from 'vue';
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';

@@ -13,14 +13,14 @@ useHead({
 const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 
 const faqSections = [
-	{ question: 'How do you handle payments?', answer: 'We use **Stripe** to securely process all payments. We never store your card details on our servers — everything is handled directly by Stripe. For more information, please refer to the [Stripe Privacy Policy](https://stripe.com/privacy).' },
-	{ question: 'Can I use Premium on multiple devices?', answer: 'Yes. Your **SnapTix Premium** subscription is linked to your account, not a specific device. You can access Premium features from any device as long as you’re logged into your account.' },
+	{ question: 'How do you handle payments?', answer: 'We use **Stripe** to securely process all payments. We never store your card details on our servers — everything is handled directly by **Stripe**. For more information, please refer to the [Stripe Privacy Policy](https://stripe.com/privacy).' },
+	{ question: 'Can I use Premium on multiple devices?', answer: 'Yes. Your **SnapTix Premium** subscription is linked to your account, not a specific device. You can access **Premium** features from any device as long as you’re logged into your account.' },
 	{ question: 'Do you offer a free trial?', answer: 'Currently, **SnapTix Premium** does not include a free trial. That said, we’re actively listening to user feedback, and this may change in the future.' },
 	{ question: 'Will the price change in the future?', answer: '**SnapTix** is a young and actively evolving application. As we introduce new features and improvements, the pricing may change in the future. If that happens, we will always notify you in advance, so you can decide whether you want to keep your plan or make a change — no surprises.' },
-	{ question: 'What if my payment fails?', answer: 'If a payment fails, Stripe will automatically attempt to retry it. If the issue persists, your Premium access may be paused until the payment is resolved. You can always update your payment method through the billing portal.' },
-	{ question: 'I subscribed, but my status hasn\'t been updated', answer: 'This can happen — no worries 🙂 Sometimes it takes a short moment for Stripe to confirm the payment and for our system to sync your subscription status.<br>If it feels like it\'s taking unusually long, feel free to contact [our support](mailto:support@snaptix.com), and we’ll take a look.' },
-	{ question: 'What happens when I cancel my plan?', answer: 'If you cancel your subscription, you will keep **Premium** access until the end of your current billing period.<br>This means you can continue enjoying all premium features until the next payment date — cancellation simply prevents the next charge.' },
-	{ question: 'Can I get a refund?', answer: 'At the moment, we don’t offer automatic refunds. However, if something went wrong or you believe you were charged by mistake, please contact [our support](mailto:support@snaptix.com).<br>We review refund requests on a case-by-case basis and always try to be fair.' },
+	{ question: 'What if my payment fails?', answer: 'If a payment fails, **Stripe** will automatically attempt to retry it. If the issue persists, your **Premium** access may be paused until the payment is resolved. You can always update your payment method through the billing portal.' },
+	{ question: 'I subscribed, but my status hasn\'t been updated', answer: 'This can happen — no worries 🙂 Sometimes it takes a short moment for **Stripe** to confirm the payment and for our system to sync your subscription status.<br>If it feels like it\'s taking unusually long, feel free to contact [our support](mailto:support@snaptix.net), and we’ll take a look.' },
+	{ question: 'What happens when I cancel my plan?', answer: 'If you cancel your subscription, you will keep **Premium** access until the end of your current billing period.<br>This means you can continue enjoying all **premium** features until the next payment date — cancellation simply prevents the next charge.' },
+	{ question: 'Can I get a refund?', answer: 'At the moment, we don’t offer automatic refunds. However, if something went wrong or you believe you were charged by mistake, please contact [our support](mailto:support@snaptix.net).<br>We review refund requests on a case-by-case basis and always try to be fair.' },
 ];
 
 const getPremium = async () => {
@@ -31,8 +31,9 @@ const getPremium = async () => {
 
 		window.location.href = url;
 	}
-	catch (err: any) {
-		if (err.status === 401 || err.status === 404) {
+	catch (err: unknown) {
+		const status: number = (err as { status?: number })?.status as number;
+		if (status === 401 || status === 404) {
 			navigateTo('/login');
 		}
 	}
@@ -263,7 +264,8 @@ const { data: userDetails } = await useAsyncData<User>(
 
 		<div class="flex flex-col items-center w-full mt-25">
 			<DropDown
-				v-for="faqSection in faqSections"
+				v-for="(faqSection, index) in faqSections"
+				:key="index"
 				:title="faqSection.question"
 				:content="faqSection.answer"
 				custom-class="w-3/4 lg:w-1/2"

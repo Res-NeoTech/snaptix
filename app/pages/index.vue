@@ -47,10 +47,13 @@ const onSubmitPrompt = async () => {
 				isLoaderHidden.value = true;
 			}, 100);
 		}
-		catch (err: any) {
-			const errorData = err.data as { response?: string; typeUser?: string } | undefined;
+		catch (err: unknown) {
+			// Narrow error type
+			const fetchError = err as { status?: number; data?: { response?: string; typeUser?: string } };
 
-			if (err.status === 429 && errorData?.typeUser) {
+			const errorData = fetchError.data;
+
+			if (fetchError.status === 429 && errorData?.typeUser) {
 				isLoaderHidden.value = true;
 				limitPopupType.value = errorData.typeUser as PopupType;
 			}

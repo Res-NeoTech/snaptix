@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
 			process.env.STRIPE_WEBHOOK_SECRET!,
 		);
 	}
-	catch (err: any) {
+	catch (err: unknown) {
 		logger.error(err, '[Stripe Webhook] Invalid webhook signature:');
 		return sendError(
 			event,

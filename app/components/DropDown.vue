@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+/* eslint-disable vue/no-v-html */
 import MarkdownIt from 'markdown-it';
 
 const props = defineProps<{

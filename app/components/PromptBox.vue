@@ -25,7 +25,7 @@ watch(prompt, (newVal) => {
 		/>
 
 		<!-- Add Context button -->
-		<button
+		<!-- <button
 			id="addContext"
 			class="glass-btn subtle-btn w-4/5 md:w-2/5 mt-10 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
 		>
@@ -34,7 +34,7 @@ watch(prompt, (newVal) => {
 				class="mr-2 text-[#F1F1F1]"
 			/>
 			Add Context
-		</button>
+		</button> Will be added later in the upcoming update -->
 
 		<!-- Fix Now button -->
 		<button

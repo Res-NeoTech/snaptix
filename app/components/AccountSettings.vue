@@ -77,8 +77,9 @@ const editAccount = async () => {
 		successfullModification.value = true;
 		emit('refreshUser');
 	}
-	catch (error: any) {
-		if (error?.status === 403) {
+	catch (error: unknown) {
+		const status: number = (error as { status?: number })?.status as number;
+		if (status === 403) {
 			wrongPassword.value = true;
 		}
 		else {

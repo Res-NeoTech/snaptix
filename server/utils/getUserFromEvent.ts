@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import type { H3Event } from 'h3';
 import { getCookie } from 'h3';
 
 /**
@@ -6,7 +7,7 @@ import { getCookie } from 'h3';
  * @param event H3 event instance.
  * @returns decoded user info from jwt.
  */
-export function getUserFromEvent(event: any) {
+export function getUserFromEvent(event: H3Event) {
 	const token = getCookie(event, 'auth_token');
 	if (!token) return null;
 

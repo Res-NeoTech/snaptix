@@ -28,8 +28,8 @@ enum Section {
 	billing = 'billing',
 }
 
-function isSection(value: any): value is Section {
-	return Object.values(Section).includes(value);
+function isSection(value: unknown): value is Section {
+	return typeof value === 'string' && Object.values(Section).includes(value as Section);
 }
 
 if (!route.query.section) {

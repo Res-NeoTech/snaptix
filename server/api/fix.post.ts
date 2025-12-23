@@ -1,5 +1,6 @@
 import uniqid from 'uniqid';
 import type { IUser } from '~~/server/models/User';
+import type { H3Event } from 'h3';
 import User from '~~/server/models/User';
 import crypto from 'crypto';
 import { getRedis, applyRateLimit, safeDecr } from '~~/server/utils/redis';
@@ -18,7 +19,7 @@ const LIMITS = {
 
 // --- HELPERS ---
 
-function setGuestCookie(event: any) {
+function setGuestCookie(event: H3Event) {
 	let guestId = getCookie(event, 'guest_id');
 
 	if (!guestId) {

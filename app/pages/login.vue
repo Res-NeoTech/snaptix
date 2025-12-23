@@ -42,11 +42,12 @@ const login = async () => {
 
 		navigateTo('/dashboard', { redirectCode: 301 });
 	}
-	catch (error: any) {
-		if (error?.status === 401) {
+	catch (error: unknown) {
+		const status: number = (error as { status?: number })?.status as number;
+		if (status === 401) {
 			unauthorized.value = true;
 		}
-		else if (error?.status === 429) {
+		else if (status === 429) {
 			rateLimited.value = true;
 		}
 		else {
