@@ -1,0 +1,54 @@
+services:
+  nuxt:
+    build: .
+    container_name: snaptix_app
+    networks:
+      - snaptix_net
+    depends_on:
+      - mongo
+      - redis
+    environment:
+      NODE_ENV: production
+      MISTRAL_API_KEY: ${MISTRAL_API_KEY}
+      MONGO_URI: ${MONGO_URI}
+      JWT_SECRET: ${JWT_SECRET}
+      REDIS_URL: ${REDIS_URL}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+      STRIPE_PREMIUM_PRICE_ID: ${STRIPE_PREMIUM_PRICE_ID}
+    ports:
+      - "127.0.0.1:3003:3000"
+    volumes:
+      - ./logs:/app/logs
+
+  mongo:
+    image: mongo:7
+    container_name: snaptix_mongo
+    networks:
+      - snaptix_net
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: snaptix
+    volumes:
+      - ./mongo_data:/data/db
+    ports:
+      - "127.0.0.1:27018:27017"
+
+  redis:
+    image: redis:8
+    container_name: snaptix_redis
+    networks:
+      - snaptix_net
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - ./redis_data:/data
+
+volumes:
+  logs:
+  mongo_data:
+  redis_data:
+
+networks:
+  snaptix_net:
+    driver: bridge
