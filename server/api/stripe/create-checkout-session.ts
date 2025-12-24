@@ -4,7 +4,7 @@ import User from '~~/server/models/User';
 
 export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
-	const stripe = new Stripe(config.stripeSecret, { apiVersion: '2025-11-17.clover' });
+	const stripe = new Stripe(config.stripeSecret, { apiVersion: '2025-12-15.clover' });
 
 	// 1. Auth (ты же сказал, у тебя JWT → куки → всё ок)
 	const user = getUserFromEvent(event);
@@ -74,8 +74,8 @@ export default defineEventHandler(async (event) => {
 				quantity: 1,
 			},
 		],
-		success_url: `http://127.0.0.1:3000/subscription-success`, // CHANGE BASE URL IN PRODUCTION.
-		cancel_url: `http://127.0.0.1:3000/pricing`, // CHANGE BASE URL IN PRODUCTION.
+		success_url: `https://snaptix.net/subscription-success`, // CHANGE BASE URL IN PRODUCTION.
+		cancel_url: `https://snaptix.net/pricing`, // CHANGE BASE URL IN PRODUCTION.
 		subscription_data: {
 			metadata: {
 				mongoUserId: user.id.toString(),

@@ -19,7 +19,7 @@ function formatDate(unixTimeStamp: number): string {
 export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
 	const redis = getRedis();
-	const stripe = new Stripe(config.stripeSecret, { apiVersion: '2025-11-17.clover' });
+	const stripe = new Stripe(config.stripeSecret, { apiVersion: '2025-12-15.clover' });
 
 	// 1. Auth
 	const user = getUserFromEvent(event);

@@ -2,6 +2,7 @@ services:
   nuxt:
     build: .
     container_name: snaptix_app
+    restart: unless-stopped
     networks:
       - snaptix_net
     depends_on:
@@ -24,6 +25,7 @@ services:
   mongo:
     image: mongo:7
     container_name: snaptix_mongo
+    restart: unless-stopped
     networks:
       - snaptix_net
     environment:
@@ -38,6 +40,7 @@ services:
   redis:
     image: redis:8
     container_name: snaptix_redis
+    restart: unless-stopped
     networks:
       - snaptix_net
     command: ["redis-server", "--appendonly", "yes"]

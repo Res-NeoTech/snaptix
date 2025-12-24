@@ -1,4 +1,4 @@
-import pino from 'pino';
+import pino, { Logger } from 'pino';
 import fs from 'fs';
 import path from 'path';
 
@@ -10,7 +10,7 @@ if (!fs.existsSync(logDir)) {
 	fs.mkdirSync(logDir, { recursive: true });
 }
 
-let logger;
+let logger: Logger;
 
 if (isProd) {
 	const streams = [

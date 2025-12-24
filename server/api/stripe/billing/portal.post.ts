@@ -5,7 +5,7 @@ import User from '~~/server/models/User';
 export default defineEventHandler(async (event) => {
 	const config = useRuntimeConfig();
 	const stripe = new Stripe(config.stripeSecret, {
-		apiVersion: '2025-11-17.clover',
+		apiVersion: '2025-12-15.clover',
 	});
 
 	// 1. Auth
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
 	// 3. Create Billing Portal session
 	const session = await stripe.billingPortal.sessions.create({
 		customer: dbUser.stripeCustomerId,
-		return_url: `http://127.0.0.1:3000/dashboard?section=billing`,
+		return_url: `https://snaptix.net/dashboard?section=billing`,
 	});
 
 	// 4. Return URL
