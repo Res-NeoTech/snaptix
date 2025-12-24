@@ -1,8 +1,9 @@
 import { setCookie } from 'h3';
+import { getClientIp } from '~~/server/utils/getClientIp';
 
 export default defineEventHandler(async (event) => {
 	const user = await getUserFromEvent(event);
-	const ip: string = getRequestIP(event) ?? 'unknown';
+	const ip: string = getClientIp(event) ?? 'unknown';
 	if (!user) {
 		setResponseStatus(event, 401);
 		return { error: 'Unauthorized.' };

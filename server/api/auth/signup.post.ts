@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { setCookie } from 'h3';
 import { validatePassword } from '~~/lib/utils/validators';
 import type { IUser } from '~~/server/models/User';
+import { getClientIp } from '~~/server/utils/getClientIp';
 import User from '~~/server/models/User';
 
 export default defineEventHandler(async (event) => {
@@ -40,7 +41,7 @@ export default defineEventHandler(async (event) => {
 	// Rate-limiting signup-in attempts.
 	const redis = getRedis();
 
-	const ip: string = getRequestIP(event) ?? 'unknown';
+	const ip: string = getClientIp(event) ?? 'unknown';
 
 	const limits = [
 		{ key: `auth:signup:fiveMinutely:${ip}`, limit: 3, ttl: 60 * 5 }, // 3 attempts per 5 minutes.

@@ -1,11 +1,12 @@
-import pino, { Logger } from 'pino';
+import type { Logger } from 'pino';
+import pino from 'pino';
 import fs from 'fs';
 import path from 'path';
 
 const isProd = process.env.NODE_ENV === 'production';
 
 // Убедимся, что директория для логов существует
-const logDir = path.resolve('/app/logs');
+const logDir = path.resolve('/logs');
 if (!fs.existsSync(logDir)) {
 	fs.mkdirSync(logDir, { recursive: true });
 }
@@ -22,9 +23,10 @@ if (isProd) {
 		{
 			level: 'info',
 		},
-		pino.multistream(streams)
+		pino.multistream(streams),
 	);
-} else {
+}
+else {
 	// dev + pretty print
 	logger = pino({
 		level: 'debug',
