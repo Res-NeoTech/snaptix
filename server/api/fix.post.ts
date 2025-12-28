@@ -17,6 +17,8 @@ const LIMITS = {
 	premium: 50,
 };
 
+let dbInfo: IUser | null;
+
 // --- HELPERS ---
 
 function setGuestCookie(event: H3Event) {
@@ -72,7 +74,7 @@ export default defineEventHandler(async (event) => {
 		max = LIMITS.guest;
 	}
 	else {
-		const dbInfo: IUser | null = await User.findById(user.id);
+		dbInfo = await User.findById(user.id);
 		if (!dbInfo) {
 			setResponseStatus(event, 404);
 			return { error: 'User not found' };
@@ -97,6 +99,7 @@ export default defineEventHandler(async (event) => {
 
 	// --- Body ---
 	const { prompt } = await readBody(event);
+	const agentId: string = dbInfo?.isPremium ? 'ag_019b6244b8fa7354b7f94d69d59002a0' : 'ag:85f5a2fd:20250806:snaptix-preview:269a3576';
 
 	try {
 		// --- API request ---
@@ -107,7 +110,7 @@ export default defineEventHandler(async (event) => {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
-				agent_id: 'ag:85f5a2fd:20250806:snaptix-preview:269a3576',
+				agent_id: agentId,
 				stream: false,
 				messages: [{ role: 'user', content: prompt }],
 			}),
@@ -118,7 +121,7 @@ export default defineEventHandler(async (event) => {
 			await safeDecr(redis, rateKey);
 
 			const text = await fixRequest.text();
-			logger.error(`[Fix] Mistral API error ${fixRequest.status}: ${text}`);
+			logger.error(`[Fix] Mistral API error for Agent ID: ${agentId} | Error: ${fixRequest.status}: ${text}`);
 			setResponseStatus(event, 500);
 			return { error: 'Server-side exception occured.' };
 		}

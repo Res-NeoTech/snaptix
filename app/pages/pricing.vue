@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ParticlesBg from '../components/imported/ParticlesBg.vue';
 import DropDown from '~/components/DropDown.vue';
+import authGlobal from '~/middleware/auth.global';
 import type User from '~~/lib/interfaces/user';
 
 useHead({
@@ -23,6 +24,8 @@ const faqSections = [
 	{ question: 'Can I get a refund?', answer: 'At the moment, we don’t offer automatic refunds. However, if something went wrong or you believe you were charged by mistake, please contact [our support](mailto:support@snaptix.net).<br>We review refund requests on a case-by-case basis and always try to be fair.' },
 ];
 
+const auth = useAuth();
+
 const getPremium = async () => {
 	try {
 		const { url } = await $fetch<{ url: string }>('/api/stripe/create-checkout-session', {
@@ -30,6 +33,10 @@ const getPremium = async () => {
 		});
 
 		window.location.href = url;
+		umTrackEvent('premium-upgrade', {
+			userId: auth.value?.userId,
+			email: auth.value?.email,
+		});
 	}
 	catch (err: unknown) {
 		const status: number = (err as { status?: number })?.status as number;
@@ -59,7 +66,7 @@ const { data: userDetails } = await useAsyncData<User>(
 	<div class="min-h-screen bg-[#0D1117] overflow-hidden">
 		<ClientOnly>
 			<ParticlesBg
-				class="absolute inset-0 w-full h-full pointer-events-none z-0 fixed"
+				class="inset-0 w-full h-full pointer-events-none z-0 fixed"
 				:quantity="nbParticles"
 				:ease="100"
 				color="00E1FF"
@@ -96,7 +103,7 @@ const { data: userDetails } = await useAsyncData<User>(
 						<Icon
 							name="mingcute:flash-fill"
 							style="color: #F1F1F1"
-							class="mr-2 flex-shrink-0"
+							class="mr-2 shrink-0"
 						/>Core
 						features to get you started
 					</li>
@@ -104,7 +111,7 @@ const { data: userDetails } = await useAsyncData<User>(
 						<Icon
 							name="mingcute:scale-fill"
 							style="color: #F1F1F1"
-							class="mr-2 flex-shrink-0"
+							class="mr-2 shrink-0"
 						/>15
 						corrections per day
 					</li>
@@ -112,7 +119,7 @@ const { data: userDetails } = await useAsyncData<User>(
 						<Icon
 							name="mingcute:bulb-2-fill"
 							style="color: #F1F1F1"
-							class="mr-2 flex-shrink-0"
+							class="mr-2 shrink-0"
 						/>Basic AI
 						Model
 					</li>
@@ -120,7 +127,7 @@ const { data: userDetails } = await useAsyncData<User>(
 						<Icon
 							name="mingcute:group-2-fill"
 							style="color: #F1F1F1"
-							class="mr-2 flex-shrink-0"
+							class="mr-2 shrink-0"
 						/>Standard
 						support
 					</li>
@@ -128,7 +135,7 @@ const { data: userDetails } = await useAsyncData<User>(
 						<Icon
 							name="mingcute:unlock-fill"
 							style="color: #F1F1F1"
-							class="mr-2 flex-shrink-0"
+							class="mr-2 shrink-0"
 						/>More
 						features to come
 					</li>
@@ -189,7 +196,7 @@ const { data: userDetails } = await useAsyncData<User>(
 						<Icon
 							name="mingcute:flash-fill"
 							style="color: #F1F1F1"
-							class="mr-2 flex-shrink-0"
+							class="mr-2 shrink-0"
 						/>Full access
 						to every feature
 					</li>
@@ -197,7 +204,7 @@ const { data: userDetails } = await useAsyncData<User>(
 						<Icon
 							name="mingcute:scale-fill"
 							style="color: #F1F1F1"
-							class="mr-2 flex-shrink-0"
+							class="mr-2 shrink-0"
 						/>50
 						corrections per day
 					</li>
@@ -205,7 +212,7 @@ const { data: userDetails } = await useAsyncData<User>(
 						<Icon
 							name="mingcute:bulb-2-fill"
 							style="color: #F1F1F1"
-							class="mr-2 flex-shrink-0"
+							class="mr-2 shrink-0"
 						/>Advanced
 						AI Model
 					</li>
@@ -213,7 +220,7 @@ const { data: userDetails } = await useAsyncData<User>(
 						<Icon
 							name="mingcute:group-2-fill"
 							style="color: #F1F1F1"
-							class="mr-2 flex-shrink-0"
+							class="mr-2 shrink-0"
 						/>Priority
 						Support
 					</li>
@@ -221,7 +228,7 @@ const { data: userDetails } = await useAsyncData<User>(
 						<Icon
 							name="mingcute:unlock-fill"
 							style="color: #F1F1F1"
-							class="mr-2 flex-shrink-0"
+							class="mr-2 shrink-0"
 						/>More
 						features to come
 					</li>

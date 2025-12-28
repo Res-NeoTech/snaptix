@@ -1,4 +1,4 @@
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS builder
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ COPY . .
 RUN npm run build
 
 # PROD образ
-FROM node:20-alpine
+FROM node:24-alpine
 
 WORKDIR /app
 
@@ -28,5 +28,7 @@ VOLUME ["/app/logs"]
 
 ENV NODE_ENV=production
 EXPOSE 3000
+
+RUN apk add curl
 
 CMD ["node", ".output/server/index.mjs"]

@@ -72,6 +72,11 @@ const createAccount = async () => {
 			},
 		});
 
+		umTrackEvent('account-created', {
+			username: username.value,
+			email: email.value,
+		});
+
 		navigateTo('/dashboard', { redirectCode: 301 });
 	}
 	catch (error: unknown) {
@@ -97,7 +102,7 @@ const createAccount = async () => {
 	<div class="min-h-screen bg-[#0D1117] overflow-hidden">
 		<ClientOnly>
 			<ParticlesBg
-				class="absolute inset-0 w-full h-full pointer-events-none z-0 fixed"
+				class="inset-0 w-full h-full pointer-events-none z-0 fixed"
 				:quantity="nbParticles"
 				:ease="100"
 				color="00E1FF"

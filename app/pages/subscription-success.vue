@@ -7,13 +7,21 @@ useHead({
 });
 
 const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
+
+onMounted(() => {
+	const auth = useAuth();
+
+	if (auth.value) {
+		umTrackRevenue('subscription-success', 3, 'USD');
+	}
+});
 </script>
 
 <template>
 	<div class="min-h-screen bg-[#0D1117] overflow-hidden">
 		<ClientOnly>
 			<ParticlesBg
-				class="absolute inset-0 w-full h-full pointer-events-none z-0 fixed"
+				class="inset-0 w-full h-full pointer-events-none z-0 fixed"
 				:quantity="nbParticles"
 				:ease="100"
 				color="00E1FF"
@@ -44,7 +52,8 @@ const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 			Thanks for supporting SnapTix — enjoy the extra features!
 		</p>
 		<p class="text-center">
-			We&apos;re actively developing SnapTix, so check back often to see new features and improvements you can enjoy!
+			We&apos;re actively developing SnapTix, so check back often to see new features and improvements you can
+			enjoy!
 		</p>
 		<FooterComponent :margin="true" />
 	</div>
@@ -53,26 +62,26 @@ const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 <style scoped>
 h1,
 h2 {
-    background: linear-gradient(to right, #00E1FF, #736EFE);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
-    font-weight: 900;
-    letter-spacing: 1px;
-    text-shadow: 0 0 10px rgba(0, 225, 255, 0.4);
+	background: linear-gradient(to right, #00E1FF, #736EFE);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	display: inline-block;
+	font-weight: 900;
+	letter-spacing: 1px;
+	text-shadow: 0 0 10px rgba(0, 225, 255, 0.4);
 }
 
 h1 {
-    font-size: xxx-large;
+	font-size: xxx-large;
 }
 
 p {
-    color: #F1F1F1;
-    width: 75%;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: large;
-    margin-bottom: 25px;
+	color: #F1F1F1;
+	width: 75%;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: large;
+	margin-bottom: 25px;
 }
 </style>

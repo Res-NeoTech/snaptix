@@ -6,8 +6,10 @@ services:
     networks:
       - snaptix_net
     depends_on:
-      - mongo
-      - redis
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       NODE_ENV: production
       MISTRAL_API_KEY: ${MISTRAL_API_KEY}
@@ -21,6 +23,12 @@ services:
       - "127.0.0.1:3003:3000"
     volumes:
       - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
 
   mongo:
     image: mongo:7
@@ -32,10 +40,21 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       MONGO_INITDB_DATABASE: snaptix
-    volumes:
-      - ./mongo_data:/data/db
     ports:
       - "127.0.0.1:27018:27017"
+    volumes:
+      - ./mongo_data:/data/db
+    healthcheck:
+      test: >
+        mongosh --quiet
+        -u "$$MONGO_INITDB_ROOT_USERNAME"
+        -p "$$MONGO_INITDB_ROOT_PASSWORD"
+        --authenticationDatabase admin
+        --eval "db.adminCommand('ping').ok"
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
 
   redis:
     image: redis:8
@@ -46,6 +65,12 @@ services:
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - ./redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
 
 volumes:
   logs:
