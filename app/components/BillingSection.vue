@@ -16,7 +16,7 @@ defineProps<{ user: User | undefined; billing: BillingInfo | undefined }>();
 
 <template>
 	<div
-		v-if="user?.isPremium"
+		v-if="billing?.invoices.length"
 		class="glass-card p-6 max-w-4xl mx-auto"
 	>
 		<h2 class="section-title">
@@ -25,14 +25,24 @@ defineProps<{ user: User | undefined; billing: BillingInfo | undefined }>();
 		<!-- Current Plan -->
 		<div class="mt-6">
 			<p class="text-[#F1F1F1] flex items-center">
-				Current Plan: Premium
+				Current Plan: {{ user?.isPremium ? "Premium" : "Free" }}
 				<Icon
+					v-if="user?.isPremium"
 					name="material-symbols:crown-rounded"
 					style="color: #F1F1F1"
 					class="mx-1"
 				/>
+				<Icon
+					v-else
+					name="ic:round-money-off"
+					style="color: #F1F1F1"
+					class="mx-1"
+				/>
 			</p>
-			<p class="text-[#9BA1A6] text-sm">
+			<p
+				v-if="user?.isPremium"
+				class="text-[#9BA1A6] text-sm"
+			>
 				Next Payment: {{ billing?.nextPayment }}
 			</p>
 		</div>
@@ -49,17 +59,19 @@ defineProps<{ user: User | undefined; billing: BillingInfo | undefined }>();
 				/>
 				<span class="text-[#F1F1F1]">**** **** **** {{ billing?.cardLast4 }}</span>
 			</div>
-			<button
-				class="btn-primary hover:cursor-pointer w-full sm:w-auto flex-1 sm:flex-none px-4 py-2 text-[#F1F1F1] text-lg flex items-center justify-center h-12"
-				@click="openBillingPortal"
-			>
-				<Icon
-					name="mingcute:settings-3-fill"
-					style="color: #F1F1F1"
-					class="mr-2"
-				/>
-				Billing Portal
-			</button>
+			<UTooltip text="Open billing portal">
+				<button
+					class="btn-primary hover:cursor-pointer w-full sm:w-auto flex-1 sm:flex-none px-4 py-2 text-[#F1F1F1] text-lg flex items-center justify-center h-12"
+					@click="openBillingPortal"
+				>
+					<Icon
+						name="mingcute:settings-3-fill"
+						style="color: #F1F1F1"
+						class="mr-2"
+					/>
+					Billing Portal
+				</button>
+			</UTooltip>
 		</div>
 
 		<!-- Payment History -->
@@ -115,13 +127,19 @@ defineProps<{ user: User | undefined; billing: BillingInfo | undefined }>();
 							</td>
 
 							<td class="py-3 text-right pr-2 text-[#00E1FF] hover:text-[#736EFE] cursor-pointer">
-								<a
-									v-if="invoice.pdfUrl"
-									:href="invoice.pdfUrl"
-									target="_blank"
-									rel="noopener"
-									download
-								>PDF</a>
+								<UTooltip
+									text="Download PDF"
+									:content="{
+										align: 'center',
+										side: 'right',
+									}"
+								>
+									<NuxtLink
+										v-if="invoice.pdfUrl"
+										:to="invoice.pdfUrl"
+										download
+									>PDF</NuxtLink>
+								</UTooltip>
 							</td>
 						</tr>
 					</tbody>
@@ -138,7 +156,7 @@ defineProps<{ user: User | undefined; billing: BillingInfo | undefined }>();
 		</h2>
 		<div class="mt-6">
 			<p class="text-[#F1F1F1] flex items-center">
-				You don't have any active subscription yet.
+				You don't have any billing history yet.
 			</p>
 			<p class="text-[#9BA1A6] text-sm">
 				If that's not the case, please wait a moment until we update your status.

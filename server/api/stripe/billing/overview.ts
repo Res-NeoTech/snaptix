@@ -36,6 +36,7 @@ export default defineEventHandler(async (event) => {
 	// 2. Get user from DB
 	const dbUser: IUser | null = await User.findById(user.id);
 	if (!dbUser || !dbUser.stripeCustomerId) {
+		setResponseStatus(event, 204);
 		return { cardLast4: null, invoices: [], nextPayment: null };
 	}
 
@@ -56,9 +57,25 @@ export default defineEventHandler(async (event) => {
 		limit: 1,
 	});
 
+	if (!subs.data.length) {
+		const response = {
+			cardLast4,
+			invoices: [],
+			nextPayment: null,
+		};
+
+		await redis.set(cacheKey, JSON.stringify(response), 'EX', 60 * 60 * 24);
+		setResponseStatus(event, 204);
+		return response;
+	}
+
+	let nextPayment: string | null = null;
+
 	const sub = subs.data[0];
-	const latestInvoice = await stripe.invoices.retrieve(sub.latest_invoice as string);
-	const nextPayment = formatDate(latestInvoice.period_end);
+	if (sub && typeof sub.latest_invoice === 'string') {
+		const latestInvoice = await stripe.invoices.retrieve(sub.latest_invoice);
+		nextPayment = formatDate(latestInvoice.period_end);
+	}
 
 	// 5. Get invoices
 	const invoices = await stripe.invoices.list({

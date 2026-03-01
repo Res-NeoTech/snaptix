@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue';
 import validator from 'validator';
 import { validatePassword } from '~~/lib/utils/validators';
-import ParticlesBg from '../components/imported/ParticlesBg.vue';
 
 useHead({
 	title: 'Sign-Up | SnapTix',
@@ -51,8 +50,6 @@ const validData = computed<boolean>(() => {
 		&& diagnostics.value.passwordRepeated;
 });
 
-const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
-
 const createAccount = async () => {
 	if (isSubmitting.value || !validData.value) return;
 
@@ -99,155 +96,129 @@ const createAccount = async () => {
 </script>
 
 <template>
-	<div class="min-h-screen bg-[#0D1117] overflow-hidden">
-		<ClientOnly>
-			<ParticlesBg
-				class="inset-0 w-full h-full pointer-events-none z-0 fixed"
-				:quantity="nbParticles"
-				:ease="100"
-				color="00E1FF"
-				:staticity="25"
-				refresh
-			/>
-		</ClientOnly>
-		<HeaderComponent />
-		<article
-			v-auto-animate
-			class="flex flex-col items-center w-full"
+	<article
+		v-auto-animate
+		class="flex flex-col items-center w-full"
+	>
+		<div class="flex items-center justify-evenly mt-25 w-full">
+			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
+			<h1 class="text-center">
+				Create a free account
+			</h1>
+			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
+		</div>
+		<input
+			id="usernameInput"
+			v-model="username"
+			class="h-15 w-4/5 md:w-2/5 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1] mt-25"
+			type="text"
+			name="username"
+			placeholder="Username"
 		>
-			<div class="flex items-center justify-evenly mt-25 w-full">
-				<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
-				<h2 class="text-center">
-					Create a free account
-				</h2>
-				<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
-			</div>
-			<input
-				id="usernameInput"
-				v-model="username"
-				class="h-15 w-4/5 md:w-2/5 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1] mt-25"
-				type="text"
-				name="username"
-				placeholder="Username"
-			>
-			<p
-				v-if="!diagnostics.usernameValid && username"
-				class="formError w-4/5 md:w-2/5 mt-10 text-lg"
-			>
-				Username must be
-				between 3 and 100 characters long.
-			</p>
-			<input
-				id="emailInput"
-				v-model="email"
-				class="h-15 w-4/5 md:w-2/5 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1] mt-10"
-				type="email"
-				name="email"
-				placeholder="E-Mail"
-			>
-			<p
-				v-if="!diagnostics.emailValid && email"
-				class="formError w-4/5 md:w-2/5 mt-10 text-lg"
-			>
-				Please enter a valid email
-				address.
-			</p>
-			<p
-				v-if="emailTaken"
-				class="formError w-4/5 md:w-2/5 mt-10 text-lg"
-			>
-				This email is already taken.
-			</p>
-			<input
-				id="passwordInput"
-				v-model="password"
-				class="h-15 w-4/5 md:w-2/5 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1] mt-10"
-				type="password"
-				name="password"
-				placeholder="Password"
-			>
-			<p
-				v-if="!diagnostics.passwordValid && password"
-				class="formError w-4/5 md:w-2/5 mt-10 text-lg"
-			>
-				Password must be at
-				least 6 characters long and include at least one number and one special character.
-			</p>
-			<input
-				id="rPasswordInput"
-				v-model="rPassword"
-				class="h-15 w-4/5 md:w-2/5 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1] mt-10"
-				type="password"
-				name="rPassword"
-				placeholder="Confirm Password"
-			>
-			<p
-				v-if="!diagnostics.passwordRepeated && password && rPassword"
-				class="formError w-4/5 md:w-2/5 mt-10 text-lg"
-			>
-				The
-				passwords do not match.
-			</p>
-			<button
-				id="submit"
-				type="button"
-				:disabled="!validData || isSubmitting"
-				class="h-15 w-4/5 md:w-2/5 text-[#F1F1F1] text-lg flex items-center justify-center mt-10 hover:cursor-pointer"
-				@click="createAccount"
-			>
-				<Icon
-					name="mingcute:user-add-line"
-					style="color: #F1F1F1"
-					class="mr-2"
-				/> {{ signButtonText }}
-			</button>
-			<p
-				v-if="serverSideError"
-				class="formError w-4/5 md:w-2/5 mt-10 text-lg"
-			>
-				Something unexpected happened. Please, try again later.
-			</p>
-			<p
-				v-if="rateLimited"
-				class="formError w-4/5 md:w-2/5 mt-10 text-lg"
-			>
-				Too many sign-up attempts. Please wait a moment.
-			</p>
-			<p class="text-[#F1F1F1] text-lg text-center w-2/3 mt-25">
-				By creating an account, you agree to SnapTix's <NuxtLink
-					class="text-[#00E1FF] hover:text-[#736EFE]"
-					to="/terms-of-use"
-				>Terms Of Use</NuxtLink> and confirm that you are familiar with our
-				<NuxtLink
-					class="text-[#00E1FF] hover:text-[#736EFE]"
-					to="/privacy-policy"
-				>Privacy Policy</NuxtLink>.
-			</p>
-			<p class="text-[#F1F1F1] text-lg text-center w-2/3 mt-5">
-				Already got an account ? <NuxtLink
-					class="text-[#00E1FF] hover:text-[#736EFE]"
-					to="/login"
-				>Log-In
-				</NuxtLink> instead.
-			</p>
-		</article>
-		<FooterComponent :margin="true" />
-	</div>
+		<p
+			v-if="!diagnostics.usernameValid && username"
+			class="formError w-4/5 md:w-2/5 mt-10 text-lg"
+		>
+			Username must be
+			between 3 and 100 characters long.
+		</p>
+		<input
+			id="emailInput"
+			v-model="email"
+			class="h-15 w-4/5 md:w-2/5 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1] mt-10"
+			type="email"
+			name="email"
+			placeholder="E-Mail"
+		>
+		<p
+			v-if="!diagnostics.emailValid && email"
+			class="formError w-4/5 md:w-2/5 mt-10 text-lg"
+		>
+			Please enter a valid email
+			address.
+		</p>
+		<p
+			v-if="emailTaken"
+			class="formError w-4/5 md:w-2/5 mt-10 text-lg"
+		>
+			This email is already taken.
+		</p>
+		<input
+			id="passwordInput"
+			v-model="password"
+			class="h-15 w-4/5 md:w-2/5 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1] mt-10"
+			type="password"
+			name="password"
+			placeholder="Password"
+		>
+		<p
+			v-if="!diagnostics.passwordValid && password"
+			class="formError w-4/5 md:w-2/5 mt-10 text-lg"
+		>
+			Password must be at
+			least 6 characters long and include at least one number and one special character.
+		</p>
+		<input
+			id="rPasswordInput"
+			v-model="rPassword"
+			class="h-15 w-4/5 md:w-2/5 placeholder:text-[#818181] p-5 text-lg text-[#F1F1F1] mt-10"
+			type="password"
+			name="rPassword"
+			placeholder="Confirm Password"
+		>
+		<p
+			v-if="!diagnostics.passwordRepeated && password && rPassword"
+			class="formError w-4/5 md:w-2/5 mt-10 text-lg"
+		>
+			The
+			passwords do not match.
+		</p>
+		<button
+			id="submit"
+			type="button"
+			:disabled="!validData || isSubmitting"
+			class="h-15 w-4/5 md:w-2/5 text-[#F1F1F1] text-lg flex items-center justify-center mt-10 hover:cursor-pointer"
+			@click="createAccount"
+		>
+			<Icon
+				name="mingcute:user-add-line"
+				style="color: #F1F1F1"
+				class="mr-2"
+			/> {{ signButtonText }}
+		</button>
+		<p
+			v-if="serverSideError"
+			class="formError w-4/5 md:w-2/5 mt-10 text-lg"
+		>
+			Something unexpected happened. Please, try again later.
+		</p>
+		<p
+			v-if="rateLimited"
+			class="formError w-4/5 md:w-2/5 mt-10 text-lg"
+		>
+			Too many sign-up attempts. Please wait a moment.
+		</p>
+		<p class="text-[#F1F1F1] text-lg text-center w-2/3 mt-25">
+			By creating an account, you agree to SnapTix's <NuxtLink
+				class="text-[#00E1FF] hover:text-[#736EFE]"
+				to="/terms-of-use"
+			>Terms Of Use</NuxtLink> and confirm that you are familiar with our
+			<NuxtLink
+				class="text-[#00E1FF] hover:text-[#736EFE]"
+				to="/privacy-policy"
+			>Privacy Policy</NuxtLink>.
+		</p>
+		<p class="text-[#F1F1F1] text-lg text-center w-2/3 mt-5">
+			Already got an account ? <NuxtLink
+				class="text-[#00E1FF] hover:text-[#736EFE]"
+				to="/login"
+			>Log-In
+			</NuxtLink> instead.
+		</p>
+	</article>
 </template>
 
 <style scoped>
-h2 {
-	background: linear-gradient(to right, #00E1FF, #736EFE);
-	-webkit-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-	display: inline-block;
-	font-weight: 900;
-	font-size: xx-large;
-	letter-spacing: 1px;
-	text-shadow: 0 0 10px rgba(0, 225, 255, 0.4);
-}
-
 input {
 	border-radius: 20px;
 	border: 1px solid rgba(255, 255, 255, 0.25);

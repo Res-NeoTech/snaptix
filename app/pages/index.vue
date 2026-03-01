@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useConversationStore } from '~~/lib/utils/useConversationStore';
-import ParticlesBg from '../components/imported/ParticlesBg.vue';
 
 useHead({
 	title: 'SnapTix',
@@ -10,7 +9,6 @@ useHead({
 	],
 });
 
-const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 const conversation = useConversationStore();
 const prompt = ref<string>(conversation.prompt);
 const isLoaderHidden = ref<boolean>(true);
@@ -81,77 +79,51 @@ const hideLimitPoput = () => {
 </script>
 
 <template>
-	<div class="min-h-screen bg-[#0D1117] overflow-hidden">
-		<ClientOnly>
-			<ParticlesBg
-				class="inset-0 w-full h-full pointer-events-none z-0 fixed"
-				:quantity="nbParticles"
-				:ease="100"
-				color="00E1FF"
-				:staticity="25"
-				refresh
-			/>
-		</ClientOnly>
-		<ResponseLoader :is-hidden="isLoaderHidden" />
-		<LimitPopup
-			:type="limitPopupType"
-			@hide="hideLimitPoput"
-		/>
-		<HeaderComponent />
-		<div class="flex items-center justify-evenly mt-25">
-			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
-			<h2 class="text-center">
-				Fix anything. No prompt needed.
-			</h2>
-			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
-		</div>
-		<PromptBox
-			@update-prompt="onUpdatePrompt"
-			@submit-prompt="onSubmitPrompt"
-		/>
-		<div
-			v-if="serverSideError"
-			v-auto-animate
-			class="error-box w-4/5 md:w-2/5 flex items-center justify-between p-4 rounded-lg border border-[#00E1FF]/40 bg-white/5 mt-25 mb-25"
-		>
-			<p class="text-[#FF4D6D] text-center">
-				The server encountered a problem while processing your request.
-				Please, retry later. We are deeply sorry for the interruption.
-			</p>
-		</div>
-		<div
-			v-if="conversation.response"
-			class="flex items-center justify-evenly mt-25 mb-25"
-		>
-			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
-			<h2 class="text-center">
-				AI Response
-			</h2>
-			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
-		</div>
-		<AiBox
-			v-if="conversation.response"
-			v-auto-animate
-			:ai-response="conversation.response"
-			@regenerate="onSubmitPrompt"
-		/>
-		<FooterComponent :margin="true" />
+	<ResponseLoader :is-hidden="isLoaderHidden" />
+	<LimitPopup
+		:type="limitPopupType"
+		@hide="hideLimitPoput"
+	/>
+	<div class="flex items-center justify-evenly mt-25">
+		<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
+		<h1 class="text-center">
+			Fix anything. No prompt needed.
+		</h1>
+		<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
 	</div>
+	<PromptBox
+		@update-prompt="onUpdatePrompt"
+		@submit-prompt="onSubmitPrompt"
+	/>
+	<div
+		v-if="serverSideError"
+		v-auto-animate
+		class="error-box w-4/5 md:w-2/5 flex items-center justify-between p-4 rounded-lg border border-[#00E1FF]/40 bg-white/5 mt-25 mb-25"
+	>
+		<p class="text-[#FF4D6D] text-center">
+			The server encountered a problem while processing your request.
+			Please, retry later. We are deeply sorry for the interruption.
+		</p>
+	</div>
+	<div
+		v-if="conversation.response"
+		class="flex items-center justify-evenly mt-25 mb-25"
+	>
+		<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
+		<h2 class="text-center">
+			AI Response
+		</h2>
+		<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
+	</div>
+	<AiBox
+		v-if="conversation.response"
+		v-auto-animate
+		:ai-response="conversation.response"
+		@regenerate="onSubmitPrompt"
+	/>
 </template>
 
 <style scoped>
-h2 {
-	background: linear-gradient(to right, #00E1FF, #736EFE);
-	-webkit-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-	display: inline-block;
-	font-weight: 900;
-	font-size: xx-large;
-	letter-spacing: 1px;
-	text-shadow: 0 0 10px rgba(0, 225, 255, 0.4);
-}
-
 .error-box {
 	border-radius: 20px;
 	border: 1px solid rgba(255, 111, 111, 0.25);

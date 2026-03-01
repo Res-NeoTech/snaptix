@@ -1,12 +1,26 @@
 @import "tailwindcss";
-
-* {
-    transition: all 500ms;
-}
+@import "@nuxt/ui";
 
 body {
-    margin: 0;
-    font-family: Roboto, sans-serif;
+  margin: 0;
+  font-family: Roboto, sans-serif;
+}
+
+a {
+  transition: all 200ms;
+}
+
+/* Global rules */
+h1, h2 {
+	background: linear-gradient(to right, #00E1FF, #736EFE);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	display: inline-block;
+	font-weight: 900;
+	font-size: xx-large;
+	letter-spacing: 1px;
+	text-shadow: 0 0 10px rgba(0, 225, 255, 0.4);
 }
 
 /* Code highlighting */
@@ -18,7 +32,8 @@ body {
 
 .hljs-comment,
 .hljs-quote {
-  color: #5EFCE8 !important;  /* minty/cyan light, but maybe a bit more muted */
+  color: #5EFCE8 !important;
+  /* minty/cyan light, but maybe a bit more muted */
   font-style: italic !important;
 }
 
@@ -27,7 +42,8 @@ body {
 .hljs-selector-tag,
 .hljs-name,
 .hljs-title {
-  color: #736EFE !important;  /* your purple */
+  color: #736EFE !important;
+  /* your purple */
   font-weight: bold !important;
 }
 
@@ -36,39 +52,45 @@ body {
 .hljs-regexp,
 .hljs-symbol,
 .hljs-template-string {
-  color: #00E1FF !important;  /* bright cyan */
+  color: #00E1FF !important;
+  /* bright cyan */
 }
 
 /* numbers, types, built-ins */
 .hljs-number,
 .hljs-type,
 .hljs-built_in {
-  color: #5EFCE8 !important;  /* minty/cyan */
+  color: #5EFCE8 !important;
+  /* minty/cyan */
 }
 
 /* functions, classes, titles */
 .hljs-function,
 .hljs-class .hljs-title {
-  color: #736EFE !important;  /* purple */
+  color: #736EFE !important;
+  /* purple */
 }
 
 /* punctuation, operators, etc */
 .hljs-punctuation,
 .hljs-operator {
-  color: #E0E0E0 !important;  /* neutral, maybe light-grey so accents stand out */
+  color: #E0E0E0 !important;
+  /* neutral, maybe light-grey so accents stand out */
 }
 
 /* Markdown */
 
-.renderer > p {
+.renderer>p {
   font-size: large !important;
 }
 
-.renderer > ol, .renderer > ul {
-    padding: 10px;
+.renderer>ol,
+.renderer>ul {
+  padding: 10px;
 }
 
-.renderer > ol > li, .renderer > ul > li {
+.renderer>ol>li,
+.renderer>ul>li {
   font-size: medium !important;
   list-style-type: disc;
 }

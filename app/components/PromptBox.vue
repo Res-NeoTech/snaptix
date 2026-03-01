@@ -40,17 +40,19 @@ watch(prompt, (newVal) => {
 		</button> Will be added later in the upcoming update -->
 
 		<!-- Fix Now button -->
-		<button
-			id="fix"
-			class="glass-btn accent-btn w-4/5 md:w-2/5 mt-6 text-[#F1F1F1] text-lg flex items-center justify-center h-[3.75rem]"
-			@click="emit('submit-prompt')"
-		>
-			<Icon
-				name="mingcute:screwdriver-line"
-				class="mr-2 text-[#F1F1F1]"
-			/>
-			Fix Now
-		</button>
+		<UTooltip text="Fix & improve">
+			<button
+				id="fix"
+				class="glass-btn accent-btn w-4/5 md:w-2/5 mt-6 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
+				@click="emit('submit-prompt')"
+			>
+				<Icon
+					name="mingcute:screwdriver-line"
+					class="mr-2 text-[#F1F1F1]"
+				/>
+				Fix Now
+			</button>
+		</UTooltip>
 	</div>
 </template>
 

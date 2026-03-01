@@ -1,4 +1,4 @@
-import type { Document } from 'mongoose';
+import type { Document, Model } from 'mongoose';
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema({
 	stripeCurrentPeriodEnd: { type: Number, default: null }, // UNIX timestamp
 });
 
-export default mongoose.models.User || mongoose.model('User', UserSchema);
+export default mongoose.models.User as Model<IUser> || mongoose.model<IUser>('User', UserSchema);
 
 export interface IUser extends Document {
 	id: string;

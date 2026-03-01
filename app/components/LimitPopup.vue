@@ -4,210 +4,217 @@ const emit = defineEmits<{ (e: 'hide'): void }>();
 </script>
 
 <template>
-	<section
-		class="fixed z-10 w-screen h-screen flex flex-col items-center justify-center"
-		:class="props.type === 'none' ? 'hiddenLoader' : ''"
-	>
-		<div
-			v-if="type === 'guest'"
-			class="flex flex-col items-center justify-center px-4 sm:px-6 md:px-8"
+	<Teleport to="body">
+		<section
+			class="fixed inset-0 z-10 w-screen h-screen flex flex-col items-center justify-center"
+			:class="props.type === 'none' ? 'hiddenLoader' : ''"
 		>
-			<div class="flex flex-col sm:flex-row items-center justify-center mb-6 sm:mb-0">
-				<NuxtImg
-					src="/snaptix.png"
-					class="w-16 sm:w-20 md:w-25 mb-4 sm:mb-0 sm:mr-5"
-					draggable="false"
-				/>
-				<h1 class="text-3xl sm:text-4xl md:text-5xl">
-					SnapTix
-				</h1>
-			</div>
-			<p class="mt-8 sm:mt-16 md:mt-25 px-4">
-				Enjoy Snaptix? Create a free account for more benefits such as:
-			</p>
-			<ul class="w-full max-w-md px-6 sm:px-8 md:px-0">
-				<li class="flex items-start sm:items-center mb-3">
-					<Icon
-						name="mingcute:scale-fill"
-						style="color: #F1F1F1"
-						class="mr-2 mt-1 sm:mt-0 flex-shrink-0"
+			<div
+				v-if="type === 'guest'"
+				class="flex flex-col items-center justify-center px-4 sm:px-6 md:px-8"
+			>
+				<div class="flex flex-col sm:flex-row items-center justify-center mb-6 sm:mb-0">
+					<NuxtImg
+						src="/snaptix.png"
+						class="w-16 sm:w-20 md:w-25 mb-4 sm:mb-0 sm:mr-5"
+						draggable="false"
 					/>
-					<span>Less limitations</span>
-				</li>
-				<li class="flex items-start sm:items-center mb-3">
-					<Icon
-						name="mingcute:bulb-2-fill"
-						style="color: #F1F1F1"
-						class="mr-2 mt-1 sm:mt-0 flex-shrink-0"
-					/>
-					<span>Smarter responses</span>
-				</li>
-				<li class="flex items-start sm:items-center mb-3">
-					<Icon
-						name="mingcute:unlock-fill"
-						style="color: #F1F1F1"
-						class="mr-2 mt-1 sm:mt-0 flex-shrink-0"
-					/>
-					<span>More features to come</span>
-				</li>
-			</ul>
-			<div class="flex flex-col sm:flex-row items-center justify-center p-5 gap-3 sm:gap-2 w-full max-w-md">
-				<button
-					id="secondaryButton"
-					class="w-full sm:w-auto sm:flex-1 px-4 py-2 text-[#F1F1F1] text-base sm:text-lg flex items-center justify-center h-12 sm:h-15"
-					@click="navigateTo('/login')"
+					<h1 class="text-3xl sm:text-4xl md:text-5xl">
+						SnapTix
+					</h1>
+				</div>
+				<p class="mt-8 sm:mt-16 md:mt-25 px-4">
+					Enjoy Snaptix? Create a free account for more benefits such as:
+				</p>
+				<ul class="w-full max-w-md px-6 sm:px-8 md:px-0">
+					<li class="flex items-start sm:items-center mb-3">
+						<Icon
+							name="mingcute:scale-fill"
+							style="color: #F1F1F1"
+							class="mr-2 mt-1 sm:mt-0 shrink-0"
+						/>
+						<span>Less limitations</span>
+					</li>
+					<li class="flex items-start sm:items-center mb-3">
+						<Icon
+							name="mingcute:bulb-2-fill"
+							style="color: #F1F1F1"
+							class="mr-2 mt-1 sm:mt-0 shrink-0"
+						/>
+						<span>Smarter responses</span>
+					</li>
+					<li class="flex items-start sm:items-center mb-3">
+						<Icon
+							name="mingcute:unlock-fill"
+							style="color: #F1F1F1"
+							class="mr-2 mt-1 sm:mt-0 shrink-0"
+						/>
+						<span>More features to come</span>
+					</li>
+				</ul>
+				<div class="flex flex-col sm:flex-row items-center justify-center p-5 gap-3 sm:gap-2 w-full max-w-md">
+					<button
+						id="secondaryButton"
+						class="w-full sm:w-auto sm:flex-1 px-4 py-2 text-[#F1F1F1] text-base sm:text-lg flex items-center justify-center h-12 sm:h-15"
+						@click="navigateTo('/login')"
+					>
+						<Icon
+							name="bx:user"
+							style="color: #F1F1F1"
+							class="mr-2"
+						/>
+						Login
+					</button>
+					<button
+						id="primaryButton"
+						class="w-full sm:w-auto sm:flex-1 px-4 py-2 text-[#F1F1F1] text-base sm:text-lg flex items-center justify-center h-12 sm:h-15"
+						@click="navigateTo('/signup')"
+					>
+						<Icon
+							name="mingcute:user-add-line"
+							style="color: #F1F1F1"
+							class="mr-2"
+						/>
+						Sign Up
+					</button>
+				</div>
+				<h3
+					class="text-[#00E1FF] hover:text-[#736EFE] cursor-pointer mt-8 sm:mt-12 text-base sm:text-lg"
+					@click="emit('hide')"
 				>
-					<Icon
-						name="bx:user"
-						style="color: #F1F1F1"
-						class="mr-2"
+					Dismiss
+				</h3>
+				<p
+					class="text-[#F1F1F1] text-sm sm:text-base md:text-lg text-center w-full sm:w-4/5 md:w-2/3 mt-8 sm:mt-12 px-4"
+				>
+					By creating an account, you agree to SnapTix's Terms of Use and confirm that you are familiar with
+					our
+					<NuxtLink
+						class="text-[#00E1FF] hover:text-[#736EFE]"
+						to="/privacy-policy"
+					>Privacy Policy</NuxtLink>
+					.
+				</p>
+			</div>
+			<div
+				v-else-if="type === 'user'"
+				class="flex flex-col items-center justify-center px-4 sm:px-6 md:px-8"
+			>
+				<div class="flex flex-col sm:flex-row items-center justify-center mb-6 sm:mb-0">
+					<NuxtImg
+						src="/snaptix.png"
+						class="w-16 sm:w-20 md:w-25 mb-4 sm:mb-0 sm:mr-5"
+						draggable="false"
 					/>
-					Login
-				</button>
+					<h1 class="text-3xl sm:text-4xl md:text-5xl">
+						SnapTix
+					</h1>
+				</div>
+				<p class="mt-8 sm:mt-12 md:mt-20 separator px-4">
+					<strong>You've reached your daily correction limit. But no worries —
+						you've got options:</strong>
+				</p>
+				<ul class="w-full max-w-2xl px-6 sm:px-8 md:px-12">
+					<li class="flex items-start mb-4">
+						<Icon
+							name="material-symbols:crown-rounded"
+							style="color: #F1F1F1"
+							class="mr-2 mt-1 shrink-0"
+						/>
+						<span>Become a Premium member and unlock way more corrections every day.</span>
+					</li>
+					<li class="flex items-start mb-4">
+						<Icon
+							name="mingcute:time-duration-fill"
+							style="color: #F1F1F1"
+							class="mr-2 mt-1 shrink-0"
+						/>
+						<span>Or just wait a few hours until your free quota resets.</span>
+					</li>
+				</ul>
+				<p class="mt-6 sm:mt-8 md:mt-10 separator px-4">
+					<strong>By upgrading to Premium, you also get:</strong>
+				</p>
+				<ul class="w-full max-w-2xl px-6 sm:px-8 md:px-12">
+					<li class="flex items-start mb-4">
+						<Icon
+							name="mingcute:scale-fill"
+							style="color: #F1F1F1"
+							class="mr-2 mt-1 shrink-0"
+						/>
+						<span>Larger daily limit (up to 50 corrections/day)</span>
+					</li>
+					<li class="flex items-start mb-4">
+						<Icon
+							name="mingcute:bulb-2-fill"
+							style="color: #F1F1F1"
+							class="mr-2 mt-1 shrink-0"
+						/>
+						<span>Smarter & more accurate responses</span>
+					</li>
+					<li class="flex items-start mb-4">
+						<Icon
+							name="mingcute:unlock-fill"
+							style="color: #F1F1F1"
+							class="mr-2 mt-1 shrink-0"
+						/>
+						<span>Early access to new features</span>
+					</li>
+				</ul>
 				<button
 					id="primaryButton"
-					class="w-full sm:w-auto sm:flex-1 px-4 py-2 text-[#F1F1F1] text-base sm:text-lg flex items-center justify-center h-12 sm:h-15"
-					@click="navigateTo('/signup')"
+					class="w-full max-w-xs sm:max-w-sm px-4 py-2 text-[#F1F1F1] text-base sm:text-lg flex items-center justify-center h-12 sm:h-15 mt-6 sm:mt-8 md:mt-10"
+					@click="navigateTo('/pricing')"
 				>
 					<Icon
-						name="mingcute:user-add-line"
+						name="solar:tag-price-bold"
 						style="color: #F1F1F1"
 						class="mr-2"
 					/>
-					Sign Up
+					See pricing
 				</button>
+				<h3
+					class="text-[#00E1FF] hover:text-[#736EFE] cursor-pointer mt-4 sm:mt-5 text-base sm:text-lg"
+					@click="emit('hide')"
+				>
+					Dismiss
+				</h3>
 			</div>
-			<h3
-				class="text-[#00E1FF] hover:text-[#736EFE] cursor-pointer mt-8 sm:mt-12 text-base sm:text-lg"
-				@click="emit('hide')"
+			<div
+				v-else
+				class="flex flex-col items-center justify-center px-4 sm:px-6 md:px-8"
 			>
-				Dismiss
-			</h3>
-			<p class="text-[#F1F1F1] text-sm sm:text-base md:text-lg text-center w-full sm:w-4/5 md:w-2/3 mt-8 sm:mt-12 px-4">
-				By creating an account, you agree to SnapTix's Terms of Use and confirm that you are familiar with our
-				<NuxtLink
-					class="text-[#00E1FF] hover:text-[#736EFE]"
-					to="/privacy-policy"
-				>Privacy Policy</NuxtLink>.
-			</p>
-		</div>
-		<div
-			v-else-if="type === 'user'"
-			class="flex flex-col items-center justify-center px-4 sm:px-6 md:px-8"
-		>
-			<div class="flex flex-col sm:flex-row items-center justify-center mb-6 sm:mb-0">
-				<NuxtImg
-					src="/snaptix.png"
-					class="w-16 sm:w-20 md:w-25 mb-4 sm:mb-0 sm:mr-5"
-					draggable="false"
-				/>
-				<h1 class="text-3xl sm:text-4xl md:text-5xl">
-					SnapTix
-				</h1>
+				<div class="flex flex-col sm:flex-row items-center justify-center mb-6 sm:mb-0">
+					<NuxtImg
+						src="/snaptix.png"
+						class="w-16 sm:w-20 md:w-25 mb-4 sm:mb-0 sm:mr-5"
+						draggable="false"
+					/>
+					<h1 class="text-3xl sm:text-4xl md:text-5xl">
+						SnapTix
+					</h1>
+				</div>
+				<p class="mt-8 sm:mt-12 md:mt-20 px-4">
+					<strong>Whoa, Premium star! ✨</strong>
+				</p>
+				<p class="mt-4 sm:mt-5 px-4">
+					<strong>You've hit your daily limit for today.</strong>
+				</p>
+				<p class="w-full sm:w-3/4 md:w-1/2 mt-4 sm:mt-5 px-4">
+					No stress — your quota will reset in a day, and you'll be back to unlimited
+					edits in no time.
+					Thanks for being a Premium member — we appreciate you and all the magic you create with your
+					content! 🩵
+				</p>
+				<h3
+					class="text-[#00E1FF] hover:text-[#736EFE] cursor-pointer mt-6 sm:mt-8 text-base sm:text-lg"
+					@click="emit('hide')"
+				>
+					Dismiss
+				</h3>
 			</div>
-			<p class="mt-8 sm:mt-12 md:mt-20 separator px-4">
-				<strong>You've reached your daily correction limit. But no worries —
-					you've got options:</strong>
-			</p>
-			<ul class="w-full max-w-2xl px-6 sm:px-8 md:px-12">
-				<li class="flex items-start mb-4">
-					<Icon
-						name="material-symbols:crown-rounded"
-						style="color: #F1F1F1"
-						class="mr-2 mt-1 flex-shrink-0"
-					/>
-					<span>Become a Premium member and unlock way more corrections every day.</span>
-				</li>
-				<li class="flex items-start mb-4">
-					<Icon
-						name="mingcute:time-duration-fill"
-						style="color: #F1F1F1"
-						class="mr-2 mt-1 flex-shrink-0"
-					/>
-					<span>Or just wait a few hours until your free quota resets.</span>
-				</li>
-			</ul>
-			<p class="mt-6 sm:mt-8 md:mt-10 separator px-4">
-				<strong>By upgrading to Premium, you also get:</strong>
-			</p>
-			<ul class="w-full max-w-2xl px-6 sm:px-8 md:px-12">
-				<li class="flex items-start mb-4">
-					<Icon
-						name="mingcute:scale-fill"
-						style="color: #F1F1F1"
-						class="mr-2 mt-1 flex-shrink-0"
-					/>
-					<span>Larger daily limit (up to 50 corrections/day)</span>
-				</li>
-				<li class="flex items-start mb-4">
-					<Icon
-						name="mingcute:bulb-2-fill"
-						style="color: #F1F1F1"
-						class="mr-2 mt-1 flex-shrink-0"
-					/>
-					<span>Smarter & more accurate responses</span>
-				</li>
-				<li class="flex items-start mb-4">
-					<Icon
-						name="mingcute:unlock-fill"
-						style="color: #F1F1F1"
-						class="mr-2 mt-1 flex-shrink-0"
-					/>
-					<span>Early access to new features</span>
-				</li>
-			</ul>
-			<button
-				id="primaryButton"
-				class="w-full max-w-xs sm:max-w-sm px-4 py-2 text-[#F1F1F1] text-base sm:text-lg flex items-center justify-center h-12 sm:h-15 mt-6 sm:mt-8 md:mt-10"
-				@click="navigateTo('/pricing')"
-			>
-				<Icon
-					name="solar:tag-price-bold"
-					style="color: #F1F1F1"
-					class="mr-2"
-				/>
-				See pricing
-			</button>
-			<h3
-				class="text-[#00E1FF] hover:text-[#736EFE] cursor-pointer mt-4 sm:mt-5 text-base sm:text-lg"
-				@click="emit('hide')"
-			>
-				Dismiss
-			</h3>
-		</div>
-		<div
-			v-else
-			class="flex flex-col items-center justify-center px-4 sm:px-6 md:px-8"
-		>
-			<div class="flex flex-col sm:flex-row items-center justify-center mb-6 sm:mb-0">
-				<NuxtImg
-					src="/snaptix.png"
-					class="w-16 sm:w-20 md:w-25 mb-4 sm:mb-0 sm:mr-5"
-					draggable="false"
-				/>
-				<h1 class="text-3xl sm:text-4xl md:text-5xl">
-					SnapTix
-				</h1>
-			</div>
-			<p class="mt-8 sm:mt-12 md:mt-20 px-4">
-				<strong>Whoa, Premium star! ✨</strong>
-			</p>
-			<p class="mt-4 sm:mt-5 px-4">
-				<strong>You've hit your daily limit for today.</strong>
-			</p>
-			<p class="w-full sm:w-3/4 md:w-1/2 mt-4 sm:mt-5 px-4">
-				No stress — your quota will reset in a day, and you'll be back to unlimited
-				edits in no time.
-				Thanks for being a Premium member — we appreciate you and all the magic you create with your text! 🩵
-			</p>
-			<h3
-				class="text-[#00E1FF] hover:text-[#736EFE] cursor-pointer mt-6 sm:mt-8 text-base sm:text-lg"
-				@click="emit('hide')"
-			>
-				Dismiss
-			</h3>
-		</div>
-	</section>
+		</section>
+	</Teleport>
 </template>
 
 <style scoped>
@@ -250,6 +257,7 @@ li {
 }
 
 @media (min-width: 640px) {
+
 	p,
 	li {
 		font-size: 1.125rem;
@@ -257,6 +265,7 @@ li {
 }
 
 @media (min-width: 768px) {
+
 	p,
 	li {
 		font-size: 1.25rem;

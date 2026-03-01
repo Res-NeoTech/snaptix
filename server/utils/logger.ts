@@ -6,12 +6,12 @@ import path from 'path';
 const isProd = process.env.NODE_ENV === 'production';
 
 // Убедимся, что директория для логов существует
-const logDir = path.resolve('/app/logs');
+const logDir = path.resolve('/logs');
 if (!fs.existsSync(logDir)) {
 	fs.mkdirSync(logDir, { recursive: true });
 }
 
-let logger: Logger;
+let loggerConstruct: Logger;
 
 if (isProd) {
 	const streams = [
@@ -19,16 +19,18 @@ if (isProd) {
 		{ stream: pino.destination(path.join(logDir, 'app.log')) },
 	];
 
-	logger = pino(
+	loggerConstruct = pino(
 		{
 			level: 'info',
+			timestamp: pino.stdTimeFunctions.isoTime,
+			base: undefined,
 		},
 		pino.multistream(streams),
 	);
 }
 else {
 	// dev + pretty print
-	logger = pino({
+	loggerConstruct = pino({
 		level: 'debug',
 		transport: {
 			target: 'pino-pretty',
@@ -40,5 +42,7 @@ else {
 		},
 	});
 }
+
+const logger: Logger = loggerConstruct; // Because ESLint doesn't like mutable exports.
 
 export { logger };

@@ -12,6 +12,21 @@ const logout = async () => {
 		},
 	});
 };
+
+const getProgressBarColor = (count: number, limit: number) => {
+	if (count >= limit) {
+		return '#FF4D6D';
+	}
+
+	const threeQuarter: number = (limit / 100) * 75;
+
+	if (count >= threeQuarter) {
+		return '#EC620D';
+	}
+	else {
+		return '#736EFE';
+	}
+};
 </script>
 
 <template>
@@ -40,11 +55,11 @@ const logout = async () => {
 					{{ user.email }}
 				</p>
 				<p class="text-[#9BA1A6] mt-2">
-					USERID: {{ user.id }}
+					UID: {{ user.id }}
 				</p>
 				<hr class="mt-5 text-[#9BA1A6]">
 				<p class="mt-5 text-[#F1F1F1] flex items-center">
-					Subscription: {{ user.isPremium ? "Premium" : "Free" }}
+					Current plan: {{ user.isPremium ? "Premium" : "Free" }}
 					<Icon
 						v-if="user?.isPremium"
 						name="material-symbols:crown-rounded"
@@ -67,7 +82,7 @@ const logout = async () => {
 						Today's Usage:
 					</h3>
 					<AnimatedCircularProgressBar
-						:gauge-primary-color="'#736EFE'"
+						:gauge-primary-color="getProgressBarColor(user.correctionCount, user.correctionLimit)"
 						:max="user.correctionLimit"
 						:min="0"
 						:value="user.correctionCount"
@@ -75,7 +90,7 @@ const logout = async () => {
 				</div>
 				<hr
 					v-if="user.correctionQuotaReset !== 'NONE'"
-					class="mt-10 text-[#9BA1A6]"
+					class="mt-10 text-[#a69f9b]"
 				>
 				<p
 					v-if="user.correctionQuotaReset !== 'NONE'"
@@ -86,16 +101,18 @@ const logout = async () => {
 			</div>
 
 			<!-- Log Out Button -->
-			<button
-				class="btn-primary w-full md:w-auto flex-1 sm:flex-none px-4 py-2 text-[#F1F1F1] mx-5 text-lg flex items-center justify-center h-15"
-				@click="logout"
-			>
-				<Icon
-					name="mingcute:exit-fill"
-					style="color: #F1F1F1"
-					class="mr-2"
-				/>Log Out
-			</button>
+			<UTooltip :text="`Log-out from ${user.username}`">
+				<button
+					class="btn-primary w-full md:w-auto flex-1 sm:flex-none px-4 py-2 text-[#F1F1F1] mx-5 text-lg flex items-center justify-center h-15"
+					@click="logout"
+				>
+					<Icon
+						name="mingcute:exit-fill"
+						style="color: #F1F1F1"
+						class="mr-2"
+					/>Log-Out
+				</button>
+			</UTooltip>
 		</div>
 	</div>
 </template>

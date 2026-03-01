@@ -1,7 +1,7 @@
 import tailwindcss from '@tailwindcss/vite';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-	modules: ['@nuxt/eslint', '@nuxt/fonts', '@nuxt/image', '@nuxt/icon', '@formkit/auto-animate', '@pinia/nuxt', 'nuxt-umami'],
+	modules: ['@nuxt/eslint', '@nuxt/fonts', '@nuxt/image', '@nuxt/icon', '@formkit/auto-animate', '@pinia/nuxt', 'nuxt-umami', '@nuxt/ui'],
 	devtools: { enabled: true },
 	app: {
 		head: {
@@ -43,18 +43,6 @@ export default defineNuxtConfig({
 		id: 'f9571e1d-cc0e-4dd2-9f7c-56b954e598dd',
 		host: 'https://umami.maksym.ch',
 		autoTrack: true,
-		// enabled: false,
-		// useDirective: true,
 		ignoreLocalhost: true,
-		// domains: ['cool-site.app', 'my-space.site'],
-		// urlOptions: {
-		//   trailingSlash: 'always',
-		//   excludeSearch: false,
-		//   excludeHash: false,
-		// },
-		// proxy: 'cloak',
-		// logErrors: true,
-		// customEndpoint: '/my-custom-endpoint',
-		// tag: 'website-variation-123',
 	},
 });

@@ -6,7 +6,7 @@ const props = defineProps<{ error: NuxtError }>();
 const nbParticles = ref<number>(Math.round(200 + Math.random() * 50));
 
 useHead({
-	title: `Error - ${props.error.statusCode} | SnapTix`,
+	title: `Error - ${props.error.status} | SnapTix`,
 });
 </script>
 
@@ -14,7 +14,7 @@ useHead({
 	<div class="min-h-screen bg-[#0D1117] overflow-hidden">
 		<ClientOnly>
 			<ParticlesBg
-				class="absolute inset-0 w-full h-full pointer-events-none z-0 fixed"
+				class="inset-0 w-full h-full pointer-events-none z-0 fixed"
 				:quantity="nbParticles"
 				:ease="100"
 				color="00E1FF"
@@ -26,15 +26,15 @@ useHead({
 		<div class="flex items-center justify-evenly mt-25">
 			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
 			<h1 class="text-center">
-				Error - {{ error.statusCode }}
+				Error - {{ error.status }}
 			</h1>
 			<hr class="w-1/5 border-t-3 rounded-xs b-[#00E1FF] text-[#00E1FF]">
 		</div>
 		<h2 class="text-center mt-25 w-full">
-			{{ error.statusMessage }}
+			{{ error.statusText }}
 		</h2>
 		<p
-			v-if="error.statusCode === 404"
+			v-if="error.status === 404"
 			class="text-center mt-25"
 		>
 			Looks like the content you are looking for doesn't exist.
@@ -42,7 +42,7 @@ useHead({
 			Try verifying the URL or return to the homepage.
 		</p>
 		<p
-			v-else-if="error.statusCode >= 500"
+			v-else-if="error.status as number >= 500"
 			class="text-center mt-25"
 		>
 			Internal server error occured, something's wrong on our side.
@@ -69,25 +69,25 @@ useHead({
 			/>
 			Return to home
 		</button>
-		<FooterComponent :margin="true" />
+		<FooterComponent />
 	</div>
 </template>
 
 <style scoped>
 h1,
 h2 {
-    background: linear-gradient(to right, #00E1FF, #736EFE);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
-    font-weight: 900;
-    letter-spacing: 1px;
-    text-shadow: 0 0 10px rgba(0, 225, 255, 0.4);
+	background: linear-gradient(to right, #00E1FF, #736EFE);
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	display: inline-block;
+	font-weight: 900;
+	letter-spacing: 1px;
+	text-shadow: 0 0 10px rgba(0, 225, 255, 0.4);
 }
 
 h1 {
-    font-size: xxx-large;
+	font-size: xxx-large;
 }
 
 h2 {
@@ -104,30 +104,30 @@ p {
 }
 
 button {
-    border-radius: 18px;
-    backdrop-filter: blur(8px);
-    transition: all 0.3s ease;
-    font-weight: 600;
-    letter-spacing: 0.3px;
+	border-radius: 18px;
+	backdrop-filter: blur(8px);
+	transition: all 0.3s ease;
+	font-weight: 600;
+	letter-spacing: 0.3px;
 }
 
 button:hover {
-    cursor: pointer;
-    transform: translateY(-2px);
+	cursor: pointer;
+	transform: translateY(-2px);
 }
 
 /* Primary = neon liquid button */
 #primaryButton {
-    background: linear-gradient(135deg, rgba(0, 225, 255, 0.5), rgba(115, 110, 254, 0.5));
-    border: 1px solid rgba(0, 225, 255, 0.7);
-    box-shadow: 0 0 18px rgba(0, 225, 255, 0.25);
-    margin-left: auto;
-    margin-right: auto;
+	background: linear-gradient(135deg, rgba(0, 225, 255, 0.5), rgba(115, 110, 254, 0.5));
+	border: 1px solid rgba(0, 225, 255, 0.7);
+	box-shadow: 0 0 18px rgba(0, 225, 255, 0.25);
+	margin-left: auto;
+	margin-right: auto;
 }
 
 #primaryButton:hover {
-    border-color: #736EFE;
-    box-shadow: 0 0 28px rgba(115, 110, 254, 0.5),
-        0 0 16px rgba(0, 225, 255, 0.3);
+	border-color: #736EFE;
+	box-shadow: 0 0 28px rgba(115, 110, 254, 0.5),
+		0 0 16px rgba(0, 225, 255, 0.3);
 }
 </style>

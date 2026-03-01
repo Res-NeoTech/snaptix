@@ -44,8 +44,15 @@ watch(
 );
 
 // Copy to clipboard
-const copyResponse = async () => {
-	await navigator.clipboard.writeText(props.aiResponse);
+const copyResponse = async (content: string) => {
+	const codeRegex: RegExp = /^```[a-zA-Z0-9_-]+\n([\s\S]*?)\n```$/;
+	const match = content.match(codeRegex);
+
+	if (match) {
+		content = match[1] as string;
+	}
+
+	await navigator.clipboard.writeText(content);
 	copyText.value = 'Copied!';
 	setTimeout(() => (copyText.value = 'Copy'), 1500);
 };
@@ -60,73 +67,83 @@ const copyResponse = async () => {
 		/>
 
 		<!-- Copy button -->
-		<button
-			id="copy"
-			class="glass-btn w-4/5 md:w-2/5 mt-10 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
-			@click="copyResponse"
+		<UTooltip
+			:content="{
+				align: 'center',
+				side: 'top',
+			}"
+			text="Copy to clipboard"
 		>
-			<Icon
-				name="mingcute:copy-2-fill"
-				class="mr-2 text-[#F1F1F1]"
-			/>
-			{{ copyText }}
-		</button>
+			<button
+				id="copy"
+				class="glass-btn w-4/5 md:w-2/5 mt-10 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
+				@click="copyResponse(props.aiResponse)"
+			>
+				<Icon
+					name="mingcute:copy-2-fill"
+					class="mr-2 text-[#F1F1F1]"
+				/>
+				{{ copyText }}
+			</button>
+		</UTooltip>
 
 		<!-- Regenerate button -->
-		<button
-			id="regenerate"
-			class="glass-btn w-4/5 md:w-2/5 mt-6 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
-			@click="emit('regenerate')"
-		>
-			<Icon
-				name="mingcute:refresh-3-fill"
-				class="mr-2 text-[#F1F1F1]"
-			/>
-			Regenerate
-		</button>
+		<UTooltip text="Regenerate fix">
+			<button
+				id="regenerate"
+				class="glass-btn w-4/5 md:w-2/5 mt-6 text-[#F1F1F1] text-lg flex items-center justify-center h-15"
+				@click="emit('regenerate')"
+			>
+				<Icon
+					name="mingcute:refresh-3-fill"
+					class="mr-2 text-[#F1F1F1]"
+				/>
+				Regenerate
+			</button>
+		</UTooltip>
 	</div>
 </template>
 
 <style scoped>
 /* Shared glass style */
 .glass-btn {
-  border-radius: 15px;
-  backdrop-filter: blur(3px);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+	border-radius: 15px;
+	backdrop-filter: blur(3px);
+	background: rgba(255, 255, 255, 0.06);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	transition: all 0.3s ease;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 
 .glass-btn:hover {
-  cursor: pointer;
-  border-color: #736EFE;
-  background: rgba(0, 225, 255, 0.12);
-  box-shadow: 0 6px 25px rgba(115, 110, 254, 0.4);
+	cursor: pointer;
+	border-color: #736EFE;
+	background: rgba(0, 225, 255, 0.12);
+	box-shadow: 0 6px 25px rgba(115, 110, 254, 0.4);
 }
 
 /* Regenerate button with accent */
 #regenerate {
-  border: 1px solid #00E1FF;
-  background: linear-gradient(135deg, rgba(0, 225, 255, 0.25), rgba(115, 110, 254, 0.25));
+	border: 1px solid #00E1FF;
+	background: linear-gradient(135deg, rgba(0, 225, 255, 0.25), rgba(115, 110, 254, 0.25));
 }
 
 /* Copy button more subtle */
 #copy {
-  border: 1px solid rgba(255, 255, 255, 0.15);
+	border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 /* AI response container */
 .renderer {
-  border-radius: 20px;
-  border: 1px solid rgba(0, 225, 255, 0.4);
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(3px);
-  transition: all 0.3s ease;
+	border-radius: 20px;
+	border: 1px solid rgba(0, 225, 255, 0.4);
+	background: rgba(255, 255, 255, 0.06);
+	backdrop-filter: blur(3px);
+	transition: all 0.3s ease;
 }
 
 .renderer:hover {
-  border: 1px solid #736EFE;
-  box-shadow: 0 6px 30px rgba(115, 110, 254, 0.25);
+	border: 1px solid #736EFE;
+	box-shadow: 0 6px 30px rgba(115, 110, 254, 0.25);
 }
 </style>

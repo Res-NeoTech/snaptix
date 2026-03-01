@@ -45,15 +45,17 @@ export default defineEventHandler(async (event) => {
 /**
  * Formats seconds to a human-readable string.
  * @param seconds - The number of seconds to format.
- * @returns A string representing the duration in hours and minutes.
+ * @returns A string representing the duration in hours, minutes and seconds.
  */
 function formatDuration(seconds: number): string {
 	const h: number = Math.floor(seconds / 3600);
 	const m: number = Math.floor((seconds % 3600) / 60);
+	const s: number = seconds % 60;
 
 	const parts: string[] = [];
 	if (h > 0) parts.push(`${h} hour${h > 1 ? 's' : ''}`);
 	if (m > 0) parts.push(`${m} minute${m > 1 ? 's' : ''}`);
+	if (s > 0 || parts.length === 0) parts.push(`${s} second${s !== 1 ? 's' : ''}`);
 
-	return parts.join(' ');
+	return parts.join(', ');
 }

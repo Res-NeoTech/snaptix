@@ -33,7 +33,7 @@ const open = ref<boolean>(false);
 
 			<Icon
 				name="mingcute:square-arrow-down-fill"
-				class="text-[#00E1FF] text-4xl w-10 h-10 flex-shrink-0 transition-transform transition-colors group-hover:text-[#736EFE]"
+				class="text-[#00E1FF] text-4xl w-10 h-10 shrink-0 transition-transform group-hover:text-[#736EFE]"
 				:class="{ 'rotate-180': open }"
 			/>
 		</div>

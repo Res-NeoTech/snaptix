@@ -2,13 +2,12 @@
 const { data } = await useAsyncData('dynamicData', () =>
 	$fetch('/api/dynamic'),
 );
-const props = defineProps<{ margin?: boolean }>();
 
 const currentYear = new Date().getFullYear();
 </script>
 
 <template>
-	<footer :class="[props.margin ? 'mt-25' : '']">
+	<footer class="mt-25">
 		<div class="footer-container">
 			<!-- Top Section: Logo and Description -->
 			<div class="footer-top">
@@ -50,12 +49,15 @@ const currentYear = new Date().getFullYear();
 						>Pricing</NuxtLink>
 					</div>
 
-					<!-- <div class="link-group">
-            <h3 class="link-title">Company</h3>
-            <NuxtLink to="/about" class="link">About Us</NuxtLink>
-            <NuxtLink to="/contact" class="link">Contact</NuxtLink>
-            <NuxtLink to="/careers" class="link">Careers</NuxtLink>
-          </div> -->
+					<div class="link-group">
+						<h3 class="link-title">
+							Company
+						</h3>
+						<NuxtLink
+							to="/news"
+							class="link"
+						>News</NuxtLink>
+					</div>
 
 					<div class="link-group">
 						<h3 class="link-title">
