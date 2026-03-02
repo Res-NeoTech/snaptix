@@ -20,20 +20,20 @@ const open = ref<boolean>(false);
 <template>
 	<div
 		v-auto-animate
-		class="hover:bg-white/5 p-5"
+		class="hover:bg-white/5 p-5 transition-colors"
 		:class="customClass"
 	>
 		<div
 			class="flex justify-between items-center gap-2 group cursor-pointer"
 			@click="open = !open"
 		>
-			<strong class="text-[#00E1FF] text-xl group-hover:text-[#736EFE]">
+			<strong class="text-[#00E1FF] text-xl group-hover:text-[#736EFE] transition-colors">
 				{{ props.title }}
 			</strong>
 
 			<Icon
 				name="mingcute:square-arrow-down-fill"
-				class="text-[#00E1FF] text-4xl w-10 h-10 shrink-0 transition-transform group-hover:text-[#736EFE]"
+				class="text-[#00E1FF] text-4xl w-10 h-10 shrink-0 transition-all group-hover:text-[#736EFE]"
 				:class="{ 'rotate-180': open }"
 			/>
 		</div>

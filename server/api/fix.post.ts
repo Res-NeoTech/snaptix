@@ -29,7 +29,7 @@ function setGuestCookie(event: H3Event) {
 		setCookie(event, 'guest_id', guestId, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
-			sameSite: 'strict',
+			sameSite: 'lax',
 			path: '/',
 			maxAge: 24 * 60 * 60,
 		});
@@ -88,7 +88,7 @@ export default defineEventHandler(async (event) => {
 	// Apply rate limit
 	const allowed = await applyRateLimit(redis, rateKey, max);
 	if (!allowed) {
-		const rateLimitUserType: string = rateKey.split(':')[1];
+		const rateLimitUserType: string = rateKey.split(':')[1] as string;
 		logger.warn(`[Fix] Rate-limit triggered for key : ${rateKey}`);
 		setResponseStatus(event, 429);
 		return {

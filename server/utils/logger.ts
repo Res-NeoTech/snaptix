@@ -5,8 +5,9 @@ import path from 'path';
 
 const isProd = process.env.NODE_ENV === 'production';
 
-// Убедимся, что директория для логов существует
-const logDir = path.resolve('/logs');
+// /app/logs for production
+// /logs for development
+const logDir = path.resolve('/app/logs');
 if (!fs.existsSync(logDir)) {
 	fs.mkdirSync(logDir, { recursive: true });
 }
